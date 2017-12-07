@@ -1,4 +1,4 @@
-# setwd("vignettes/")
+# setwd("~/STRIPS2Helmers/vignettes/")
 
 rm(list=ls(all=TRUE))
 
@@ -112,7 +112,7 @@ g <- ggplot(d, aes(x = date_time,
   theme(legend.position = "bottom",
         legend.title    = element_blank())
 
-ggsave(filename = "runoff.jpg", plot=g, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff.jpg", plot=g, width = 6, height=8)
 
 
 # Multiply flow by 10
