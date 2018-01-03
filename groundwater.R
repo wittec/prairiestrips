@@ -184,8 +184,7 @@ ggsave(filename = "gwdrp.jpg", plot=drp, width = 6, height=8)
 
 ########################################################################################
 
-gwdepth <- xlsx::read.xlsx("../data-raw/water_quality/2016/Depth to Groundwater.xlsx", sheetName = "strips 2") %>%
-  select(-NA.) %>%
+gwdepth2016 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/2016/2016strips2gwdepth.csv", header = T) %>%
   filter(!is.na(site)) %>%
   rename(rawdepthft = uncorrected.depth..ft.) %>%
   mutate(site = gsub("Arm", "Armstrong", site),
@@ -203,11 +202,32 @@ gwdepth <- xlsx::read.xlsx("../data-raw/water_quality/2016/Depth to Groundwater.
          trt = gsub("trt", "TRT", trt),
          trt = gsub("ctl", "CTL", trt),
          position = paste(trt, pos),
-         sitepos = paste(site, position),
-         #make date column (month names)
-         #correct for well above ground
-         abovegroundin = 1.5)
+         sitepos = paste(site, position)
+          )
 
+gwdepth2017 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/2017/2017strips2gwdepth.csv", header = T) %>%
+  filter(!is.na(site)) %>%
+  rename(rawdepthft = uncorrected.depth..ft.) %>%
+  mutate(site = gsub("Arm", "Armstrong", site),
+         site = gsub("arm", "Armstrong", site),
+         site = gsub("white", "Whiterock", site),
+         site = gsub("white ", "Whiterock", site),
+         site = gsub("spirit", "Spirit Lake", site),
+         site = gsub("eia", "EIA", site),
+         site = gsub("guthrie", "Guthrie", site),
+         site = gsub("mcnay", "McNay", site),
+         site = gsub("rhodes", "Rhodes", site),
+         site = gsub("worle", "Worle", site),
+         pos = gsub("top", "Top", pos),
+         pos = gsub("bot", "Bottom", pos),
+         trt = gsub("trt", "TRT", trt),
+         trt = gsub("ctl", "CTL", trt),
+         position = paste(trt, pos),
+         sitepos = paste(site, position)
+         )
+
+gwdepth <- rbind(gwdepth2016, gwdepth2017)
+gwdepth$abovegroundin = 1.5
 gwdepth$abovegroundin[gwdepth$sitepos=="Whiterock CTL Bottom"] <- 2
 gwdepth$abovegroundin[gwdepth$sitepos=="Spirit Lake TRT Top"] <- 1
 gwdepth$abovegroundin[gwdepth$sitepos=="Spirit Lake CTL Top"] <- 13.8 
@@ -249,6 +269,12 @@ gwdepth$date[gwdepth$month=="12"] <- "Dec."
 gwdepth$order <- factor(gwdepth$date, levels = c("Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
 
 
+# Customized colors
+colorscale <- c(TRT = "blue", 
+                CTL = "red")
+linescale <- c(Top = "dashed",
+               Bottom = "solid")
+
 gwdepthplot <- ggplot(gwdepth, aes(x = order, 
                            y = negadjdepthft, 
                            group = position,
@@ -268,7 +294,7 @@ gwdepthplot <- ggplot(gwdepth, aes(x = order,
 
 ggsave(filename = "gwdepth.jpg", plot=gwdepthplot, width = 6, height=8)
 
-
+test <- filter(gwdepth, site=="Whiterock")
 
 
 
