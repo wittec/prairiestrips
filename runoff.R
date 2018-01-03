@@ -29,8 +29,16 @@ rain <- STRIPS2Helmers::rain %>%
 myrain <- rain %>%
   select(-watershed, -watershed_year, -treatment, -cumulative_rain)
 
-#the cleaned "runoff.rda" has whiterock 2017 in it... need to figure out why it isn't getting into flow below
 
+
+
+
+
+
+
+#the cleaned "runoff.rda" has whiterock 2017 in it... need to figure out why it isn't getting into flow below
+flow <- STRIPS2Helmers/data/runoff %>%
+  
 flow <- STRIPS2Helmers::runoff %>%
   filter(!is.na(flow)) %>%
   
@@ -63,7 +71,7 @@ ggplot(flow, aes(x = date_time, y = cumulative_flow,
 #   facet_grid(site ~ year, scales='free') + 
 #   theme_bw()
 
-#test <- filter(runoff, watershed=="whitectl")
+#test <- filter(flow, watershed=="whitectl")
 
 
 # Combine flow and rain
