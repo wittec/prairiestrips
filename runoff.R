@@ -37,7 +37,7 @@ myrain <- rain %>%
 
 
 #the cleaned "runoff.rda" has whiterock 2017 in it... need to figure out why it isn't getting into flow below
-flow <- STRIPS2Helmers/data/runoff %>%
+
   
 flow <- STRIPS2Helmers::runoff %>%
   filter(!is.na(flow)) %>%
