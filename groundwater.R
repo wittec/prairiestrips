@@ -1,10 +1,10 @@
-# setwd("vignettes/")
+# setwd("groundwater/data-raw/waterquality/")
 
 library("dplyr")
 library("tidyr")
 library("ggplot2")
 
-gw2016 <- xlsx::read.xlsx("../data-raw/water_quality/2016/CopyofSTRIPSgroundwaternitrateresultsv2.xlsx", sheetName = "Results", startRow = 22) %>%
+gw2016 <- read.csv("../2016/2016gwno3results2.csv", skip = 21, header = T) %>%
   select(ID..., NOx.result..mg.N.L.) %>%
   rename(id = ID..., no3mgL = NOx.result..mg.N.L.) %>%
   mutate(id = as.numeric(as.character(id))) %>%
@@ -184,7 +184,7 @@ ggsave(filename = "gwdrp.jpg", plot=drp, width = 6, height=8)
 
 ########################################################################################
 
-gwdepth2016 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/2016/2016strips2gwdepth.csv", header = T) %>%
+gwdepth2016 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2016/2016strips2gwdepth.csv", header = T) %>%
   filter(!is.na(site)) %>%
   rename(rawdepthft = uncorrected.depth..ft.) %>%
   mutate(site = gsub("Arm", "Armstrong", site),
@@ -205,7 +205,7 @@ gwdepth2016 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data
          sitepos = paste(site, position)
           )
 
-gwdepth2017 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/2017/2017strips2gwdepth.csv", header = T) %>%
+gwdepth2017 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2017/2017strips2gwdepth.csv", header = T) %>%
   filter(!is.na(site)) %>%
   rename(rawdepthft = uncorrected.depth..ft.) %>%
   mutate(site = gsub("Arm", "Armstrong", site),
