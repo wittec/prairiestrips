@@ -4,6 +4,12 @@ library("dplyr")
 library("tidyr")
 library("ggplot2")
 
+
+
+
+
+#left off here, need to get csv file loaded correctly
+
 gw2016 <- read.csv("../2016/2016gwno3results2.csv", skip = 21, header = T) %>%
   select(ID..., NOx.result..mg.N.L.) %>%
   rename(id = ID..., no3mgL = NOx.result..mg.N.L.) %>%
