@@ -5,19 +5,14 @@ library("tidyr")
 library("ggplot2")
 
 
-
-
-
-#left off here, need to get csv file loaded correctly
-
-gw2016 <- read.csv("../2016/2016gwno3results2.csv", skip = 21, header = T) %>%
+gw2016 <- read.csv("./2016/2016gwno3results2.csv", skip = 21, header = T) %>%
   select(ID..., NOx.result..mg.N.L.) %>%
   rename(id = ID..., no3mgL = NOx.result..mg.N.L.) %>%
   mutate(id = as.numeric(as.character(id))) %>%
   filter(!is.na(id))
 
 
-gw2016a <- xlsx::read.xlsx("../data-raw/water_quality/2016/CopyofSTRIPSgroundwaternitrateresults.xlsx", sheetName = "Results", startRow = 21) %>%
+gw2016a <- read.csv("./2016/2016gwno3results.csv", skip = 20, header = T) %>%
   select(ID..., Nitrate.nitrite..mg.N.L.) %>%
   rename(id = ID..., no3mgL = Nitrate.nitrite..mg.N.L.) %>%
   mutate(id = as.numeric(as.character(id))) %>%
@@ -25,8 +20,9 @@ gw2016a <- xlsx::read.xlsx("../data-raw/water_quality/2016/CopyofSTRIPSgroundwat
 
 gw2016 <- rbind(gw2016, gw2016a)
 
-gw2016codes <- xlsx::read.xlsx("../data-raw/water_quality/2016/CopyofSTRIPSgroundwaternitrateresultsv2.xlsx", sheetName = "Lab Codes") %>%
+gw2016codes <- read.csv("2016/2016gwcodes.csv", header = T) %>%
   select(-Sample.Source) %>%
+  filter(!is.na(ID.)) %>%
   rename(id = ID., position = Position, site = Site, date = Date) %>%
   mutate(year = "2016",
          month = 12,
@@ -82,11 +78,11 @@ gw2016codes$sitepos[gw2016codes$sitepos== "Guthrie Bottom"] <- "Guthrie TRT-bot"
 
 
 
-gw2017 <- xlsx::read.xlsx("../data-raw/water_quality/2017/STRIPS2017groundwaterresults.xlsx", sheetName = "Sheet1", startRow = 3) %>%
+gw2017 <- xlsx::read.xlsx("./2017/STRIPS2017groundwaterresults.xlsx", sheetName = "Sheet1", startRow = 3) %>%
   select(Sample.ID., NOx.result..mg.N.L., DRP.result..mg.P.L.) %>%
   rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
 
-gw2017codes <- xlsx::read.xlsx("../data-raw/water_quality/2017/STRIPS2017groundwatercodes.xlsx", sheetName = "STRIPS", startRow = 3) %>%
+gw2017codes <- xlsx::read.xlsx("./2017/STRIPS2017groundwatercodes_v.2.xlsx", sheetName = "STRIPS", startRow = 3) %>%
   select(year, month, site, trt, position, Date, ID.) %>%
   rename(id = ID., newdate = Date) %>%
   mutate(year = "2017") %>%
@@ -117,6 +113,9 @@ all <- rbind(gw2016codes, gw2017codes) %>%
          site = gsub("Arm.", "Armstrong", site),
          date = gsub("August", "Aug.", date),
          date = gsub("September", "Sept.", date),
+         date = gsub("October", "Oct.", date),
+         date = gsub("November", "Nov.", date),
+         date = gsub("December", "Dec.", date),
          trt = position,
          trt = gsub("CTLbot", "CTL", trt),
          trt = gsub("CTLtop", "CTL", trt),
@@ -146,8 +145,10 @@ colorscale <- c(TRT = "blue",
 linescale <- c(Top = "dashed",
                Bottom = "solid")
 
+no3data <- all %>%
+  filter(no3mgL!="NA")
 
-no3 <- ggplot(all, aes(x = order, 
+no3 <- ggplot(no3data, aes(x = order, 
                    y = no3mgL, 
                    group = position,
                   linetype = pos,
@@ -156,7 +157,7 @@ no3 <- ggplot(all, aes(x = order,
   geom_point() +
   facet_grid(site~year, scales='free_x') + 
   labs(x = '',  
-       y = 'Nitrate and Nitrite (mg/L)') + 
+       y = 'Groundwater Nitrate and Nitrite (mg/L)') + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   theme_bw() +
@@ -164,7 +165,9 @@ no3 <- ggplot(all, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "gwno3.jpg", plot=no3, width = 6, height=8)
+setwd("~/prairiestrips")
+
+ggsave(filename = "./graphs/gwno3.jpg", plot=no3, width = 6, height=8)
 
 drpdata <- filter(all, year=="2017", drpmgL!="NA")
 drpdata$drpmgL <- as.numeric(drpdata$drpmgL)
@@ -178,7 +181,7 @@ drp <- ggplot(drpdata, aes(x = order,
   geom_point() +
   facet_grid(site~year, scales='free_x') + 
   labs(x = '',  
-       y = 'Dissolved Reactive Phosphorus (mg/L)') + 
+       y = 'Groundwater Dissolved Reactive Phosphorus (mg/L)') + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   theme_bw() +
@@ -186,11 +189,11 @@ drp <- ggplot(drpdata, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "gwdrp.jpg", plot=drp, width = 6, height=8)
+ggsave(filename = "./graphs/gwdrp.jpg", plot=drp, width = 6, height=8)
 
 ########################################################################################
 
-gwdepth2016 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2016/2016strips2gwdepth.csv", header = T) %>%
+gwdepth2016 <- read.csv("./groundwater/data-raw/depth/2016/2016strips2gwdepth.csv", header = T) %>%
   filter(!is.na(site)) %>%
   rename(rawdepthft = uncorrected.depth..ft.) %>%
   mutate(site = gsub("Arm", "Armstrong", site),
