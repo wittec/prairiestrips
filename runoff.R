@@ -35,7 +35,9 @@ flow <- STRIPS2Helmers::runoff %>%
   mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"),
          site = gsub("ctl", "", watershed),
          site = gsub("trt", "", site),
-         year = lubridate::year(date_time)) %>%
+         year = lubridate::year(date_time),
+         watershed = as.character(watershed),
+         sampleID = as.character(sampleID)) %>%
   
   left_join(myrain, by=c("date_time", "site", "year")) %>%
   filter(!is.na(flow), !is.na(rain)) %>%
@@ -48,6 +50,9 @@ flow <- STRIPS2Helmers::runoff %>%
     cumulative_flow = cumsum(flow) * 231 * 5 / # convert gpm to in^3 from 5 minutes
            (acres * 6.273e6) )                 # normalize by watershed area
                                                # after converting acres to square inches
+
+#test <- readr::read_csv("../data-raw/sitenamesandwatershedsizes.csv")
+
 
 ggplot(flow, aes(x = date_time, y = cumulative_flow, 
               group = watershed, linetype = treatment)) +
@@ -73,6 +78,10 @@ flow <- flow %>%
 wnames <- data.frame(site = c("arm","eia","marsh","mcnay","rhodes","spirit","white","worle"),
                      full = c("Armstrong","E. IA Airport","Marshaltown","McNay",
                               "Rhodes","Spirit Lake ","Whiterock","Worle"))
+
+wnames <- wnames %>%
+  mutate(site = as.character(site))
+
 
 d <- bind_rows(flow,rain) %>%
   mutate(treatment = factor(treatment, 
@@ -105,29 +114,30 @@ g <- ggplot(d, aes(x = date_time,
   scale_linetype_manual(values = linescale) +
   theme_bw() +
   theme(legend.position = "bottom",
-        legend.title    = element_blank())
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
 
 ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff.jpg", plot=g, width = 6, height=8)
 
-
-# Multiply flow by 10
-g <- ggplot(d %>% left_join(wnames), aes(x = date_time, 
-                                         y = y*ifelse(treatment != "rain", 10, 1), 
-                                         group = watershed, 
-                                         linetype = treatment,
-                                         color = treatment)) +
-  geom_line() + 
-  facet_grid(full~year, scales='free_x') + 
-  labs(x = '',  
-       y = 'Cumulative runoff (x10) and rainfall in inches') + 
-  scale_color_manual(values = colorscale) +
-  theme_bw() +
-  theme(legend.position = "bottom",
-        legend.title    = element_blank())
-
-ggsave(filename = "runoff_x10.jpg", plot=g, width = 6, height=8)
-
-
+# 
+# # Multiply flow by 10
+# g <- ggplot(d %>% left_join(wnames), aes(x = date_time, 
+#                                          y = y*ifelse(treatment != "rain", 10, 1), 
+#                                          group = watershed, 
+#                                          linetype = treatment,
+#                                          color = treatment)) +
+#   geom_line() + 
+#   facet_grid(full~year, scales='free_x') + 
+#   labs(x = '',  
+#        y = 'Cumulative runoff (x10) and rainfall in inches') + 
+#   scale_color_manual(values = colorscale) +
+#   theme_bw() +
+#   theme(legend.position = "bottom",
+#         legend.title    = element_blank())
+# 
+# ggsave(filename = "runoff_x10.jpg", plot=g, width = 6, height=8)
+# 
+# 
 
 
 ###################################################
@@ -138,7 +148,9 @@ sed <- STRIPS2Helmers::runoff %>%
   mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"),
          site = gsub("ctl", "", watershed),
          site = gsub("trt", "", site),
-         year = lubridate::year(date_time)) %>%
+         year = lubridate::year(date_time),
+         watershed = as.character(watershed),
+         sampleID = as.character(sampleID)) %>%
   
   left_join(myrain, by=c("date_time", "site", "year")) %>%
   # filter(!is.na(flow), !is.na(rain_m)) %>%
@@ -243,7 +255,8 @@ test7 <- expand.grid(test6$watershed, test2$date_time) %>%
 test6<- as.data.frame(unique(test1$watershed)) %>%
   rename(watershed = `unique(test1$watershed)`)
 
-no3graph <- ggplot(test3 %>% 
+
+no3graph <- ggplot(sed2 %>% 
          filter(analyte == "Nitrate + nitrite (mg N/L)"), 
        aes(x = date_time, 
            y = cumulative,
@@ -258,9 +271,10 @@ no3graph <- ggplot(test3 %>%
        y = 'Cumulative Nitrate + Nitrite (lbs/ac)') + 
   theme_bw() +
   theme(legend.position = "bottom",
-        legend.title    = element_blank())
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "testno3.jpg", plot=no3graph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/no3.jpg", plot=no3graph, width = 6, height=8)
 
 
 #stuff between ### is only stuff I am messing with
@@ -281,9 +295,10 @@ orthopgraph <- ggplot(sed2 %>%
        y = 'Cumulative Orthophosphate (lbs/ac)') + 
   theme_bw() +
   theme(legend.position = "bottom",
-        legend.title    = element_blank())
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "orthop.jpg", plot=orthopgraph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/orthop.jpg", plot=orthopgraph, width = 6, height=8)
 
 
 tssgraph <- ggplot(sed2 %>% 
@@ -301,9 +316,10 @@ tssgraph <- ggplot(sed2 %>%
        y = 'Cumulative Total Suspended Solids (lbs/ac)') + 
   theme_bw() + 
   theme(legend.position = "bottom",
-      legend.title    = element_blank())
+      legend.title    = element_blank(),
+      axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "tss.jpg", plot=tssgraph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss.jpg", plot=tssgraph, width = 6, height=8)
 
 #############################################################################
 #THIS IS FOR lISA TO SEND TO EIA, edited to give to hoien at spirit lake
