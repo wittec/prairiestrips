@@ -268,7 +268,7 @@ no3graph <- ggplot(sed2 %>%
   scale_linetype_manual(values = linescale) +
   facet_grid(full ~ year, scales = 'free_x') + 
   labs(x = '',  
-       y = 'Cumulative Nitrate + Nitrite (lbs/ac)') + 
+       y = 'Runoff Dissolved Nitrogen (lbs/ac)') + 
   theme_bw() +
   theme(legend.position = "bottom",
         legend.title    = element_blank(),
@@ -292,7 +292,7 @@ orthopgraph <- ggplot(sed2 %>%
   scale_linetype_manual(values = linescale) +
   facet_grid(full ~ year, scales = 'free_x') + 
   labs(x = '',  
-       y = 'Cumulative Orthophosphate (lbs/ac)') + 
+       y = 'Runoff Dissolved Phosphorus (lbs/ac)') + 
   theme_bw() +
   theme(legend.position = "bottom",
         legend.title    = element_blank(),
@@ -313,7 +313,7 @@ tssgraph <- ggplot(sed2 %>%
   scale_linetype_manual(values = linescale) +
   facet_grid(full ~ year, scales = 'free_x') + 
   labs(x = '',  
-       y = 'Cumulative Total Suspended Solids (lbs/ac)') + 
+       y = 'Runoff Total Suspended Solids (lbs/ac)') + 
   theme_bw() + 
   theme(legend.position = "bottom",
       legend.title    = element_blank(),

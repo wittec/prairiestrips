@@ -157,7 +157,7 @@ no3 <- ggplot(no3data, aes(x = order,
   geom_point() +
   facet_grid(site~year, scales='free_x') + 
   labs(x = '',  
-       y = 'Groundwater Nitrate and Nitrite (mg/L)') + 
+       y = 'Groundwater Dissolved Nitrogen (mg/L)') + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   theme_bw() +
@@ -181,7 +181,7 @@ drp <- ggplot(drpdata, aes(x = order,
   geom_point() +
   facet_grid(site~year, scales='free_x') + 
   labs(x = '',  
-       y = 'Groundwater Dissolved Reactive Phosphorus (mg/L)') + 
+       y = 'Groundwater Dissolved Phosphorus (mg/L)') + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   theme_bw() +
