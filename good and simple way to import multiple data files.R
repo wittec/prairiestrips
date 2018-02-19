@@ -17,3 +17,5 @@ data <- plyr::ldply(pr2files, importing) %>%          #THIS RUNS LDPLY ON THE LI
 
 select(name, X1, X2, X5, X7, X9, X11, X13, X15) %>%
 rename(datetime = X1, measnum = X2, mv100 = X5, mv200 = X7, mv300 = X9, mv400 = X11, mv600 = X13, mv1000 = X15)
+
+altdata <- map_dfr(pr2files, importing)               #THIS DOES THE SAME THING AS LDPLY BUT USES THE PURR PACKAGE (PART OF TIDYVERSE)
