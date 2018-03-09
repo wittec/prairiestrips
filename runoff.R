@@ -99,7 +99,7 @@ linescale <- c(rain = "dotted",
                control = "solid",
                treatment = "dashed")
 
-
+#test <- d %>% filter(codes=="SPL")
 
 
 g <- ggplot(d, aes(x = date_time, 
