@@ -317,14 +317,14 @@ test <- filter(gwdepth, site=="Whiterock")
 
 
 ######################################################################
-#THIS WAS FOR LISA TO GIVE TO EIA, also will edit to give to Hoien for spirit lake
+#THIS WAS FOR LISA TO GIVE TO EIA, also will edit to give to Hoien for spirit lake, also will do for Guthrie
 
 
 
-spirit <- all %>%
-  filter(site=="Spirit Lake")
+guthrie <- all %>%
+  filter(site=="Guthrie")
 
-spiritno3plot <- ggplot(spirit, aes(x = order, 
+guthrieno3plot <- ggplot(data = subset(guthrie, !is.na(no3mgL)), aes(x = order, 
                           y = no3mgL, 
                           group = position,
                           linetype = pos,
@@ -343,13 +343,13 @@ spiritno3plot <- ggplot(spirit, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "gwspiritno3.jpg", plot=spiritno3plot, width = 6, height=8)
+ggsave(filename = "gwguthrieno3.jpg", plot=guthrieno3plot, width = 6, height=8)
 
 
-spiritdrp <- drpdata %>%
-  filter(site=="Spirit Lake")
+guthriedrp <- drpdata %>%
+  filter(site=="Guthrie")
 
-spiritdrpplot <- ggplot(spiritdrp, aes(x = order, 
+guthriedrpplot <- ggplot(guthriedrp, aes(x = order, 
                            y = drpmgL, 
                            group = position,
                            linetype = pos,
@@ -368,13 +368,13 @@ spiritdrpplot <- ggplot(spiritdrp, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "gwspiritdrp.jpg", plot=spiritdrpplot, width = 6, height=8)
+ggsave(filename = "gwguthriedrp.jpg", plot=guthriedrpplot, width = 6, height=8)
 
 
-spiritgwdepth <- gwdepth %>%
-  filter(site=="Spirit Lake")
+guthriegwdepth <- gwdepth %>%
+  filter(site=="Guthrie")
 
-spiritgwdepthplot <- ggplot(spiritgwdepth, aes(x = order, 
+guthriegwdepthplot <- ggplot(guthriegwdepth, aes(x = order, 
                                    y = negadjdepthft, 
                                    group = position,
                                    linetype = pos,
@@ -393,7 +393,7 @@ spiritgwdepthplot <- ggplot(spiritgwdepth, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "spiritgwdepth.jpg", plot=spiritgwdepthplot, width = 6, height=8)
+ggsave(filename = "guthriegwdepth.jpg", plot=guthriegwdepthplot, width = 6, height=8)
 
 
 
