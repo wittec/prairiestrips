@@ -196,41 +196,25 @@ elisesed <- sed2 %>% filter(analyte == "TSS (mg/L)") %>%
   mutate(date = date(date_time),
          sitename = paste(full,treatment,sep=" ")
         ) %>%
-         group_by(sitename, date)
+         group_by(sitename, date) %>%
+  summarise("TSS lbs/ac" = sum(valueload))
   
-daysed <- summarise(elisesed, valueload = sum(valueload)) %>%
-  arrange(sitename, date) %>%
-  spread(sitename, valueload)
+# daysed <- summarise(elisesed, valueload = sum(valueload)) %>%
+#   arrange(sitename, date) %>%
+#   spread(sitename, valueload)
 
 eliseflow <- d %>%
   mutate(date = date(date_time),
-        sitname = paste(full, treatment, sep = " "), 
-    flowin = flow * 231 * 5 /      # convert gpm to in^3 from 5 minutes
-    (acres * 6.273e6))  %>%           # normalize by watershed area
-                                   # after converting acres to square inches
-  group_by(sitename, date)
-
-
-
-##########LEFT OFF HERE
-
-
-%>% 
-  mutate(cumflowin = cumsum(flowin)
-)
-  
-merge(eliseflow, addfullname, by = watershed)
-dayflowsum <- daysum %>%
-  select(-valueload) %>%
-  arrange(sitename, date) %>%
-  spread(sitename, flow)
-
-test <- merge(daysedsum, dayflowsum, by = "date")
-
-names(test) <- gsub(".x", " TSS", names(test))
-
-names(test) <- gsub(".y", " Flow", names(test))
-  
+        sitename = paste(full, treatment, sep = " "),
+        flowin = flow * 231 * 5 / (acres * 6.273e6)  
+        ) %>%
+  filter(treatment != "rain") %>%
+  group_by(sitename, date, treatment) %>%
+  summarise("rainday (in)" = sum(rain), "flowday (in)" = sum(flowin)) %>%
+  select(-treatment) %>%
+  left_join(elisesed)
+ 
+#ELISEFLOW IS PRETTY GOOD NOW...NEED TO SEE IF IT WORKS WITH THE NEAL SMITH DATA OK
   
 ########################################
 #testing stuff below
