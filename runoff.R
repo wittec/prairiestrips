@@ -213,9 +213,9 @@ eliseflow <- d %>%
   summarise("rainday (in)" = sum(rain), "flowday (in)" = sum(flowin)) %>%
   select(-treatment) %>%
   left_join(elisesed)
+
+write.csv(eliseflow, file = ("C:/Users/Chris/Documents/prairiestrips/eliseflowrainandsed.csv"))
  
-#ELISEFLOW IS PRETTY GOOD NOW...NEED TO SEE IF IT WORKS WITH THE NEAL SMITH DATA OK
-  
 ########################################
 #testing stuff below
 
