@@ -192,97 +192,107 @@ sed2 <- sed %>%
 
 #############################################
 #THIS IS A SED SUMMARIZATION BY DAY FOR ELISE
-elisesed <- sed2 %>% filter(analyte == "TSS (mg/L)") %>%
-  mutate(date = date(date_time),
-         sitename = paste(full,treatment,sep=" ")
-        ) %>%
-         group_by(sitename, date) %>%
-  summarise("TSS lbs/ac" = sum(valueload))
-  
-# daysed <- summarise(elisesed, valueload = sum(valueload)) %>%
-#   arrange(sitename, date) %>%
-#   spread(sitename, valueload)
-
-eliseflow <- d %>%
-  mutate(date = date(date_time),
-        sitename = paste(full, treatment, sep = " "),
-        flowin = flow * 231 * 5 / (acres * 6.273e6)  
-        ) %>%
-  filter(treatment != "rain") %>%
-  group_by(sitename, date, treatment) %>%
-  summarise("rainday (in)" = sum(rain), "flowday (in)" = sum(flowin)) %>%
-  select(-treatment) %>%
-  left_join(elisesed)
-
-write.csv(eliseflow, file = ("C:/Users/Chris/Documents/prairiestrips/eliseflowrainandsed.csv"))
- 
+# elisesed <- sed2 %>% filter(analyte == "TSS (mg/L)") %>%
+#   mutate(date = date(date_time),
+#          sitename = paste(full,treatment,sep=" ")
+#         ) %>%
+#          group_by(sitename, date) %>%
+#   summarise("TSS lbs/ac" = sum(valueload))
+#   
+# # daysed <- summarise(elisesed, valueload = sum(valueload)) %>%
+# #   arrange(sitename, date) %>%
+# #   spread(sitename, valueload)
+# 
+# eliseflow <- d %>%
+#   mutate(date = date(date_time),
+#         sitename = paste(full, treatment, sep = " "),
+#         flowin = flow * 231 * 5 / (acres * 6.273e6)  
+#         ) %>%
+#   filter(treatment != "rain") %>%
+#   group_by(sitename, date, treatment) %>%
+#   summarise("rainday (in)" = sum(rain), "flowday (in)" = sum(flowin)) %>%
+#   select(-treatment) %>%
+#   left_join(elisesed)
+# 
+# write.csv(eliseflow, file = ("C:/Users/Chris/Documents/prairiestrips/eliseflowrainandsed.csv"))
+#  
 ########################################
 #testing stuff below
+sed2daterange <- ungroup(sed2) %>%
+  mutate(date = date(date_time)) %>%
+  arrange(date_time)
 
-test1 <- sed2 %>%
-  group_by(watershed, analyte, year)%>%
-  full_join(test7)%>%
-  arrange(watershed, analyte, date_time)%>%
-  na.locf(, fromlast = T)
-  
-  #complete(watershed, date_time)
+range(sed2daterange$date_time)
 
+library(lubridate)
+library(zoo)
+graphrange <- as.data.frame(seq(ymd_hms('2016-03-09 14:10:00'), ymd_hms('2017-11-14 14:30:00'), by = '5 min')) %>%
+  rename(date_time = "seq(ymd_hms(\"2016-03-09 14:10:00\"), ymd_hms(\"2017-11-14 14:30:00\"), by = \"5 min\")")
 
-test2 <- as.data.frame(unique(sed2$date_time)) %>%
-  rename(date_time = 'unique(sed2$date_time)')
+names(graphrange)
+library(purrr)
+t <- ungroup(sed2) %>%
+  filter(analyte == "Nitrate + nitrite (mg N/L)") %>%
+  group_by(watershed, year) %>%
+  arrange(year, watershed)
 
-test8 <- as.data.frame(seq(start(sed2$date_time, end(sed2$date_time, "5 min"))))
-
-
-az <- as.data.frame(zoo(1:6))
-
-bz <- as.data.frame(zoo(c(2,NA,1,4,5,2)))
-bz1 <- na.locf(bz)
-bz2 <- na.locf(bz, fromLast = TRUE)
-
-z <- as.data.frame(zoo(c(0.007306621, 0.007659046, 0.007681013,
-           0.007817548, 0.007847579, 0.007867313),
-         as.Date(c("1993-01-01", "1993-01-09", "1993-01-16",
-                   "1993-01-23", "1993-01-30", "1993-02-06"))))
-g <-  seq(start(z), end(z), "day")
-na.locf(z, xout = g)
+watersheds <- list(unique(sed2$watershed))
+analytes <- list(unique(sed2$analyte))
+apply <- list(watersheds, analytes)
+applygraphrange <- function(x) { s <- filter(t, watershed == x)
+                                  siterange <- left_join(graphrange, s)
+                                  }
+testmap <- map_dfr(watersheds, applygraphrange)
 
 
 
+###NEED TO MAKE A NEW LIST OF THE COMBOS OF WATERSHEDS AND ANALYTES?
 
-# test2 <- as.data.frame(seq(ISOdate(2016,4,26), ISOdate(2017,6,19), by = "5 min")) %>%
-#   rename(date_time = "seq(ISOdate(2016, 4, 26), ISOdate(2017, 6, 19), by = \"5 min\")")
+#t <- sed2 %>% group_by(watershed, year) %>% filter(analyte == "Nitrate + nitrite (mg N/L)") %>%full_join(graphrange)
+
+
+
+
+# u <- sed2 %>%
+#   select(watershed, date_time, cumulative)
 #   
-#   # 
-# test3 <- merge(test2, test1, by = "date_time", all.x = T) %>%
-#   arrange(watershed, year, date_time)
-#   
-#   colnames(date)
-#   
-# test4 <- sed2 %>%
-#   mutate(date_time = as.factor(date_time),
-#          analyte = as.factor(analyte),
-#          watershed = as.factor(watershed)) %>%
-#   complete(analyte, watershed, date_time)
+# v <- graphrange %>%
+#   left_join(u)
 # 
-# df <- tibble(
-#   group = c(1:2, 1),
-#   item_id = c(1:2, 2),
-#   item_name = c("a", "b", "b"),
-#   value1 = 1:3,
-#   value2 = 4:6
-# )
+# testrange <- graphrange %>%
+#   full_join(sed2) %>%
+#   group_by(watershed, year, analyte) %>%
+#   arrange(watershed, analyte, date_time) %>%
+#   mutate(cumulative = na.locf(cumulative, na.rm = F),
+#          treatment = na.locf(treatment, na.rm = F),
+#          codes = na.locf(codes, na.rm = F)#,
+#          #year = na.locf(year, na.rm = F)
+#          ) 
 # 
-# test5 <- df %>%
-#   complete(group, nesting(item_id, item_name))
-
-test7 <- expand.grid(test6$watershed, test2$date_time) %>%
-  rename(watershed = 'Var1', date_time = 'Var2')
-
-test6<- as.data.frame(unique(test1$watershed)) %>%
-  rename(watershed = `unique(test1$watershed)`)
+# t <- filter(testrange, watershed == "armctl", analyte == "Nitrate + nitrite (mg N/L)", year == "2016") %>%
+#   mutate(month = month(date_time))
 
 
+ggplot(data = testrange %>%
+  filter(analyte == "Nitrate + nitrite (mg N/L)"), 
+aes(x = date_time, 
+    y = cumulative,
+    group = treatment,
+    color = treatment,
+    linetype = treatment)) + 
+  geom_line() + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_grid(codes ~ year, scales = 'free_x') + 
+  labs(x = '',  
+       y = 'Runoff Dissolved Nitrogen (lbs/ac)') + 
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+
+##########################################
 no3graph <- ggplot(sed2 %>% 
          filter(analyte == "Nitrate + nitrite (mg N/L)"), 
        aes(x = date_time, 

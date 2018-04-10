@@ -3448,8 +3448,8 @@
 "3447","Rhodes treatment",2017-06-13,0,0,NA
 "3448","Rhodes treatment",2017-06-14,0.02,0,NA
 "3449","Rhodes treatment",2017-06-15,0,0,NA
-"3450","Rhodes treatment",2017-06-16,0.027,0.0126786437759107,0.0546515977837079
-"3451","Rhodes treatment",2017-06-17,0,0.00128117596169916,0.00552253968062196
+"3450","Rhodes treatment",2017-06-16,0.027,0.0126786437759107,NA
+"3451","Rhodes treatment",2017-06-17,0,0.00128117596169916,NA
 "3452","Rhodes treatment",2017-06-18,0,0,NA
 "3453","Rhodes treatment",2017-06-19,0.008,0.00012576875502022,NA
 "3454","Rhodes treatment",2017-06-20,0,0,NA
@@ -3601,10 +3601,10 @@
 "3600","Spirit Lake  control",2016-10-01,0,0,NA
 "3601","Spirit Lake  control",2016-10-02,0,0,NA
 "3602","Spirit Lake  control",2016-10-03,0,0,NA
-"3603","Spirit Lake  control",2016-10-04,0.042,0.0211337160350826,NA
-"3604","Spirit Lake  control",2016-10-05,0.003,0.0130404034986113,NA
-"3605","Spirit Lake  control",2016-10-06,0.013,0.00463572979874429,NA
-"3606","Spirit Lake  control",2016-10-07,0,0.00389383465178419,NA
+"3603","Spirit Lake  control",2016-10-04,0.042,0.0211337160350826,0.797102156771328
+"3604","Spirit Lake  control",2016-10-05,0.003,0.0130404034986113,0.491846002693337
+"3605","Spirit Lake  control",2016-10-06,0.013,0.00463572979874429,0.174846213257248
+"3606","Spirit Lake  control",2016-10-07,0,0.00389383465178419,0.146864091194172
 "3607","Spirit Lake  control",2016-10-08,0,0,NA
 "3608","Spirit Lake  control",2016-10-09,0,0,NA
 "3609","Spirit Lake  control",2016-10-10,0,0,NA
@@ -3622,8 +3622,8 @@
 "3621","Spirit Lake  control",2016-10-22,0,0,NA
 "3622","Spirit Lake  control",2016-10-23,0,0,NA
 "3623","Spirit Lake  control",2016-10-24,0,0,NA
-"3624","Spirit Lake  control",2016-10-25,0.017,0.00117958287812776,NA
-"3625","Spirit Lake  control",2016-10-26,0.012,0.00798038974372474,NA
+"3624","Spirit Lake  control",2016-10-25,0.017,0.00117958287812776,0.0550833861462986
+"3625","Spirit Lake  control",2016-10-26,0.012,0.00798038974372474,0.372662996388408
 "3626","Spirit Lake  control",2016-10-27,0,0,NA
 "3627","Spirit Lake  control",2016-10-28,0,0,NA
 "3628","Spirit Lake  control",2016-10-29,0,0,NA
@@ -3646,8 +3646,8 @@
 "3645","Spirit Lake  control",2017-04-27,0,0,NA
 "3646","Spirit Lake  control",2017-04-28,0,0,NA
 "3647","Spirit Lake  control",2017-04-29,0,0,NA
-"3648","Spirit Lake  control",2017-04-30,0.021,0.0137211581746147,NA
-"3649","Spirit Lake  control",2017-05-01,0,0.00641324604355056,NA
+"3648","Spirit Lake  control",2017-04-30,0.021,0.0137211581746147,2.46439087827374
+"3649","Spirit Lake  control",2017-05-01,0,0.00641324604355056,1.15185211399219
 "3650","Spirit Lake  control",2017-05-02,0,0,NA
 "3651","Spirit Lake  control",2017-05-03,0,0,NA
 "3652","Spirit Lake  control",2017-05-04,0,0,NA
@@ -3663,11 +3663,11 @@
 "3662","Spirit Lake  control",2017-05-14,0,0,NA
 "3663","Spirit Lake  control",2017-05-15,0.002,0.000280769812959867,NA
 "3664","Spirit Lake  control",2017-05-16,0.008,0.000463262167699928,NA
-"3665","Spirit Lake  control",2017-05-17,0.022,0.00838777328787859,NA
-"3666","Spirit Lake  control",2017-05-18,0,0.0024753233604921,NA
+"3665","Spirit Lake  control",2017-05-17,0.022,0.00838777328787859,1.8693727388077
+"3666","Spirit Lake  control",2017-05-18,0,0.0024753233604921,0.711329377038797
 "3667","Spirit Lake  control",2017-05-19,0,0,NA
-"3668","Spirit Lake  control",2017-05-20,0.023,0.104928315103173,NA
-"3669","Spirit Lake  control",2017-05-21,0,0.00952467861389353,NA
+"3668","Spirit Lake  control",2017-05-20,0.023,0.104928315103173,2.01020451731289
+"3669","Spirit Lake  control",2017-05-21,0,0.00952467861389353,0.182472690586674
 "3670","Spirit Lake  control",2017-05-22,0.002,0.00327000590121929,NA
 "3671","Spirit Lake  control",2017-05-23,0,0.00771686662805646,NA
 "3672","Spirit Lake  control",2017-05-24,0,0,NA
@@ -3705,7 +3705,7 @@
 "3704","Spirit Lake  control",2017-06-25,0,0,NA
 "3705","Spirit Lake  control",2017-06-26,0,0,NA
 "3706","Spirit Lake  control",2017-06-27,0,0,NA
-"3707","Spirit Lake  control",2017-06-28,0.051,0.0505016742790202,NA
+"3707","Spirit Lake  control",2017-06-28,0.051,0.0505016742790202,10.6137812113372
 "3708","Spirit Lake  control",2017-06-29,0.001,0.0281701911644049,NA
 "3709","Spirit Lake  control",2017-06-30,0,0.0027518532899846,NA
 "3710","Spirit Lake  control",2017-07-01,0,0,NA
