@@ -431,3 +431,140 @@ spirittssgraph <- ggplot(spiritsed2 %>%
 ggsave(filename = "spirittss.jpg", plot=spirittssgraph, width = 6, height=8)
 
 
+# for Lisa to bring to DC -------------------------------------------------
+r2017 <- d %>%
+  filter(year=="2017")
+
+rainrunplot2017 <- ggplot(r2017, aes(x = date_time, 
+                                        y = y, 
+                                        group = watershed, 
+                                        linetype = treatment,
+                                        color = treatment)) +
+  ggtitle("2017 Rain and Surface Runoff") +
+  geom_line() + 
+  facet_wrap(~full, ncol = 2) + 
+  labs(x = '',  
+       y = 'Cumulative rainfall and runoff (inches)') + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "~/prairiestrips/graphs/runoff2017.jpg", plot=rainrunplot2017, width = 6, height=8)
+
+r2016 <- d %>%
+  filter(year=="2016")
+
+rainrunplot2017 <- ggplot(r2016, aes(x = date_time, 
+                                     y = y, 
+                                     group = watershed, 
+                                     linetype = treatment,
+                                     color = treatment)) +
+  ggtitle("2016 Rain and Surface Runoff") +
+  geom_line() + 
+  facet_wrap(~full, ncol = 2) + 
+  labs(x = '',  
+       y = 'Cumulative rainfall and runoff (inches)') + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "~/prairiestrips/graphs/runoff2016.jpg", plot=rainrunplot2017, width = 6, height=8)
+
+sed2017 <- sed2%>%
+  filter(year=="2017")
+
+orthopgraph2017 <- ggplot(sed2017 %>% 
+                              filter(analyte == "Orthophosphate (mg P/L)"), 
+                            aes(x = date_time, 
+                                y = cumulative,
+                                group = treatment,
+                                color = treatment,
+                                linetype = treatment)) + 
+  ggtitle("2017 Surface Runoff Dissolved Phosphorus") +
+  geom_line() + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_wrap(~full, ncol = 2) + 
+  labs(x = '',  
+       y = 'Cumulative Orthophosphate (lbs/ac)') + 
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "~/prairiestrips/graphs/orthop2017.jpg", plot=orthopgraph2017, width = 6, height=8)
+
+sed2016 <- sed2%>%
+  filter(year=="2016")
+
+orthopgraph2016 <- ggplot(sed2016 %>% 
+                            filter(analyte == "Orthophosphate (mg P/L)"), 
+                          aes(x = date_time, 
+                              y = cumulative,
+                              group = treatment,
+                              color = treatment,
+                              linetype = treatment)) + 
+  ggtitle("2016 Surface Runoff Dissolved Phosphorus") +
+  geom_line() + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_wrap(~full, ncol = 2) + 
+  labs(x = '',  
+       y = 'Cumulative Orthophosphate (lbs/ac)') + 
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "~/prairiestrips/graphs/orthop2016.jpg", plot=orthopgraph2016, width = 6, height=8)
+
+
+tssgraph2017 <- ggplot(sed2017 %>% 
+                           filter(analyte == "TSS (mg/L)"), 
+                         aes(x = date_time, 
+                             y = cumulative,
+                             group = treatment,
+                             color = treatment,
+                             linetype = treatment)) + 
+  ggtitle("2017 Surface Runoff Sediment") +
+  geom_line() + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_wrap(~full, ncol = 2) + 
+  labs(x = '',  
+       y = 'Cumulative Total Suspended Solids (lbs/ac)') + 
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "~/prairiestrips/graphs/tss2017.jpg", plot=tssgraph2017, width = 6, height=8)
+
+
+tssgraph2016 <- ggplot(sed2016 %>% 
+                         filter(analyte == "TSS (mg/L)"), 
+                       aes(x = date_time, 
+                           y = cumulative,
+                           group = treatment,
+                           color = treatment,
+                           linetype = treatment)) + 
+  ggtitle("2016 Surface Runoff Sediment") +
+  geom_line() + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_wrap(~full, ncol = 2) + 
+  labs(x = '',  
+       y = 'Cumulative Total Suspended Solids (lbs/ac)') + 
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "~/prairiestrips/graphs/tss2016.jpg", plot=tssgraph2016, width = 6, height=8)
+
