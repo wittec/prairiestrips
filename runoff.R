@@ -78,7 +78,7 @@ flow <- flow %>%
   mutate(y = cumulative_flow)
 
 wnames <- data.frame(site = c("arm","eia","marsh","mcnay","rhodes","spirit","white","worle"),
-                     full = c("Armstrong","E. IA Airport","Marshaltown","McNay",
+                     full = c("Armstrong","E. IA Airport","Marshalltown","McNay",
                               "Rhodes","Spirit Lake ","Whiterock","Worle"),
                     codes = c("ARM", "EIA", "MAR", "MCN", "RHO", "SPL", "WHI", "WOR"))
 
@@ -110,7 +110,7 @@ g <- ggplot(d, aes(x = date_time,
                    linetype = treatment,
                    color = treatment)) +
   geom_line() + 
-  facet_grid(codes~year, scales='free_x') + 
+  facet_grid(full~year, scales='free_x') + 
   labs(x = '',  
        y = 'Cumulative rainfall and runoff (inches)') + 
   scale_color_manual(values = colorscale) +
@@ -303,7 +303,7 @@ no3graph <- ggplot(sed2 %>%
   geom_line() + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
-  facet_grid(codes ~ year, scales = 'free_x') + 
+  facet_grid(full ~ year, scales = 'free_x') + 
   labs(x = '',  
        y = 'Runoff Dissolved Nitrogen (lbs/ac)') + 
   theme_bw() +
@@ -327,7 +327,7 @@ orthopgraph <- ggplot(sed2 %>%
   geom_line() + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
-  facet_grid(codes ~ year, scales = 'free_x') + 
+  facet_grid(full ~ year, scales = 'free_x') + 
   labs(x = '',  
        y = 'Runoff Dissolved Phosphorus (lbs/ac)') + 
   theme_bw() +
@@ -348,7 +348,7 @@ tssgraph <- ggplot(sed2 %>%
   geom_line() + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
-  facet_grid(codes ~ year, scales = 'free_x') + 
+  facet_grid(full ~ year, scales = 'free_x') + 
   labs(x = '',  
        y = 'Runoff Total Suspended Solids (lbs/ac)') + 
   theme_bw() + 

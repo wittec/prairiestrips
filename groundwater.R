@@ -146,7 +146,7 @@ linescale <- c(Top = "dashed",
                Bottom = "solid")
 
 no3data <- all %>%
-  filter(no3mgL!="NA")
+  filter(no3mgL!="NA" & year != "2015")
 
 no3 <- ggplot(no3data, aes(x = order, 
                    y = no3mgL, 
