@@ -1,4 +1,7 @@
-# setwd("groundwater/data-raw/waterquality/")
+# setwd("~/prairiestrips/groundwater/data-raw/waterquality/")
+
+rm(list=ls(all=TRUE))
+
 
 library("dplyr")
 library("tidyr")
@@ -157,7 +160,7 @@ no3 <- ggplot(no3data, aes(x = order,
   geom_point() +
   facet_grid(site~year, scales='free_x') + 
   labs(x = '',  
-       y = 'Groundwater Dissolved Nitrogen (mg/L)') + 
+       y = 'Groundwater Nitrate - Nitrogen (mg/L)') + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   theme_bw() +
@@ -192,6 +195,7 @@ drp <- ggplot(drpdata, aes(x = order,
 ggsave(filename = "./graphs/gwdrp.jpg", plot=drp, width = 6, height=8)
 
 ########################################################################################
+setwd("~/prairiestrips/")
 
 gwdepth2016 <- read.csv("./groundwater/data-raw/depth/2016/2016strips2gwdepth.csv", header = T) %>%
   filter(!is.na(site)) %>%
@@ -319,22 +323,22 @@ test <- filter(gwdepth, site=="Whiterock")
 ######################################################################
 #THIS WAS FOR LISA TO GIVE TO EIA, also will edit to give to Hoien for spirit lake, also will do for Guthrie
 
+setwd("./graphs/")
 
+white <- all %>%
+  filter(site=="Whiterock")
 
-guthrie <- all %>%
-  filter(site=="Guthrie")
-
-guthrieno3plot <- ggplot(data = subset(guthrie, !is.na(no3mgL)), aes(x = order, 
+whiteno3plot <- ggplot(data = subset(white, !is.na(no3mgL)), aes(x = order, 
                           y = no3mgL, 
                           group = position,
                           linetype = pos,
                           color = trt)) +
-  ggtitle("Groundwater Nitrate") +
+  ggtitle("Groundwater Nitrate - Nitrogen") +
   geom_line() + 
   geom_point() +
   facet_grid(site~year, scales='free_x') + 
   labs(x = '',  
-       y = 'Nitrate and Nitrite (mg/L)') + 
+       y = 'Nitrate - Nitrogen (mg/L)') + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   theme_bw() +
@@ -343,13 +347,13 @@ guthrieno3plot <- ggplot(data = subset(guthrie, !is.na(no3mgL)), aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "gwguthrieno3.jpg", plot=guthrieno3plot, width = 6, height=8)
+ggsave(filename = "gwwhiteno3.jpg", plot=whiteno3plot, width = 6, height=8)
 
 
-guthriedrp <- drpdata %>%
-  filter(site=="Guthrie")
+whitedrp <- drpdata %>%
+  filter(site=="Whiterock")
 
-guthriedrpplot <- ggplot(guthriedrp, aes(x = order, 
+whitedrpplot <- ggplot(whitedrp, aes(x = order, 
                            y = drpmgL, 
                            group = position,
                            linetype = pos,
@@ -368,13 +372,13 @@ guthriedrpplot <- ggplot(guthriedrp, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "gwguthriedrp.jpg", plot=guthriedrpplot, width = 6, height=8)
+ggsave(filename = "gwwhitedrp.jpg", plot=whitedrpplot, width = 6, height=8)
 
 
-guthriegwdepth <- gwdepth %>%
-  filter(site=="Guthrie")
+whitegwdepth <- gwdepth %>%
+  filter(site=="Whiterock")
 
-guthriegwdepthplot <- ggplot(guthriegwdepth, aes(x = order, 
+whitegwdepthplot <- ggplot(whitegwdepth, aes(x = order, 
                                    y = negadjdepthft, 
                                    group = position,
                                    linetype = pos,
@@ -393,7 +397,7 @@ guthriegwdepthplot <- ggplot(guthriegwdepth, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "guthriegwdepth.jpg", plot=guthriegwdepthplot, width = 6, height=8)
+ggsave(filename = "whitegwdepth.jpg", plot=whitegwdepthplot, width = 6, height=8)
 
 
 

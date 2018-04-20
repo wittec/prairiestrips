@@ -305,7 +305,7 @@ no3graph <- ggplot(sed2 %>%
   scale_linetype_manual(values = linescale) +
   facet_grid(full ~ year, scales = 'free_x') + 
   labs(x = '',  
-       y = 'Runoff Dissolved Nitrogen (lbs/ac)') + 
+       y = 'Runoff Nitrate - Nitrogen (lbs/ac)') + 
   theme_bw() +
   theme(legend.position = "bottom",
         legend.title    = element_blank(),
@@ -360,11 +360,12 @@ ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss.jpg", plot=
 
 #############################################################################
 #THIS IS FOR lISA TO SEND TO EIA, edited to give to hoien at spirit lake
+setwd("C:/Users/Chris/Documents/prairiestrips/graphs/")
 
-spirit <- d %>%
-  filter(site=="spirit")
+white <- d %>%
+  filter(site=="white")
 
-spiritrainrunplot <- ggplot(spirit, aes(x = date_time, 
+whiterainrunplot <- ggplot(white, aes(x = date_time, 
                    y = y, 
                    group = watershed, 
                    linetype = treatment,
@@ -381,13 +382,13 @@ spiritrainrunplot <- ggplot(spirit, aes(x = date_time,
   theme(legend.position = "bottom",
         legend.title    = element_blank())
 
-ggsave(filename = "spiritrunoff.jpg", plot=spiritrainrunplot, width = 6, height=8)
+ggsave(filename = "whiterunoff.jpg", plot=whiterainrunplot, width = 6, height=8)
 
 
-spiritsed2 <- sed2%>%
-  filter(site=="spirit")
+whitesed2 <- sed2%>%
+  filter(site=="white")
 
-spiritorthopgraph <- ggplot(spiritsed2 %>% 
+whiteorthopgraph <- ggplot(whitesed2 %>% 
                         filter(analyte == "Orthophosphate (mg P/L)"), 
                       aes(x = date_time, 
                           y = cumulative,
@@ -400,16 +401,16 @@ spiritorthopgraph <- ggplot(spiritsed2 %>%
   scale_linetype_manual(values = linescale) +
   facet_grid(full ~ year, scales = 'free_x') + 
   labs(x = '',  
-       y = 'Cumulative Orthophosphate (lbs/ac)') + 
+       y = 'Cumulative Dissolved Nitrogen (lbs/ac)') + 
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position = "bottom",
         legend.title    = element_blank())
 
-ggsave(filename = "spiritorthop.jpg", plot=spiritorthopgraph, width = 6, height=8)
+ggsave(filename = "whiteorthop.jpg", plot=whiteorthopgraph, width = 6, height=8)
 
 
-spirittssgraph <- ggplot(spiritsed2 %>% 
+whitetssgraph <- ggplot(whitesed2 %>% 
                      filter(analyte == "TSS (mg/L)"), 
                    aes(x = date_time, 
                        y = cumulative,
@@ -428,7 +429,29 @@ spirittssgraph <- ggplot(spiritsed2 %>%
   theme(legend.position = "bottom",
         legend.title    = element_blank())
 
-ggsave(filename = "spirittss.jpg", plot=spirittssgraph, width = 6, height=8)
+ggsave(filename = "whitetss.jpg", plot=whitetssgraph, width = 6, height=8)
+
+
+whiteno3graph <- ggplot(whitesed2 %>% 
+                          filter(analyte == "Nitrate + nitrite (mg N/L)"), 
+                        aes(x = date_time, 
+                            y = cumulative,
+                            group = treatment,
+                            color = treatment,
+                            linetype = treatment)) + 
+  ggtitle("Surface Runoff Nitrate - Nitrogen") +
+  geom_line() + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_grid(full ~ year, scales = 'free_x') + 
+  labs(x = '',  
+       y = 'Cumulative Runoff Nitrate - Nitrogen (lbs/ac)') + 
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "whiteno3.jpg", plot=whiteno3graph, width = 6, height=8)
 
 
 # for Lisa to bring to DC -------------------------------------------------
