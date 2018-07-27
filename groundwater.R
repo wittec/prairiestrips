@@ -81,14 +81,14 @@ gw2016codes$sitepos[gw2016codes$sitepos== "Guthrie Bottom"] <- "Guthrie TRT-bot"
 
 
 
-gw2017 <- xlsx::read.xlsx("./2017/STRIPS2017groundwaterresults.xlsx", sheetName = "Sheet1", startRow = 3) %>%
+gw2017 <- read.csv("./2017/STRIPS2017groundwaterresults.csv", skip = 2, header = T) %>%
   select(Sample.ID., NOx.result..mg.N.L., DRP.result..mg.P.L.) %>%
   rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
 
-gw2017codes <- xlsx::read.xlsx("./2017/STRIPS2017groundwatercodes_v.2.xlsx", sheetName = "STRIPS", startRow = 3) %>%
-  select(year, month, site, trt, position, Date, ID.) %>%
-  rename(id = ID., newdate = Date) %>%
-  mutate(year = "2017") %>%
+gw2017codes <- read.csv("./2017/STRIPS2017groundwatercodes.csv", skip = 2) %>%
+  select(year, month, site, trt, position, ID.) %>%
+  rename(id = ID.) %>%
+  filter(id != "NA") %>%
   left_join(gw2017, by = c("id")) %>%
   mutate(trt = gsub("trt", "TRT", trt),
          trt = gsub("ctl", "CTL", trt),
@@ -108,6 +108,110 @@ gw2017codes <- xlsx::read.xlsx("./2017/STRIPS2017groundwatercodes_v.2.xlsx", she
   filter(!is.na(site)) %>%
   select(-trt, -year1)
  
+
+# reworking stuff above to be more streamlined ----------------------------
+
+# setwd("~/prairiestrips/groundwater/data-raw/waterquality/")
+
+rm(list=ls(all=TRUE))
+
+
+library("dplyr")
+library("tidyr")
+library("ggplot2")
+
+
+gw2016codes <- read.csv("2016/2016gwcodes.csv", header = T) %>%
+  select(-Sample.Source) %>%
+  filter(!is.na(ID.)) %>%
+  rename(id = ID., position = Position, site = Site, date = Date)
+  
+gw2016 <- read.csv("./2016/2016gwno3results2.csv", skip = 21, header = T)[ , 1:3] %>%
+  select(ID..., NOx.result..mg.N.L.) %>%
+  rename(id = ID..., no3mgL = NOx.result..mg.N.L.) %>%
+  mutate(id = as.numeric(as.character(id))) %>%
+  filter(!is.na(id))
+
+gw2016a <- read.csv("./2016/2016gwno3results.csv", skip = 20, header = T)[ , 1:3] %>%
+  select(ID..., Nitrate.nitrite..mg.N.L.) %>%
+  rename(id = ID..., no3mgL = Nitrate.nitrite..mg.N.L.) %>%
+  mutate(id = as.numeric(as.character(id))) %>%
+  filter(!is.na(id))
+
+gw2017codes <- read.csv("./2017/STRIPS2017groundwatercodes.csv", skip = 2)[ , 1:8] %>%
+  select(year, month, site, trt, position, ID.) %>%
+  rename(id = ID.) %>%
+  filter(id != "NA") 
+
+gw2017 <- read.csv("./2017/STRIPS2017groundwaterresults.csv", skip = 2, header = T) %>%
+  select(Sample.ID., NOx.result..mg.N.L., DRP.result..mg.P.L.) %>%
+  rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
+  #left_join(gw2017codes, by = c("id"))
+
+
+gw2016 <- gw2016 %>%
+  rbind(gw2016a) %>%
+  full_join(gw2016codes)
+
+gw2017 <- gw2017 %>%
+  full_join(gw2017codes)
+
+all <- gw2016 %>%
+  full_join(gw2017)
+
+
+
+
+
+
+
+#creating a funciton to correct all formatting, type o's, etc. in data
+correction <- function(data, column) { 
+  correct <- read.csv("./corrections.csv", header = T)
+  x
+  
+  data %>%
+  mutate(column = gsub(correct$bad, correct$good, column))
+} 
+
+
+
+
+rbind(gw2016, gw2017) %>%
+  left_join(gw2016codes, by = c("id")) %>%
+  left_join(gw2017codes, by = c("id"))
+
+
+gw2016 <- rbind(gw2016, gw2016a) %>%
+  left_join(gw2016codes) %>%
+  separate(date, c("month", "year"), " ") %>%
+  mutate(
+    month = gsub("Sept.", "September", month),
+    month = gsub("Dec.", "December", month),
+    month = gsub("Aug.", "August", month),
+    month = gsub("Oct.", "October", month),
+    month = gsub("Nov.", "November", month)
+  )
+
+gw2016$year <- gw2016$year %>%  replace_na("2016")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 all <- rbind(gw2016codes, gw2017codes) %>%
   filter(site != "NA") %>%
