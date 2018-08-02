@@ -157,22 +157,39 @@ gw2017 <- gw2017 %>%
   full_join(gw2017codes)
 
 all <- gw2016 %>%
-  full_join(gw2017)
+  full_join(gw2017) %>%
+  mutate(date = as.character(date))
 
+# correcting typo's, wrong codes, etc. ------------------------------------
 
+fixit <- function (x) {
+   correct <- read.csv("./corrections.csv", header = T) %>%
+     mutate(bad = as.character(bad),
+            good = as.character(good)
+     )
 
-
-
-
-
-#creating a funciton to correct all formatting, type o's, etc. in data
-correction <- function(data, column) { 
-  correct <- read.csv("./corrections.csv", header = T)
-  x
+   testdata <- as.data.frame(x)
+   
+  # testdata$totest <- x #%>%
+  #x <- as.data.frame(x)  %>%
+    #%>%
+   
+  left_join(testdata, correct, by = c("x" = "bad"))  %>%
+  mutate(x = ifelse(!is.na(good), good, x)) %>%
+  # 
+  #  x
   
-  data %>%
-  mutate(column = gsub(correct$bad, correct$good, column))
-} 
+  #testdata <- testdata %>%
+  select(-ends_with("good"))
+  
+}
+
+corrected <- as.data.frame(lapply(all[3:5], fixit)) %>%
+  rename(site = x, position = x.1, date = x.2)
+
+all$site <- corrected$site
+all$position <- corrected$position
+all$date <- corrected$date
 
 
 

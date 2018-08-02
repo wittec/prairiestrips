@@ -192,27 +192,27 @@ sed2 <- sed %>%
 
 #############################################
 #THIS IS A SED SUMMARIZATION BY DAY FOR ELISE
-# elisesed <- sed2 %>% filter(analyte == "TSS (mg/L)") %>%
-#   mutate(date = date(date_time),
-#          sitename = paste(full,treatment,sep=" ")
-#         ) %>%
-#          group_by(sitename, date) %>%
-#   summarise("TSS lbs/ac" = sum(valueload))
-#   
-# # daysed <- summarise(elisesed, valueload = sum(valueload)) %>%
-# #   arrange(sitename, date) %>%
-# #   spread(sitename, valueload)
-# 
-# eliseflow <- d %>%
-#   mutate(date = date(date_time),
-#         sitename = paste(full, treatment, sep = " "),
-#         flowin = flow * 231 * 5 / (acres * 6.273e6)  
-#         ) %>%
-#   filter(treatment != "rain") %>%
-#   group_by(sitename, date, treatment) %>%
-#   summarise("rainday (in)" = sum(rain), "flowday (in)" = sum(flowin)) %>%
-#   select(-treatment) %>%
-#   left_join(elisesed)
+elisesed <- sed2 %>% filter(analyte == "TSS (mg/L)") %>%
+  mutate(date = date(date_time),
+         sitename = paste(full,treatment,sep=" ")
+        ) %>%
+         group_by(sitename, date) %>%
+  summarise("TSS lbs/ac" = sum(valueload))
+
+# daysed <- summarise(elisesed, valueload = sum(valueload)) %>%
+#   arrange(sitename, date) %>%
+#   spread(sitename, valueload)
+
+eliseflow <- d %>%
+  mutate(date = date(date_time),
+        sitename = paste(full, treatment, sep = " "),
+        flowin = flow * 231 * 5 / (acres * 6.273e6)
+        ) %>%
+  filter(treatment != "rain") %>%
+  group_by(sitename, date, treatment) %>%
+  summarise("rainday (in)" = sum(rain*39.3701), "flowday (in)" = sum(flowin)) %>%
+  select(-treatment) %>%
+  left_join(elisesed)
 # 
 # write.csv(eliseflow, file = ("C:/Users/Chris/Documents/prairiestrips/eliseflowrainandsed.csv"))
 #  
