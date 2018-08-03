@@ -110,10 +110,7 @@
 #  
 
 
-
-
-
-# reworking stuff above to be more streamlined ----------------------------
+# reworking water quality stuff above to be more streamlined ----------------------------
 
 # setwd("~/prairiestrips/groundwater/data-raw/waterquality/")
 
@@ -176,10 +173,10 @@ all$year[all$id <5000] <- "2015"
 all$year[all$id >= 5000 & all$id < 6000] <- "2016"
 all$year[all$id >= 6000] <- "2017"
 
-# correcting typo's, wrong codes, etc. ------------------------------------
+# water quality - correcting typo's, wrong codes, etc. ------------------------------------
 
 fixit <- function (x) {
-   correct <- read.csv("./corrections.csv", header = T) %>%
+   correct <- read.csv("~/prairiestrips/groundwater/data-raw/waterquality/corrections.csv", header = T) %>%
      mutate(bad = as.character(bad),
             good = as.character(good)
      )
@@ -203,49 +200,7 @@ all <- all %>%
   mutate(pos = paste(trt, position, sep = "-"))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-# 
-# all <- rbind(gw2016codes, gw2017codes) %>%
-#   filter(site != "NA") %>%
-#   arrange(year, month) %>%
-#   mutate(position = gsub("-", "", position),
-#          site = gsub("Arm.", "Armstrong", site),
-#          date = gsub("August", "Aug.", date),
-#          date = gsub("September", "Sept.", date),
-#          date = gsub("October", "Oct.", date),
-#          date = gsub("November", "Nov.", date),
-#          date = gsub("December", "Dec.", date),
-#          trt = position,
-#          trt = gsub("CTLbot", "CTL", trt),
-#          trt = gsub("CTLtop", "CTL", trt),
-#          trt = gsub("TRTtop", "TRT", trt),
-#          trt = gsub("TRTbot", "TRT", trt),
-#          trt = gsub("Bottom", "TRT", trt),
-#          trt = gsub("Top", "TRT", trt),
-#          trt = gsub("TRTBot", "TRT", trt),
-#          trt = gsub("TRTTRT", "TRT", trt),
-#          trt = factor(trt),
-#          pos = position,
-#          pos = gsub("CTLbot", "Bottom", pos),
-#          pos = gsub("TRTbot", "Bottom", pos),
-#          pos = gsub("CTLtop", "Top", pos),
-#          pos = gsub("TRTtop", "Top", pos),
-#          pos = gsub("TRTBot", "Bottom", pos),
-#          pos = factor(pos),
-#         position = factor(position, 
-#                           levels = c("CTLbot","TRTbot","TRTtop", "CTLtop", "Top", "Bottom"))
-#   )
+# graphing water quality ----------------------------------------------------------------
 
 all$order <- factor(all$month, levels = c("Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
 
@@ -259,9 +214,6 @@ linescale <- c(Top = "dashed",
 
 no3data <- all %>%
   filter(no3mgL!="NA" & year != "2015")
-
-
-###############LEFT OFF HERE
 
 no3 <- ggplot(no3data, aes(x = order, 
                    y = no3mgL, 
@@ -308,107 +260,144 @@ drp <- ggplot(drpdata, aes(x = order,
 
 ggsave(filename = "./graphs/gwdrp.jpg", plot=drp, width = 6, height=8)
 
-########################################################################################
+
+# groundwater depth data manipulation - old way -------------------------------------
+
+# 
+# setwd("~/prairiestrips/")
+# 
+# gwdepth2016 <- read.csv("./groundwater/data-raw/depth/2016/2016strips2gwdepth.csv", header = T) %>%
+#   filter(!is.na(site)) %>%
+#   rename(rawdepthft = uncorrected.depth..ft.) %>%
+#   mutate(site = gsub("Arm", "Armstrong", site),
+#          site = gsub("arm", "Armstrong", site),
+#          site = gsub("white", "Whiterock", site),
+#          site = gsub("white ", "Whiterock", site),
+#          site = gsub("spirit", "Spirit Lake", site),
+#          site = gsub("eia", "EIA", site),
+#          site = gsub("guthrie", "Guthrie", site),
+#          site = gsub("mcnay", "McNay", site),
+#          site = gsub("rhodes", "Rhodes", site),
+#          site = gsub("worle", "Worle", site),
+#          pos = gsub("top", "Top", pos),
+#          pos = gsub("bot", "Bottom", pos),
+#          trt = gsub("trt", "TRT", trt),
+#          trt = gsub("ctl", "CTL", trt),
+#          position = paste(trt, pos),
+#          sitepos = paste(site, position)
+#           )
+# 
+# gwdepth2017 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2017/2017strips2gwdepth.csv", header = T) %>%
+#   filter(!is.na(site)) %>%
+#   rename(rawdepthft = uncorrected.depth..ft.) %>%
+#   mutate(site = gsub("Arm", "Armstrong", site),
+#          site = gsub("arm", "Armstrong", site),
+#          site = gsub("white", "Whiterock", site),
+#          site = gsub("white ", "Whiterock", site),
+#          site = gsub("spirit", "Spirit Lake", site),
+#          site = gsub("eia", "EIA", site),
+#          site = gsub("guthrie", "Guthrie", site),
+#          site = gsub("mcnay", "McNay", site),
+#          site = gsub("rhodes", "Rhodes", site),
+#          site = gsub("worle", "Worle", site),
+#          pos = gsub("top", "Top", pos),
+#          pos = gsub("bot", "Bottom", pos),
+#          trt = gsub("trt", "TRT", trt),
+#          trt = gsub("ctl", "CTL", trt),
+#          position = paste(trt, pos),
+#          sitepos = paste(site, position)
+#          )
+# 
+# gwdepth <- rbind(gwdepth2016, gwdepth2017)
+# gwdepth$abovegroundin = 1.5
+# gwdepth$abovegroundin[gwdepth$sitepos=="Whiterock CTL Bottom"] <- 2
+# gwdepth$abovegroundin[gwdepth$sitepos=="Spirit Lake TRT Top"] <- 1
+# gwdepth$abovegroundin[gwdepth$sitepos=="Spirit Lake CTL Top"] <- 13.8 
+# gwdepth$abovegroundin[gwdepth$sitepos=="Spirit Lake CTL Bottom"] <- 0
+# gwdepth$abovegroundin[gwdepth$sitepos=="Armstrong TRT Top"] <- 2.5
+# gwdepth$abovegroundin[gwdepth$sitepos=="Armstrong TRT Bottom"] <- 4
+# gwdepth$abovegroundin[gwdepth$sitepos=="Armstrong CTL Bottom"] <- 0
+# gwdepth$abovegroundin[gwdepth$sitepos=="Worle TRT Top"] <- 0
+# gwdepth$abovegroundin[gwdepth$sitepos=="Worle TRT Bottom"] <- 2
+# gwdepth$abovegroundin[gwdepth$sitepos=="McNay CTL Bottom"] <- 1
+# gwdepth$abovegroundin[gwdepth$sitepos=="EIA TRT Top"] <- 1
+# gwdepth$abovegroundin[gwdepth$sitepos=="EIA TRT Bottom"] <- 0.5
+# gwdepth$abovegroundin[gwdepth$sitepos=="Rhodes TRT Top"] <- 5
+# gwdepth$abovegroundin[gwdepth$sitepos=="Rhodes TRT Bottom"] <- 0
+# gwdepth$abovegroundin[gwdepth$sitepos=="Rhodes CTL Bottom"] <- 2
+# gwdepth$abovegroundin[gwdepth$sitepos=="Guthrie TRT Top"] <- 0
+# gwdepth$abovegroundin[gwdepth$sitepos=="Guthrie TRT Bottom"] <- 2
+# 
+# gwdepth <- gwdepth %>%
+#   mutate(adjdepthft = as.numeric(as.character(rawdepthft))-(abovegroundin/12))
+#   
+# gwdepth$adjdepthft <- as.numeric(format(round(gwdepth$adjdepthft, 2), nsmall = 2))
+# 
+# gwdepth$negadjdepthft <- -(gwdepth$adjdepthft)
+# 
+# gwdepth$date<- "Feb."
+# gwdepth$date[gwdepth$month=="3"] <- "March"
+# gwdepth$date[gwdepth$month=="4"] <- "April"
+# gwdepth$date[gwdepth$month=="5"] <- "May"
+# gwdepth$date[gwdepth$month=="6"] <- "June"
+# gwdepth$date[gwdepth$month=="7"] <- "July"
+# gwdepth$date[gwdepth$month=="8"] <- "Aug."
+# gwdepth$date[gwdepth$month=="9"] <- "Sept."
+# gwdepth$date[gwdepth$month=="10"] <- "Oct."
+# gwdepth$date[gwdepth$month=="11"] <- "Nov."
+# gwdepth$date[gwdepth$month=="12"] <- "Dec."
+
+
+
+# gw depth data manip - new way -------------------------------------------
+
 setwd("~/prairiestrips/")
 
-gwdepth2016 <- read.csv("./groundwater/data-raw/depth/2016/2016strips2gwdepth.csv", header = T) %>%
-  filter(!is.na(site)) %>%
-  rename(rawdepthft = uncorrected.depth..ft.) %>%
-  mutate(site = gsub("Arm", "Armstrong", site),
-         site = gsub("arm", "Armstrong", site),
-         site = gsub("white", "Whiterock", site),
-         site = gsub("white ", "Whiterock", site),
-         site = gsub("spirit", "Spirit Lake", site),
-         site = gsub("eia", "EIA", site),
-         site = gsub("guthrie", "Guthrie", site),
-         site = gsub("mcnay", "McNay", site),
-         site = gsub("rhodes", "Rhodes", site),
-         site = gsub("worle", "Worle", site),
-         pos = gsub("top", "Top", pos),
-         pos = gsub("bot", "Bottom", pos),
-         trt = gsub("trt", "TRT", trt),
-         trt = gsub("ctl", "CTL", trt),
-         position = paste(trt, pos),
-         sitepos = paste(site, position)
-          )
-
-gwdepth2017 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2017/2017strips2gwdepth.csv", header = T) %>%
-  filter(!is.na(site)) %>%
-  rename(rawdepthft = uncorrected.depth..ft.) %>%
-  mutate(site = gsub("Arm", "Armstrong", site),
-         site = gsub("arm", "Armstrong", site),
-         site = gsub("white", "Whiterock", site),
-         site = gsub("white ", "Whiterock", site),
-         site = gsub("spirit", "Spirit Lake", site),
-         site = gsub("eia", "EIA", site),
-         site = gsub("guthrie", "Guthrie", site),
-         site = gsub("mcnay", "McNay", site),
-         site = gsub("rhodes", "Rhodes", site),
-         site = gsub("worle", "Worle", site),
-         pos = gsub("top", "Top", pos),
-         pos = gsub("bot", "Bottom", pos),
-         trt = gsub("trt", "TRT", trt),
-         trt = gsub("ctl", "CTL", trt),
-         position = paste(trt, pos),
-         sitepos = paste(site, position)
-         )
-
-gwdepth <- rbind(gwdepth2016, gwdepth2017)
-gwdepth$abovegroundin = 1.5
-gwdepth$abovegroundin[gwdepth$sitepos=="Whiterock CTL Bottom"] <- 2
-gwdepth$abovegroundin[gwdepth$sitepos=="Spirit Lake TRT Top"] <- 1
-gwdepth$abovegroundin[gwdepth$sitepos=="Spirit Lake CTL Top"] <- 13.8 
-gwdepth$abovegroundin[gwdepth$sitepos=="Spirit Lake CTL Bottom"] <- 0
-gwdepth$abovegroundin[gwdepth$sitepos=="Armstrong TRT Top"] <- 2.5
-gwdepth$abovegroundin[gwdepth$sitepos=="Armstrong TRT Bottom"] <- 4
-gwdepth$abovegroundin[gwdepth$sitepos=="Armstrong CTL Bottom"] <- 0
-gwdepth$abovegroundin[gwdepth$sitepos=="Worle TRT Top"] <- 0
-gwdepth$abovegroundin[gwdepth$sitepos=="Worle TRT Bottom"] <- 2
-gwdepth$abovegroundin[gwdepth$sitepos=="McNay CTL Bottom"] <- 1
-gwdepth$abovegroundin[gwdepth$sitepos=="EIA TRT Top"] <- 1
-gwdepth$abovegroundin[gwdepth$sitepos=="EIA TRT Bottom"] <- 0.5
-gwdepth$abovegroundin[gwdepth$sitepos=="Rhodes TRT Top"] <- 5
-gwdepth$abovegroundin[gwdepth$sitepos=="Rhodes TRT Bottom"] <- 0
-gwdepth$abovegroundin[gwdepth$sitepos=="Rhodes CTL Bottom"] <- 2
-gwdepth$abovegroundin[gwdepth$sitepos=="Guthrie TRT Top"] <- 0
-gwdepth$abovegroundin[gwdepth$sitepos=="Guthrie TRT Bottom"] <- 2
-
-gwdepth <- gwdepth %>%
-  mutate(adjdepthft = as.numeric(as.character(rawdepthft))-(abovegroundin/12))
+gwdepth2016 <- read.csv("./groundwater/data-raw/depth/2016/2016strips2gwdepth.csv", header = T)
   
-gwdepth$adjdepthft <- as.numeric(format(round(gwdepth$adjdepthft, 2), nsmall = 2))
+gwdepth2017 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2017/2017strips2gwdepth.csv", header = T) 
+
+gwdepth <- rbind(gwdepth2016, gwdepth2017) %>%
+  mutate(month = as.character(month)) %>%
+  select(-X)
+
+correcteddepth <- as.data.frame(lapply(gwdepth[c(2:5)], fixit)) %>%
+  rename(month = x, site = x.1, trt = x.2, pos = x.3)
+
+gwdepth$month <- correcteddepth$month
+gwdepth$site <- correcteddepth$site
+gwdepth$trt <- correcteddepth$trt
+gwdepth$pos <- correcteddepth$pos
+gwdepth <- gwdepth %>%
+  mutate(wellid = paste(site, trt, pos, sep = ""),
+         uncorrected.depth..ft. = as.numeric(as.character(uncorrected.depth..ft.)))
+
+depthadj <- read.csv("./groundwater/data-raw/depth/depthadjustment.csv", header = T) %>%
+  select(wellid, abovegroundin)
+gwdepth <- left_join(gwdepth, depthadj) %>%
+  mutate(adjdepthft = round(uncorrected.depth..ft. - (abovegroundin/12), digits = 2))
 
 gwdepth$negadjdepthft <- -(gwdepth$adjdepthft)
 
-gwdepth$date<- "Feb."
-gwdepth$date[gwdepth$month=="3"] <- "March"
-gwdepth$date[gwdepth$month=="4"] <- "April"
-gwdepth$date[gwdepth$month=="5"] <- "May"
-gwdepth$date[gwdepth$month=="6"] <- "June"
-gwdepth$date[gwdepth$month=="7"] <- "July"
-gwdepth$date[gwdepth$month=="8"] <- "Aug."
-gwdepth$date[gwdepth$month=="9"] <- "Sept."
-gwdepth$date[gwdepth$month=="10"] <- "Oct."
-gwdepth$date[gwdepth$month=="11"] <- "Nov."
-gwdepth$date[gwdepth$month=="12"] <- "Dec."
+gwdepth$order <- factor(gwdepth$month, levels = c("Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
 
 
-gwdepth$order <- factor(gwdepth$date, levels = c("Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
+# gwdepth graph -----------------------------------------------------------
 
 
 # Customized colors
 colorscale <- c(TRT = "blue", 
                 CTL = "red")
 linescale <- c(Top = "dashed",
-               Bottom = "solid")
+               Bot = "solid")
 
 gwdepthplot <- ggplot(gwdepth, aes(x = order, 
                            y = negadjdepthft, 
-                           group = position,
+                           group = wellid,
                            linetype = pos,
                            color = trt)) +
-  geom_line() + 
-  geom_point() +
+  geom_line(size = 1) + 
+  geom_point(size= 1.5) +
   facet_grid(site~year, scales='free_x') + 
   labs(x = '',  
        y = 'Groundwater Depth From Ground Surface (ft)') + 
@@ -421,31 +410,19 @@ gwdepthplot <- ggplot(gwdepth, aes(x = order,
 
 ggsave(filename = "gwdepth.jpg", plot=gwdepthplot, width = 6, height=8)
 
-test <- filter(gwdepth, site=="Whiterock")
 
 
-
-
-
-
-
-
-
-
-
-
-######################################################################
-#THIS WAS FOR LISA TO GIVE TO EIA, also will edit to give to Hoien for spirit lake, also will do for Guthrie
+# site specific graphs ----------------------------------------------------
 
 setwd("./graphs/")
 
 white <- all %>%
-  filter(site=="Whiterock")
+  filter(site=="WHI")
 
 whiteno3plot <- ggplot(data = subset(white, !is.na(no3mgL)), aes(x = order, 
                           y = no3mgL, 
-                          group = position,
-                          linetype = pos,
+                          group = pos,
+                          linetype = position,
                           color = trt)) +
   ggtitle("Groundwater Nitrate - Nitrogen") +
   geom_line() + 
@@ -463,14 +440,13 @@ whiteno3plot <- ggplot(data = subset(white, !is.na(no3mgL)), aes(x = order,
 
 ggsave(filename = "gwwhiteno3.jpg", plot=whiteno3plot, width = 6, height=8)
 
-
-whitedrp <- drpdata %>%
-  filter(site=="Whiterock")
+whitedrp <- white %>%
+  filter(year !=2016)
 
 whitedrpplot <- ggplot(whitedrp, aes(x = order, 
                            y = drpmgL, 
-                           group = position,
-                           linetype = pos,
+                           group = pos,
+                           linetype = position,
                            color = trt)) +
   ggtitle("Groundwater Dissolved Reactive Phosphorus") +
   geom_line() + 
@@ -490,11 +466,11 @@ ggsave(filename = "gwwhitedrp.jpg", plot=whitedrpplot, width = 6, height=8)
 
 
 whitegwdepth <- gwdepth %>%
-  filter(site=="Whiterock")
+  filter(site=="WHI")
 
 whitegwdepthplot <- ggplot(whitegwdepth, aes(x = order, 
                                    y = negadjdepthft, 
-                                   group = position,
+                                   group = wellid,
                                    linetype = pos,
                                    color = trt)) +
   ggtitle("Groundwater Depth from Ground Surface") +
@@ -514,7 +490,3 @@ whitegwdepthplot <- ggplot(whitegwdepth, aes(x = order,
 ggsave(filename = "whitegwdepth.jpg", plot=whitegwdepthplot, width = 6, height=8)
 
 
-
-
-
-##########################################################################
