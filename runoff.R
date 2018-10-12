@@ -19,14 +19,6 @@ rain <- STRIPS2Helmers::rain %>%
   mutate(cumulative_rain = cumsum(rain * 39.3701), # convert to inches
          watershed_year = paste(watershed,year,sep="_"))
 
-# ggplot(rain, aes(x = date_time, y = cumulative_rain, 
-#               group = watershed_year)) +
-#   geom_line() + 
-#   facet_grid(site ~ year, scales = 'free_x') + 
-#   labs(x = '', y = 'Cumulative rainfall (inches)') + 
-#   theme_bw()
-
-
 # Flow
 myrain <- rain %>%
   select(-watershed, -watershed_year, -treatment, -cumulative_rain)
@@ -53,20 +45,12 @@ flow <- STRIPS2Helmers::runoff %>%
            (acres * 6.273e6) )                 # normalize by watershed area
                                                # after converting acres to square inches
 
-#test <- readr::read_csv("../data-raw/sitenamesandwatershedsizes.csv")
-
 
 ggplot(flow, aes(x = date_time, y = cumulative_flow, 
               group = watershed, linetype = treatment)) +
   geom_line(size=3) + 
   facet_grid(site~year, scales='free') + 
   theme_bw()
-  
-# ggplot(flow, aes(x = date_time, y = cumulative_flow, 
-#               group = watershed, linetype = treatment)) +
-#   geom_line(size=3) + 
-#   facet_grid(site ~ year, scales='free') + 
-#   theme_bw()
 
 # Combine flow and rain
 rain <- rain %>%
@@ -101,8 +85,6 @@ linescale <- c(rain = "dotted",
                control = "solid",
                treatment = "dashed")
 
-#test <- d %>% filter(codes=="SPL")
-
 
 g <- ggplot(d, aes(x = date_time, 
                    y = y, 
@@ -121,26 +103,6 @@ g <- ggplot(d, aes(x = date_time,
         axis.text.x = element_text(angle=60,hjust=1))
 
 ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff.jpg", plot=g, width = 6, height=8)
-
-# 
-# # Multiply flow by 10
-# g <- ggplot(d %>% left_join(wnames), aes(x = date_time, 
-#                                          y = y*ifelse(treatment != "rain", 10, 1), 
-#                                          group = watershed, 
-#                                          linetype = treatment,
-#                                          color = treatment)) +
-#   geom_line() + 
-#   facet_grid(full~year, scales='free_x') + 
-#   labs(x = '',  
-#        y = 'Cumulative runoff (x10) and rainfall in inches') + 
-#   scale_color_manual(values = colorscale) +
-#   theme_bw() +
-#   theme(legend.position = "bottom",
-#         legend.title    = element_blank())
-# 
-# ggsave(filename = "runoff_x10.jpg", plot=g, width = 6, height=8)
-# 
-# 
 
 
 ###################################################
@@ -183,11 +145,6 @@ sed2 <- sed %>%
   group_by(watershed, year, analyte) %>%
   filter(!is.na(value)) %>%
   mutate(cumulative = cumsum(valueload)) %>%
-  ##########################################
-#ADDING THIS STUFF IN
-
-
-#############################################
   left_join(wnames)
 
 #############################################
@@ -216,81 +173,6 @@ eliseflow <- d %>%
 # 
 # write.csv(eliseflow, file = ("C:/Users/Chris/Documents/prairiestrips/eliseflowrainandsed.csv"))
 #  
-########################################
-#testing stuff below
-sed2daterange <- ungroup(sed2) %>%
-  mutate(date = date(date_time)) %>%
-  arrange(date_time)
-
-range(sed2daterange$date_time)
-
-library(lubridate)
-library(zoo)
-graphrange <- as.data.frame(seq(ymd_hms('2016-03-09 14:10:00'), ymd_hms('2017-11-14 14:30:00'), by = '5 min')) %>%
-  rename(date_time = "seq(ymd_hms(\"2016-03-09 14:10:00\"), ymd_hms(\"2017-11-14 14:30:00\"), by = \"5 min\")")
-
-names(graphrange)
-library(purrr)
-t <- ungroup(sed2) %>%
-  filter(analyte == "Nitrate + nitrite (mg N/L)") %>%
-  group_by(watershed, year) %>%
-  arrange(year, watershed)
-
-watersheds <- list(unique(sed2$watershed))
-analytes <- list(unique(sed2$analyte))
-apply <- list(watersheds, analytes)
-applygraphrange <- function(x) { s <- filter(t, watershed == x)
-                                  siterange <- left_join(graphrange, s)
-                                  }
-testmap <- map_dfr(watersheds, applygraphrange)
-
-
-
-###NEED TO MAKE A NEW LIST OF THE COMBOS OF WATERSHEDS AND ANALYTES?
-
-#t <- sed2 %>% group_by(watershed, year) %>% filter(analyte == "Nitrate + nitrite (mg N/L)") %>%full_join(graphrange)
-
-
-
-
-# u <- sed2 %>%
-#   select(watershed, date_time, cumulative)
-#   
-# v <- graphrange %>%
-#   left_join(u)
-# 
-# testrange <- graphrange %>%
-#   full_join(sed2) %>%
-#   group_by(watershed, year, analyte) %>%
-#   arrange(watershed, analyte, date_time) %>%
-#   mutate(cumulative = na.locf(cumulative, na.rm = F),
-#          treatment = na.locf(treatment, na.rm = F),
-#          codes = na.locf(codes, na.rm = F)#,
-#          #year = na.locf(year, na.rm = F)
-#          ) 
-# 
-# t <- filter(testrange, watershed == "armctl", analyte == "Nitrate + nitrite (mg N/L)", year == "2016") %>%
-#   mutate(month = month(date_time))
-
-
-ggplot(data = testrange %>%
-  filter(analyte == "Nitrate + nitrite (mg N/L)"), 
-aes(x = date_time, 
-    y = cumulative,
-    group = treatment,
-    color = treatment,
-    linetype = treatment)) + 
-  geom_line() + 
-  scale_color_manual(values = colorscale) +
-  scale_linetype_manual(values = linescale) +
-  facet_grid(codes ~ year, scales = 'free_x') + 
-  labs(x = '',  
-       y = 'Runoff Dissolved Nitrogen (lbs/ac)') + 
-  theme_bw() +
-  theme(legend.position = "bottom",
-        legend.title    = element_blank(),
-        axis.text.x = element_text(angle=60,hjust=1))
-
 
 ##########################################
 no3graph <- ggplot(sed2 %>% 
@@ -590,4 +472,80 @@ tssgraph2016 <- ggplot(sed2016 %>%
         legend.title    = element_blank())
 
 ggsave(filename = "~/prairiestrips/graphs/tss2016.jpg", plot=tssgraph2016, width = 6, height=8)
+
+# trying to extend lines of graphs to the end of x axis -------------------
+
+sed2daterange <- ungroup(sed2) %>%
+  mutate(date = date(date_time)) %>%
+  arrange(date_time)
+
+range(sed2daterange$date_time)
+
+library(lubridate)
+library(zoo)
+graphrange <- as.data.frame(seq(ymd_hms('2016-03-09 14:10:00'), ymd_hms('2017-11-14 14:30:00'), by = '5 min')) %>%
+  rename(date_time = "seq(ymd_hms(\"2016-03-09 14:10:00\"), ymd_hms(\"2017-11-14 14:30:00\"), by = \"5 min\")")
+
+names(graphrange)
+library(purrr)
+t <- ungroup(sed2) %>%
+  filter(analyte == "Nitrate + nitrite (mg N/L)") %>%
+  group_by(watershed, year) %>%
+  arrange(year, watershed)
+
+watersheds <- list(unique(sed2$watershed))
+analytes <- list(unique(sed2$analyte))
+apply <- list(watersheds, analytes)
+applygraphrange <- function(x) { s <- filter(t, watershed == x)
+siterange <- left_join(graphrange, s)
+}
+testmap <- map_dfr(watersheds, applygraphrange)
+
+
+
+###NEED TO MAKE A NEW LIST OF THE COMBOS OF WATERSHEDS AND ANALYTES?
+
+#t <- sed2 %>% group_by(watershed, year) %>% filter(analyte == "Nitrate + nitrite (mg N/L)") %>%full_join(graphrange)
+
+
+
+
+# u <- sed2 %>%
+#   select(watershed, date_time, cumulative)
+#   
+# v <- graphrange %>%
+#   left_join(u)
+# 
+# testrange <- graphrange %>%
+#   full_join(sed2) %>%
+#   group_by(watershed, year, analyte) %>%
+#   arrange(watershed, analyte, date_time) %>%
+#   mutate(cumulative = na.locf(cumulative, na.rm = F),
+#          treatment = na.locf(treatment, na.rm = F),
+#          codes = na.locf(codes, na.rm = F)#,
+#          #year = na.locf(year, na.rm = F)
+#          ) 
+# 
+# t <- filter(testrange, watershed == "armctl", analyte == "Nitrate + nitrite (mg N/L)", year == "2016") %>%
+#   mutate(month = month(date_time))
+
+
+ggplot(data = testrange %>%
+         filter(analyte == "Nitrate + nitrite (mg N/L)"), 
+       aes(x = date_time, 
+           y = cumulative,
+           group = treatment,
+           color = treatment,
+           linetype = treatment)) + 
+  geom_line() + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_grid(codes ~ year, scales = 'free_x') + 
+  labs(x = '',  
+       y = 'Runoff Dissolved Nitrogen (lbs/ac)') + 
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
 
