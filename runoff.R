@@ -85,6 +85,33 @@ linescale <- c(rain = "dotted",
                control = "solid",
                treatment = "dashed")
 
+# test graph for 2018 whiterock-----------------------------------------------------
+
+test <- d %>%
+  filter(year == "2018") %>%  # need to remove junk data
+  filter()
+
+
+e <- ggplot(test, aes(x = date_time, 
+                   y = y, 
+                   group = watershed, 
+                   linetype = treatment,
+                   color = treatment)) +
+  geom_line() + 
+  facet_grid(full~year, scales='free_x') + 
+  labs(x = '',  
+       y = 'Cumulative rainfall and runoff (inches)') + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+e
+
+# resume regular program --------------------------------------------------
+
 
 g <- ggplot(d, aes(x = date_time, 
                    y = y, 
