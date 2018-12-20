@@ -180,6 +180,8 @@ g <- ggplot(d, aes(x = date_time,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
+g
+
 ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2018.jpg", plot=g, width = 6, height=8)
 
 
@@ -271,7 +273,7 @@ no3graph <- ggplot(sed2 %>%
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/no3.jpg", plot=no3graph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/no32018.jpg", plot=no3graph, width = 6, height=8)
 
 
 #stuff between ### is only stuff I am messing with
@@ -295,7 +297,7 @@ orthopgraph <- ggplot(sed2 %>%
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/orthop.jpg", plot=orthopgraph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/orthop2018.jpg", plot=orthopgraph, width = 6, height=8)
 
 
 tssgraph <- ggplot(sed2 %>% 
@@ -316,7 +318,7 @@ tssgraph <- ggplot(sed2 %>%
       legend.title    = element_blank(),
       axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss.jpg", plot=tssgraph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss2018.jpg", plot=tssgraph, width = 6, height=8)
 
 
 # 2018 whi tss graph ------------------------------------------------------
