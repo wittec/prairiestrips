@@ -149,7 +149,6 @@ gw2017 <- read.csv("./2017/STRIPS2017groundwaterresults.csv", skip = 2, header =
   rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
   #left_join(gw2017codes, by = c("id"))
 
-
 gw2016 <- gw2016 %>%
   rbind(gw2016a) %>%
   full_join(gw2016codes) %>%
@@ -351,15 +350,39 @@ ggsave(filename = "./graphs/gwdrp.jpg", plot=drp, width = 6, height=8)
 
 # gw depth data manip - new way -------------------------------------------
 
+#rm(list=ls(all=TRUE))
+
+fixit <- function (x) {
+  correct <- read.csv("~/prairiestrips/groundwater/data-raw/waterquality/corrections.csv", header = T) %>%
+    mutate(bad = as.character(bad),
+           good = as.character(good)
+    )
+  
+  testdata <- as.data.frame(x)
+  
+  left_join(testdata, correct, by = c("x" = "bad"))  %>%
+    mutate(x = ifelse(!is.na(good), good, x)) %>%
+    select(-ends_with("good"))
+  
+}
+
 setwd("~/prairiestrips/")
 
 gwdepth2016 <- read.csv("./groundwater/data-raw/depth/2016/2016strips2gwdepth.csv", header = T)
   
 gwdepth2017 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2017/2017strips2gwdepth.csv", header = T) 
 
-gwdepth <- rbind(gwdepth2016, gwdepth2017) %>%
+gwdepth2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2018/2018strips2gwdepth.csv", header = T) 
+
+gwdepth <- rbind(gwdepth2016, gwdepth2017, gwdepth2018) %>%
   mutate(month = as.character(month)) %>%
   select(-X)
+
+#changing dry wells to depth of 15
+gwdepth$uncorrected.depth..ft. <- as.character(gwdepth$uncorrected.depth..ft.)
+gwdepth$uncorrected.depth..ft.[gwdepth$uncorrected.depth..ft.== "dry"] <- 15
+gwdepth$uncorrected.depth..ft. <- as.numeric(gwdepth$uncorrected.depth..ft.)
+  
 
 correcteddepth <- as.data.frame(lapply(gwdepth[c(2:5)], fixit)) %>%
   rename(month = x, site = x.1, trt = x.2, pos = x.3)
@@ -379,8 +402,7 @@ gwdepth <- left_join(gwdepth, depthadj) %>%
 
 gwdepth$negadjdepthft <- -(gwdepth$adjdepthft)
 
-gwdepth$order <- factor(gwdepth$month, levels = c("Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
-
+gwdepth$order <- factor(gwdepth$month, levels = c("Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
 
 # gwdepth graph -----------------------------------------------------------
 
@@ -408,9 +430,35 @@ gwdepthplot <- ggplot(gwdepth, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
+
 ggsave(filename = "gwdepth.jpg", plot=gwdepthplot, width = 6, height=8)
 
+# creating 2018 whi depth graph -------------------------------------------
+gwdepthtest <- gwdepth %>%
+  filter(year == "2018" & site == "WHI")
+gwdepthplottest <- ggplot(gwdepthtest, aes(x = order, 
+                                   y = negadjdepthft, 
+                                   group = wellid,
+                                   linetype = pos,
+                                   color = trt)) +
+  geom_line(size = 1) + 
+  geom_point(size= 1.5) +
+  facet_grid(site~year, scales='free_x') + 
+  labs(x = '',  
+       y = 'Groundwater Depth From Ground Surface (ft)') + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
 
+gwdepthplottest 
+
+
+
+
+# back to normal programming ----------------------------------------------
 
 # site specific graphs ----------------------------------------------------
 

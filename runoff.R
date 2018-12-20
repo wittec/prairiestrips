@@ -85,6 +85,84 @@ linescale <- c(rain = "dotted",
                control = "solid",
                treatment = "dashed")
 
+# test graph for 2018 whiterock-----------------------------------------------------
+
+flowtest <- STRIPS2Helmers::runoff %>%
+  filter(!is.na(flow)) %>%
+  
+  mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"),
+         site = gsub("ctl", "", watershed),
+         site = gsub("trt", "", site),
+         year = lubridate::year(date_time),
+         watershed = as.character(watershed),
+         sampleID = as.character(sampleID)) %>%
+  
+  left_join(myrain, by=c("date_time", "site", "year")) %>%
+  filter(!is.na(flow), !is.na(rain)) %>%
+  filter(year == "2018") %>%  # need to remove junk data
+  filter(date_time <= "2018-06-19 19:05:00" | date_time >= "2018-06-24 15:15:00") %>%
+  filter(date_time <= "2018-06-24 23:25:00" | date_time >= "2018-06-26 04:40:00") %>%
+  filter(date_time <= "2018-06-26 11:25:00" | date_time >= "2018-06-30 18:55:00") %>%
+  filter(date_time <= "2018-07-01 09:20:00" | date_time >= "2018-07-04 21:35:00") %>%
+  filter(date_time <= "2018-07-05 03:20:00" | date_time >= "2018-09-25 08:10:00") %>%
+  filter(date_time <= "2018-09-25 13:20:00" | date_time >= "2018-10-01 09:00:00") %>%
+  group_by(watershed,year) %>%
+  do(HelmersLab::clip_flow(.)) %>%
+  
+  left_join(readr::read_csv("../data-raw/sitenamesandwatershedsizes.csv")) %>%
+  group_by(watershed,year) %>%
+  mutate(
+    cumulative_flow = cumsum(flow) * 231 * 5 / # convert gpm to in^3 from 5 minutes
+      (acres * 6.273e6) )                 # normalize by watershed area
+# after converting acres to square inches
+
+
+# Combine flow and rain
+raintest <- rain %>%
+  mutate(treatment = "rain",
+         watershed = paste(site,"_rain", sep=""),
+         y = cumulative_rain) %>%
+  filter(year == "2018")
+
+flowtest <- flowtest %>%
+  mutate(y = cumulative_flow)
+
+wnames <- data.frame(site = c("arm","eia","marsh","mcnay","rhodes","spirit","white","worle"),
+                     full = c("Armstrong","E. IA Airport","Marshalltown","McNay",
+                              "Rhodes","Spirit Lake ","Whiterock","Worle"),
+                     codes = c("ARM", "EIA", "MAR", "MCN", "RHO", "SPL", "WHI", "WOR"))
+
+wnames <- wnames %>%
+  mutate(site = as.character(site))
+
+
+dtest <- bind_rows(flowtest,raintest) %>%
+  mutate(treatment = factor(treatment, 
+                            levels = c("rain","control","treatment"))) %>%
+  left_join(wnames)
+
+
+e <- ggplot(dtest, aes(x = date_time, 
+                   y = y, 
+                   group = watershed, 
+                   linetype = treatment,
+                   color = treatment)) +
+  geom_line(size = 1) +
+  geom_line(size = 1.5) +
+  facet_grid(full~year, scales='free_x') + 
+  labs(x = '',  
+       y = 'Cumulative rainfall and runoff (inches)') + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+e
+
+# resume regular program --------------------------------------------------
+
 
 g <- ggplot(d, aes(x = date_time, 
                    y = y, 
@@ -102,7 +180,7 @@ g <- ggplot(d, aes(x = date_time,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff.jpg", plot=g, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2018.jpg", plot=g, width = 6, height=8)
 
 
 ###################################################
@@ -240,8 +318,37 @@ tssgraph <- ggplot(sed2 %>%
 
 ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss.jpg", plot=tssgraph, width = 6, height=8)
 
+
+# 2018 whi tss graph ------------------------------------------------------
+sed2test <- sed2 %>%
+  filter(year == "2018")
+
+tssgraphtest <- ggplot(sed2test %>% 
+                     filter(analyte == "TSS (mg/L)"), 
+                   aes(x = date_time, 
+                       y = cumulative,
+                       group = treatment,
+                       color = treatment,
+                       linetype = treatment)) + 
+  geom_line(size = 1) +
+  geom_point(size = 1.5) +
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_grid(full ~ year, scales = 'free_x') + 
+  labs(x = '',  
+       y = 'Runoff Total Suspended Solids (lbs/ac)') + 
+  theme_bw() + 
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+tssgraphtest
+
+
 #############################################################################
-#THIS IS FOR lISA TO SEND TO EIA, edited to give to hoien at spirit lake
+
+# THIS IS FOR lISA TO SEND TO EIA, edited to give to hoien at spir --------
+
 setwd("C:/Users/Chris/Documents/prairiestrips/graphs/")
 
 white <- d %>%
