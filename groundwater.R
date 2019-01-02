@@ -149,6 +149,16 @@ gw2017 <- read.csv("./2017/STRIPS2017groundwaterresults.csv", skip = 2, header =
   rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
   #left_join(gw2017codes, by = c("id"))
 
+gw2018codes <- read.csv("./2018/STRIPS2018groundwatercodes.csv", skip = 2)[ , 1:8] %>%
+  select(year, month, site, trt, position, ID.) %>%
+  rename(id = ID.) %>%
+  filter(id != "NA") 
+
+gw2018 <- read.csv("./2018/STRIPS2018groundwaterresults.csv", skip = 2, header = T) %>%
+  select(Sample.ID., NOx.result..mg.N.L., DRP.result..mg.P.L.) %>%
+  rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
+
+
 gw2016 <- gw2016 %>%
   rbind(gw2016a) %>%
   full_join(gw2016codes) %>%
@@ -159,8 +169,13 @@ gw2017 <- gw2017 %>%
   full_join(gw2017codes) %>%
   mutate(month = as.character(month))
 
+gw2018 <- gw2018 %>%
+  full_join(gw2018codes) %>%
+  mutate(month = as.character(month))
+
 all <- gw2016 %>%
   full_join(gw2017) %>%
+  full_join(gw2018) %>%
   filter(!is.na(id)) %>%
   filter(!is.na(site))
 
