@@ -1,0 +1,37 @@
+---
+title: "tablesforstrips2018"
+author: "witte"
+date: "January 4, 2019"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+  pdf_document: default
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+require(knitr)
+require(kableExtra)
+require(dplyr)
+```
+```{r, echo=FALSE}
+this <- read.csv("C:/Users/Chris/Documents/STRIPS2Helmers/vignettes/writetabletest.csv")
+kable(this)%>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, " " = 1, "Runoff" = 2))
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

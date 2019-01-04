@@ -113,10 +113,11 @@ e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flo
 e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
 e1$rain <- e2$rain
 e1 <- e1 %>% 
-  rename(Site == full) %>%
-  
-  #LEFT OFF HERE...NEED TO ROUND DECIMAL PLACES
-  mutate_if(is.numeric, round, )
+  mutate_if(is.numeric, round, 2) %>%
+  rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
+
+write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
+
 
 # water quality (tss, no3, orthop, tn, tp) ----------------------------------------------------------------
 sed <- STRIPS2Helmers::runoff %>%
@@ -256,6 +257,24 @@ tssgraph <- ggplot(sed2 %>%
       axis.text.x = element_text(angle=60,hjust=1))
 
 ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss2018.jpg", plot=tssgraph, width = 6, height=8)
+
+
+
+# create table of final cumulative values for nutrients ---------------
+
+
+
+
+#####LEFT OFF HERE
+endtable <- sed2 %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
+e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
+e1$rain <- e2$rain
+e1 <- e1 %>% 
+  mutate_if(is.numeric, round, 2) %>%
+  rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
+
+write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
 
 
 # 2018 whi tss graph ------------------------------------------------------
