@@ -20,7 +20,7 @@ require(kableExtra)
 require(dplyr)
 ```
 ```{r, echo=FALSE}
-this <- read.csv("C:/Users/Chris/Documents/STRIPS2Helmers/vignettes/writetabletest.csv")
+this <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
 kable(this)%>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, " " = 1, "Runoff" = 2))
