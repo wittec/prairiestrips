@@ -5,8 +5,8 @@ date: "January 4, 2019"
 output:
   html_document:
     df_print: paged
-  word_document: default
   pdf_document: default
+  word_document: default
 always_allow_html: yes
 ---
 
@@ -20,10 +20,17 @@ require(kableExtra)
 require(dplyr)
 ```
 ```{r, echo=FALSE}
-this <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
-kable(this)%>%
+rainrun2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
+kable(rainrun2018, caption = "Table 1: Rain and surface runoff cumulative totals (inches) for 2018") %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, " " = 1, "Runoff" = 2))
+
+nutrients2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018.csv")
+kable(nutrients2018, caption = "Table 2: Cumulative totals (lbs/ac) for measured nutrients exported from field in 2018", 
+      col.names = c("Site", "Control", "Treatment", "Control", "Treatment", "Control", "Treatment")) %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Nitrate + Nitrite" = 2, "Orthophosphate" = 2, "Total Suspended Solids" = 2))
+
 ```
 
 ## Including Plots
