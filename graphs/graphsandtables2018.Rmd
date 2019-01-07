@@ -1,7 +1,7 @@
 ---
-title: "tablesforstrips2018"
+title: "Graphs and Tables for strips 2018"
 author: "witte"
-date: "January 4, 2019"
+date: "January 7, 2019"
 output:
   html_document:
     df_print: paged
@@ -22,23 +22,35 @@ require(dplyr)
 ```{r, echo=FALSE}
 rainrun2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
 kable(rainrun2018, caption = "Table 1: Rain and surface runoff cumulative totals (inches) for 2018") %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "center") %>%
   add_header_above(c(" " = 1, " " = 1, "Runoff" = 2))
 
 nutrients2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018.csv")
 kable(nutrients2018, caption = "Table 2: Cumulative totals (lbs/ac) for measured nutrients exported from field in 2018", 
       col.names = c("Site", "Control", "Treatment", "Control", "Treatment", "Control", "Treatment")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "center") %>%
   add_header_above(c(" " = 1, "Nitrate + Nitrite" = 2, "Orthophosphate" = 2, "Total Suspended Solids" = 2))
-
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/runoff2018.jpg")
 ```
+
+```{r}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/no32018.jpg")
+```
+
+```{r}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/orthop2018.jpg")
+```
+
+```{r}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/tss2018.jpg")
+```
+
+```{r}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/gwdepth.jpg")
+```
+
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

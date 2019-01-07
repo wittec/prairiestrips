@@ -108,7 +108,7 @@ ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2018.jpg"
 
 # create table of final cumulative values for rain and flow ---------------
 
-endtable <- d %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+endtable <- d %>% filter(year=="2018") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
 e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
 e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
 e1$rain <- e2$rain
@@ -262,7 +262,7 @@ ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss2018.jpg", p
 
 # create table of final cumulative values for nutrients ---------------
 
-nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% summarize_at(c("cumulative"), max, na.rm = T)
+nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2018") %>% summarize_at(c("cumulative"), max, na.rm = T)
 n1 <- nuttable %>% spread(analyte, cumulative)
 no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
 orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
