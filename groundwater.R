@@ -149,15 +149,14 @@ gw2017 <- read.csv("./2017/STRIPS2017groundwaterresults.csv", skip = 2, header =
   rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
   #left_join(gw2017codes, by = c("id"))
 
-gw2018codes <- read.csv("./2018/STRIPS2018groundwatercodes.csv", skip = 2)[ , 1:8] %>%
+gw2018codes <- read.csv("./2018/groundwater_codes.csv", skip = 2)[ , 1:8] %>%
   select(year, month, site, trt, position, ID.) %>%
   rename(id = ID.) %>%
   filter(id != "NA") 
 
-gw2018 <- read.csv("./2018/STRIPS2018groundwaterresults.csv", skip = 2, header = T) %>%
+gw2018 <- read.csv("./2018/groundwater.csv", skip = 2, header = T) %>%
   select(Sample.ID., NOx.result..mg.N.L., DRP.result..mg.P.L.) %>%
   rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
-
 
 gw2016 <- gw2016 %>%
   rbind(gw2016a) %>%
@@ -171,7 +170,10 @@ gw2017 <- gw2017 %>%
 
 gw2018 <- gw2018 %>%
   full_join(gw2018codes) %>%
-  mutate(month = as.character(month))
+  mutate(month = as.character(month),
+         no3mgL = as.numeric(as.character(no3mgL)),
+         drpmgL = as.numeric(as.character(drpmgL))
+        )
 
 all <- gw2016 %>%
   full_join(gw2017) %>%
@@ -185,7 +187,8 @@ all$position[all$position == "CTL"] <- "Bot"
 is.na(all$id) <- NULL
 all$year[all$id <5000] <- "2015"
 all$year[all$id >= 5000 & all$id < 6000] <- "2016"
-all$year[all$id >= 6000] <- "2017"
+all$year[all$id >= 6000 & all$id < 7000] <- "2017"
+all$year[all$id >= 7000] <- "2018"
 
 # water quality - correcting typo's, wrong codes, etc. ------------------------------------
 
@@ -448,41 +451,17 @@ gwdepthplot <- ggplot(gwdepth, aes(x = order,
 
 ggsave(filename = "gwdepth.jpg", plot=gwdepthplot, width = 6, height=8)
 
-# creating 2018 whi depth graph -------------------------------------------
-gwdepthtest <- gwdepth %>%
-  filter(year == "2018" & site == "WHI")
-gwdepthplottest <- ggplot(gwdepthtest, aes(x = order, 
-                                   y = negadjdepthft, 
-                                   group = wellid,
-                                   linetype = pos,
-                                   color = trt)) +
-  geom_line(size = 1) + 
-  geom_point(size= 1.5) +
-  facet_grid(site~year, scales='free_x') + 
-  labs(x = '',  
-       y = 'Groundwater Depth From Ground Surface (ft)') + 
-  scale_color_manual(values = colorscale) +
-  scale_linetype_manual(values = linescale) +
-  theme_bw() +
-  theme(legend.position = "bottom",
-        legend.title    = element_blank(),
-        axis.text.x = element_text(angle=60,hjust=1))
-
-gwdepthplottest 
-
-
-
-
-# back to normal programming ----------------------------------------------
-
 # site specific graphs ----------------------------------------------------
 
-setwd("./graphs/")
+setwd("~/prairiestrips/graphs/")
 
-white <- all %>%
-  filter(site=="WHI")
+arm <- all %>%
+  filter(site=="ARM")
 
-whiteno3plot <- ggplot(data = subset(white, !is.na(no3mgL)), aes(x = order, 
+armno3 <- arm %>%
+  filter(year == "2016" | year == "2017")
+
+armno3plot <- ggplot(data = subset(armno3, !is.na(no3mgL)), aes(x = order, 
                           y = no3mgL, 
                           group = pos,
                           linetype = position,
@@ -501,12 +480,14 @@ whiteno3plot <- ggplot(data = subset(white, !is.na(no3mgL)), aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "gwwhiteno3.jpg", plot=whiteno3plot, width = 6, height=8)
+armno3plot
 
-whitedrp <- white %>%
-  filter(year !=2016)
+ggsave(filename = "gwarmno3.jpg", plot=armno3plot, width = 6, height=6)
 
-whitedrpplot <- ggplot(whitedrp, aes(x = order, 
+armdrp <- arm %>%
+  filter(year ==2017)
+
+armdrpplot <- ggplot(armdrp, aes(x = order, 
                            y = drpmgL, 
                            group = pos,
                            linetype = position,
@@ -525,13 +506,13 @@ whitedrpplot <- ggplot(whitedrp, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "gwwhitedrp.jpg", plot=whitedrpplot, width = 6, height=8)
+ggsave(filename = "gwarmdrp.jpg", plot=armdrpplot, width = 6, height= 6)
 
 
-whitegwdepth <- gwdepth %>%
-  filter(site=="WHI")
+armgwdepth <- gwdepth %>%
+  filter(site=="ARM")
 
-whitegwdepthplot <- ggplot(whitegwdepth, aes(x = order, 
+armgwdepthplot <- ggplot(armgwdepth, aes(x = order, 
                                    y = negadjdepthft, 
                                    group = wellid,
                                    linetype = pos,
@@ -550,6 +531,10 @@ whitegwdepthplot <- ggplot(whitegwdepth, aes(x = order,
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "whitegwdepth.jpg", plot=whitegwdepthplot, width = 6, height=8)
+ggsave(filename = "armgwdepth.jpg", plot=armgwdepthplot, width = 6, height=6)
 
+#TESTING COWPLOT
+library(cowplot)
+armno3drplot <- plot_grid(armno3plot, armdrpplot, labels = c("A", "B"))
 
+armno3drplot

@@ -1,0 +1,127 @@
+---
+title: "Iowa Nutrient Research Center Progress Report"
+date: "January 22, 2019"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+  pdf_document: default
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+require(knitr)
+require(kableExtra)
+require(dplyr)
+require(officer)
+require(flextable)
+```
+
+<!-- ```{r, echo=FALSE} -->
+<!-- rainrun2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv") -->
+<!-- kable(rainrun2018, caption = "Table 1: Rain and surface runoff cumulative totals (inches) for 2018") %>% -->
+<!--   kable_styling(full_width = F, position = "center") %>% -->
+<!--   add_header_above(c(" " = 1, " " = 1, "Runoff" = 2)) -->
+<!-- ``` -->
+
+Progress 4th Quarter of 2018: We concluded the 2018 runoff monitoring season on October 8. A long period of unusually cold weather in the early part of October caused us to cease monitoring early, as the freezing temperatures can be harmful to field equipment. Below, we have table summaries of year-end totals for rain and runoff (Table 1), and nutrient losses (Table 2). For comparative purposes, there are also figures that illustrate the last 3 years of data for rain and runoff (Figure 1), and nutrients (Figures 2-4). Results of total nitrogen and total phosphorus have yet to be returned to us from the lab, and will be reported as soon as possible. Prairie strips seem to have reduced runoff volume (Table 1), with the exception of the McNay site. The field where prairie strips are located at McNay is noticeably wetter than the field without prairie strips due to side-slope seeps. We suspect the wet conditions reduce infiltration and therefore contribute to the higher amount of runoff in the treatment field compared to the control field.
+
+Nutrient loss summaries (Table 2) show variable results between the treatment and control fields. These will require further and deeper investigation to better understand, and will most likely require analysis on a single runoff event scale, not the entire monitoring season.
+
+Groundwater depth monitoring is presented in Figure 5. Groundwater tends to be closer to the surface in the fields without prairie strips. Groundwater nutrient analyses results have yet to be returned to us from the lab, but will be reported as soon as possible.
+  
+Table 1: 2018 Rain and surface runoff end-of-year totals for each monitored site. Fields without prairie strips are the "Control", while fields with prairie strips are the "Treatment". Treatment fields tend to have less runoff than the Control fields with the exception of McNay, which has side-slope seeps in the Treatment field.
+```{r echo=FALSE}
+noborder <- fp_border(width = 0)
+std_border = fp_border(color="black", width = 1)
+colkeys = c("Rain", "Control", "Treatment")
+
+rainrun2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
+
+flex <- flextable(rainrun2018) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  vline(j=1, border = std_border, part = "body") %>%
+  vline(j=2, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2) %>%
+  set_header_labels(Rain = "Rain (in.)") %>%
+  bold(part = "header") %>%
+  add_header(Control = "Runoff (in.)", top = TRUE) %>% 
+  merge_at(i=1, j=3:4, part = "header") %>%
+  hline(i=1, j=1:2, border = noborder, part = "header") %>%
+  align(align = "center", part = "all") %>%
+  height(i=1, 0.25, part = "header")
+
+flex
+```
+  
+Table 2: 2018 Nutrient loss end-of-year totals for each monitored site. Fields without prairie strips are the "Control", while fields with prairie strips are the "Treatment". There are inconsistent results based on the entire season's totals. Further investigation is needed at the single runoff event scale.
+
+
+```{r echo=FALSE}
+nutrients2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018.csv")
+noborder <- fp_border(width = 0)
+std_border = fp_border(color="black", width = 1)
+colkeys = c("no3ctl", "no3trt", "orthoctl", "orthotrt", "tssctl", "tsstrt")
+
+nut <- flextable(nutrients2018) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  vline(j=1, border = std_border, part = "body") %>%
+  vline(j=3, border = std_border, part = "body") %>%
+  vline(j=5, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2, na_str = "0.00") %>%
+  set_header_labels(site = "Site", no3ctl = "Control", no3trt = "Treatment", orthoctl = "Control", 
+         orthotrt = "Treatment", tssctl = "Control", tsstrt = "Treatment") %>%
+  bold(part = "header") %>%
+  add_header(no3ctl = "Nitrate (lbs/ac)", orthoctl = "Orthophosphate (lbs/ac)", tssctl = "Total Suspended Solids (lbs/ac)") %>% 
+  hline(i=1, j=1, border = noborder, part = "header") %>%
+  merge_at(i=1, j=2:3, part = "header") %>% 
+  merge_at(i=1, j=4:5, part = "header") %>% 
+  merge_at(i=1, j=6:7, part = "header") %>%
+  align(align = "center", part = "all")
+  
+
+nut
+
+```
+<!-- ```{r, echo=FALSE} -->
+
+<!-- nutrients2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018.csv") -->
+<!-- kable(nutrients2018, caption = "Table 2: Cumulative totals (lbs/ac) for measured nutrients exported from field in 2018",  -->
+<!--       col.names = c("Site", "Control", "Treatment", "Control", "Treatment", "Control", "Treatment")) %>% -->
+<!--   kable_styling(full_width = F, position = "center") %>% -->
+<!--   add_header_above(c(" " = 1, "Nitrate + Nitrite" = 2, "Orthophosphate" = 2, "Total Suspended Solids" = 2)) -->
+<!-- ``` -->
+
+```{r echo=FALSE}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/runoff2018.jpg")
+```
+
+Figure 1: Rain and surface runoff summaries in inches from 2016-2018. Fields without prairie strips are the "control", while fields with prairie strips are the "treatment". There was a greater number of runoff events in 2018 than the previous two years.
+  
+```{r echo=FALSE}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/no32018.jpg")
+```
+
+Figure 2: Nitrate export estimates via surface runoff in pounds per acre. Fields without prairie strips are the "control", while fields with prairie strips are the "treatment". Between-treatment results vary among sites.
+  
+```{r echo=FALSE}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/orthop2018.jpg")
+```
+
+Figure 3: Orthophosphate export estimates via surface runoff in pounds per acre. Fields without prairie strips are the "control", while fields with prairie strips are the "treatment". Between-treatment results vary among sites.
+  
+```{r echo=FALSE}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/tss2018.jpg")
+```
+
+Figure 4: Total suspended solids export estimates via surface runoff in pounds per acre. Fields without prairie strips are the "control", while fields with prairie strips are the "treatment". Between-treatment results vary among sites.
+  
+```{r echo=FALSE}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/gwdepth.jpg")
+```
+
+Figure 5: Monthly groundwater depth measurements in feet from surface of ground. Groundwater tends to be nearer to the surface in fields without prairie strips (CTL) than when prairie strips are present (TRT).
