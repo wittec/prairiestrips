@@ -106,18 +106,6 @@ g
 
 ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2018.jpg", plot=g, width = 6, height=8)
 
-# create table of final cumulative values for rain and flow in 2018---------------
-
-endtable <- d %>% filter(year=="2018") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
-e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
-e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
-e1$rain <- e2$rain
-e1 <- e1 %>% 
-  mutate_if(is.numeric, round, 2) %>%
-  rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
-
-write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
-
 # create table of final cumulative values for rain and flow in 2016---------------
 
 endtable <- d %>% filter(year=="2016") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
@@ -141,6 +129,20 @@ e1 <- e1 %>%
   rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
 
 write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2017.csv")
+
+
+# create table of final cumulative values for rain and flow in 2018---------------
+
+endtable <- d %>% filter(year=="2018") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
+e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
+e1$rain <- e2$rain
+e1 <- e1 %>% 
+  mutate_if(is.numeric, round, 2) %>%
+  rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
+
+write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
+
 
 # water quality (tss, no3, orthop, tn, tp) ----------------------------------------------------------------
 sed <- STRIPS2Helmers::runoff %>%
@@ -181,6 +183,7 @@ sed2 <- sed %>%
   mutate(cumulative = cumsum(valueload)) %>%
   left_join(wnames)
 
+saveRDS(sed2, file = "~/prairiestrips/seddataforgraphs.Rda")
 
 # Sediment summary by day -------------------------------------------------
 
@@ -279,11 +282,9 @@ tssgraph <- ggplot(sed2 %>%
 
 ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss2018.jpg", plot=tssgraph, width = 6, height=8)
 
+# create table of final cumulative values for nutrients in 2016 ---------------
 
-
-# create table of final cumulative values for nutrients in 2018 ---------------
-
-nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2018") %>% summarize_at(c("cumulative"), max, na.rm = T)
+nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2016") %>% summarize_at(c("cumulative"), max, na.rm = T)
 n1 <- nuttable %>% spread(analyte, cumulative)
 no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
 orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
@@ -296,7 +297,8 @@ allnuttable <- no3table %>%
   rename(site = full, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
-write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018.csv")
+write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2016.csv")
+
 
 # create table of final cumulative values for nutrients in 2017 ---------------
 
@@ -315,9 +317,9 @@ allnuttable <- no3table %>%
 
 write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2017.csv")
 
-# create table of final cumulative values for nutrients in 2016 ---------------
+# create table of final cumulative values for nutrients in 2018 ---------------
 
-nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2016") %>% summarize_at(c("cumulative"), max, na.rm = T)
+nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2018") %>% summarize_at(c("cumulative"), max, na.rm = T)
 n1 <- nuttable %>% spread(analyte, cumulative)
 no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
 orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
@@ -330,7 +332,9 @@ allnuttable <- no3table %>%
   rename(site = full, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
-write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2016.csv")
+write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018.csv")
+
+
 
 # 2018 whi tss graph ------------------------------------------------------
 # sed2test <- sed2 %>%
@@ -592,62 +596,45 @@ write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiest
 
 # trying to extend lines of graphs to the end of x axis -------------------
 
-sed2daterange <- ungroup(sed2) %>%
+sed2 <- readRDS("~/prairiestrips/seddataforgraphs.Rda") %>%
+  ungroup %>%
   mutate(date = date(date_time)) %>%
   arrange(date_time)
 
-range(sed2daterange$date_time)
-
 library(lubridate)
 library(zoo)
-graphrange <- as.data.frame(seq(ymd_hms('2016-03-09 14:10:00'), ymd_hms('2017-11-14 14:30:00'), by = '5 min')) %>%
-  rename(date_time = "seq(ymd_hms(\"2016-03-09 14:10:00\"), ymd_hms(\"2017-11-14 14:30:00\"), by = \"5 min\")")
+graphrange <- as.data.frame(seq(min(sed2$date_time), max(sed2$date_time), by = '5 min'))
+names(graphrange) <- 'date_time'
 
-names(graphrange)
-library(purrr)
-t <- ungroup(sed2) %>%
-  filter(analyte == "Nitrate + nitrite (mg N/L)") %>%
-  group_by(watershed, year) %>%
-  arrange(year, watershed)
 
-watersheds <- list(unique(sed2$watershed))
-analytes <- list(unique(sed2$analyte))
-apply <- list(watersheds, analytes)
-applygraphrange <- function(x) { s <- filter(t, watershed == x)
-siterange <- left_join(graphrange, s)
-}
-testmap <- map_dfr(watersheds, applygraphrange)
+#BELOW IS PROBABLY NOT WHAT i WANT...SED2 IS CLIPPED(DATES CLIPPED ARE MISSING), THEREFORE THE FULL_JOIN DOESN'T APPLY TO EACH SITE.
+#NEED TO GET THE SITE APPLIED TO EACH OF THE MISSING BITS OF DATA TO DRAW OUT GRAPH LINES TO THE END.
+test <- graphrange %>%
+  full_join(sed2) %>%
+  arrange(watershed, year, analyte, date_time) %>%
+  group_by(watershed, year, analyte) %>%
+  na.locf(test$value, na.rm = F)
 
 
 
-###NEED TO MAKE A NEW LIST OF THE COMBOS OF WATERSHEDS AND ANALYTES?
-
-#t <- sed2 %>% group_by(watershed, year) %>% filter(analyte == "Nitrate + nitrite (mg N/L)") %>%full_join(graphrange)
-
-
-
-
-# u <- sed2 %>%
-#   select(watershed, date_time, cumulative)
-#   
-# v <- graphrange %>%
-#   left_join(u)
 # 
-# testrange <- graphrange %>%
-#   full_join(sed2) %>%
-#   group_by(watershed, year, analyte) %>%
-#   arrange(watershed, analyte, date_time) %>%
-#   mutate(cumulative = na.locf(cumulative, na.rm = F),
-#          treatment = na.locf(treatment, na.rm = F),
-#          codes = na.locf(codes, na.rm = F)#,
-#          #year = na.locf(year, na.rm = F)
-#          ) 
+# library(purrr)
+# t <- ungroup(sed2) %>%
+#   filter(analyte == "Nitrate + nitrite (mg N/L)") %>%
+#   group_by(watershed, year) %>%
+#   arrange(year, watershed)
 # 
-# t <- filter(testrange, watershed == "armctl", analyte == "Nitrate + nitrite (mg N/L)", year == "2016") %>%
-#   mutate(month = month(date_time))
+# watersheds <- list(unique(sed2$watershed))
+# analytes <- list(unique(sed2$analyte))
+# apply <- list(watersheds, analytes)
+# applygraphrange <- function(x) { s <- filter(t, watershed == x)
+# siterange <- left_join(graphrange, s)
+# }
+# testmap <- map_dfr(watersheds, applygraphrange)
+# 
 
 
-ggplot(data = testrange %>%
+ggplot(data = test %>%
          filter(analyte == "Nitrate + nitrite (mg N/L)"), 
        aes(x = date_time, 
            y = cumulative,
