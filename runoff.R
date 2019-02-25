@@ -609,29 +609,32 @@ names(graphrange) <- 'date_time'
 
 #BELOW IS PROBABLY NOT WHAT i WANT...SED2 IS CLIPPED(DATES CLIPPED ARE MISSING), THEREFORE THE FULL_JOIN DOESN'T APPLY TO EACH SITE.
 #NEED TO GET THE SITE APPLIED TO EACH OF THE MISSING BITS OF DATA TO DRAW OUT GRAPH LINES TO THE END.
-test <- graphrange %>%
-  full_join(sed2) %>%
+test <- sed2 %>%
+  group_by((watershed)) %>%
+  full_join(graphrange) %>%
   arrange(watershed, year, analyte, date_time) %>%
   group_by(watershed, year, analyte) %>%
   na.locf(test$value, na.rm = F)
 
 
 
-# 
-# library(purrr)
-# t <- ungroup(sed2) %>%
-#   filter(analyte == "Nitrate + nitrite (mg N/L)") %>%
-#   group_by(watershed, year) %>%
-#   arrange(year, watershed)
-# 
-# watersheds <- list(unique(sed2$watershed))
-# analytes <- list(unique(sed2$analyte))
-# apply <- list(watersheds, analytes)
-# applygraphrange <- function(x) { s <- filter(t, watershed == x)
-# siterange <- left_join(graphrange, s)
-# }
-# testmap <- map_dfr(watersheds, applygraphrange)
-# 
+#THIS NOT WORKING YET EITHER
+library(purrr)
+t <- ungroup(sed2) %>%
+  filter(analyte == "Nitrate + nitrite (mg N/L)") %>%
+  group_by(watershed, year) %>%
+  arrange(year, watershed)
+
+watersheds <- list(unique(sed2$watershed))
+analytes <- list(unique(sed2$analyte))
+apply <- list(watersheds, analytes)
+applygraphrange <- function(x) { s <- filter(t, watershed == x)
+siterange <- graphrange 
+siterange$watershed <- x %>%
+  left_join(s)
+}
+testmap <- map_dfr(watersheds, applygraphrange)
+
 
 
 ggplot(data = test %>%
@@ -652,4 +655,5 @@ ggplot(data = test %>%
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-
+#GIO SAID THAT ALL I NEED TO DO IS ADD THE LAST DATE_TIME TO THE END OF EACH WATERSHED'S DATA AND THEN FILL (DPLYR COMMAND?) DATA INTO THAT DATE
+#AND THEN THE LINES WILLBE CARRIED TO THE END OF THE GRAPHS

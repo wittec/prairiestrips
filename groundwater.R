@@ -370,6 +370,8 @@ ggsave(filename = "./graphs/gwdrp.jpg", plot=drp, width = 6, height=8)
 
 #rm(list=ls(all=TRUE))
 
+library(tidyverse)
+
 fixit <- function (x) {
   correct <- read.csv("~/prairiestrips/groundwater/data-raw/waterquality/corrections.csv", header = T) %>%
     mutate(bad = as.character(bad),
@@ -533,7 +535,45 @@ armgwdepthplot <- ggplot(armgwdepth, aes(x = order,
 
 ggsave(filename = "armgwdepth.jpg", plot=armgwdepthplot, width = 6, height=6)
 
-#TESTING COWPLOT
+
+
+# year specific gw depth graph --------------------------------------------
+
+y2018 <- gwdepth %>%
+  filter(year == "2018")
+
+
+# Customized colors
+colorscale <- c(TRT = "blue", 
+                CTL = "red")
+linescale <- c(Top = "dashed",
+               Bot = "solid")
+
+yeargwdepthplot <- ggplot(y2018, aes(x = order, 
+                                   y = negadjdepthft, 
+                                   group = wellid,
+                                   linetype = pos,
+                                   color = trt)) +
+  geom_line(size = 1) + 
+  geom_point(size= 1.5) +
+  facet_grid(site~year, scales='free_x') + 
+  labs(x = '',  
+       y = 'Groundwater Depth From Ground Surface (ft)') + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+yeargwdepthplot
+
+
+
+
+# testing cowplot ---------------------------------------------------------
+
+
 library(cowplot)
 armno3drplot <- plot_grid(armno3plot, armdrpplot, labels = c("A", "B"))
 
