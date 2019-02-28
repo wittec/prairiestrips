@@ -143,6 +143,17 @@ e1 <- e1 %>%
 
 write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
 
+#MAKING TABLE WITH 3 LETTER CODES INSTEAD OF FULL NAMES OF SITES
+endtable <- d %>% filter(year=="2018") %>% group_by(codes, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
+e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
+e1$rain <- e2$rain
+e1 <- e1 %>% 
+  mutate_if(is.numeric, round, 2) %>%
+  rename(Site = codes, Rain = rain, Control = control, Treatment = treatment)
+
+write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018sitecodes.csv")
+
 
 # water quality (tss, no3, orthop, tn, tp) ----------------------------------------------------------------
 sed <- STRIPS2Helmers::runoff %>%
@@ -333,6 +344,24 @@ allnuttable <- no3table %>%
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
 write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018.csv")
+
+#MAKING 2018 TABLE WITH THE SITE CODES INSTEAD OF FULL NAMES
+
+nuttable <- sed2 %>% group_by(codes, treatment, analyte) %>% filter(year=="2018") %>% summarize_at(c("cumulative"), max, na.rm = T)
+n1 <- nuttable %>% spread(analyte, cumulative)
+no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+
+allnuttable <- no3table %>%
+  left_join(orthotable, by = "codes") %>%
+  left_join(tsstable, by = "codes") %>%
+  mutate_if(is.numeric, round, 2) %>%
+  rename(site = codes, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
+         orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
+
+write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018sitecodes.csv")
+
 
 
 
@@ -594,50 +623,71 @@ write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiest
 # 
 # ggsave(filename = "~/prairiestrips/graphs/tss2016.jpg", plot=tssgraph2016, width = 6, height=8)
 
+
+
 # trying to extend lines of graphs to the end of x axis -------------------
 
-sed2 <- readRDS("~/prairiestrips/seddataforgraphs.Rda") %>%
+#rm(list=ls(all=TRUE))
+
+
+library(tidyverse)
+library(lubridate)
+library(zoo)
+library(purrr)
+
+sed2 <- as.data.frame(readRDS("~/prairiestrips/seddataforgraphs.Rda")) %>%
   ungroup %>%
   mutate(date = date(date_time)) %>%
   arrange(date_time)
 
-library(lubridate)
-library(zoo)
-graphrange <- as.data.frame(seq(min(sed2$date_time), max(sed2$date_time), by = '5 min'))
-names(graphrange) <- 'date_time'
+max2016date <- max(sed2$date_time[sed2$year=="2016"])
 
+max2017date <- max(sed2$date_time[sed2$year=="2017"])
 
-#BELOW IS PROBABLY NOT WHAT i WANT...SED2 IS CLIPPED(DATES CLIPPED ARE MISSING), THEREFORE THE FULL_JOIN DOESN'T APPLY TO EACH SITE.
-#NEED TO GET THE SITE APPLIED TO EACH OF THE MISSING BITS OF DATA TO DRAW OUT GRAPH LINES TO THE END.
-test <- sed2 %>%
-  group_by((watershed)) %>%
-  full_join(graphrange) %>%
-  arrange(watershed, year, analyte, date_time) %>%
-  group_by(watershed, year, analyte) %>%
-  na.locf(test$value, na.rm = F)
+max2018date <- max(sed2$date_time[sed2$year=="2018"])
 
+yearwatershedanalytesplit <- split(sed2, list(sed2$year, sed2$watershed, sed2$analyte))
 
+applymaxdate <- function(data) 
+{ t <- data %>%
+  select(-date_time, date_time)
+  year <- max(sed2$year)
+  
+  newrow <- tail(t, 1)#t[1, ]
+ 
+  newrow <-newrow %>%
+    mutate(date_time = ifelse(year == 2016, "2016-11-03 06:25:00", date_time)) %>%
+    mutate(date_time = ifelse(year == 2017, "2017-06-28 11:25:00", date_time)) %>%
+    mutate(date_time = ifelse(year == 2018, "2018-10-11 02:30:00", date_time))
+  #newrow[ , 1:18] <- NA
 
-#THIS NOT WORKING YET EITHER
-library(purrr)
-t <- ungroup(sed2) %>%
-  filter(analyte == "Nitrate + nitrite (mg N/L)") %>%
-  group_by(watershed, year) %>%
-  arrange(year, watershed)
+  
+   t <- t %>%
+  # group_by(watershed) %>%
+   rbind(newrow)
+  
 
-watersheds <- list(unique(sed2$watershed))
-analytes <- list(unique(sed2$analyte))
-apply <- list(watersheds, analytes)
-applygraphrange <- function(x) { s <- filter(t, watershed == x)
-siterange <- graphrange 
-siterange$watershed <- x %>%
-  left_join(s)
+  #return(t)
 }
-testmap <- map_dfr(watersheds, applygraphrange)
+
+# test <- sed2$ %>%
+#   do(applymaxdate(.))
+
+zz <- map_dfr(yearwatershedanalytesplit, applymaxdate)
 
 
 
-ggplot(data = test %>%
+# graph here when I get the dataset right to continue lines to end --------
+
+# Customized colors
+colorscale <- c(rain = "blue", 
+                control = "black",
+                treatment = "seagreen")
+linescale <- c(rain = "dotted",
+               control = "solid",
+               treatment = "dashed")
+
+ggplot(data = zz %>%
          filter(analyte == "Nitrate + nitrite (mg N/L)"), 
        aes(x = date_time, 
            y = cumulative,
@@ -654,6 +704,3 @@ ggplot(data = test %>%
   theme(legend.position = "bottom",
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
-
-#GIO SAID THAT ALL I NEED TO DO IS ADD THE LAST DATE_TIME TO THE END OF EACH WATERSHED'S DATA AND THEN FILL (DPLYR COMMAND?) DATA INTO THAT DATE
-#AND THEN THE LINES WILLBE CARRIED TO THE END OF THE GRAPHS
