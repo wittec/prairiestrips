@@ -315,7 +315,7 @@ no3graph <- ggplot(sed3 %>%
            group = treatment,
            color = treatment,
            linetype = treatment)) + 
-  geom_line() + 
+  geom_line(size = 1) + 
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   facet_grid(full ~ year, scales = 'free_x') + 
@@ -338,7 +338,7 @@ orthopgraph <- ggplot(sed3 %>%
            group = treatment,
            color = treatment,
            linetype = treatment)) + 
-  geom_line() + 
+  geom_line(size = 1) +
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   facet_grid(full ~ year, scales = 'free_x') + 
@@ -361,7 +361,7 @@ tssgraph <- ggplot(sed3 %>%
            group = treatment,
            color = treatment,
            linetype = treatment)) + 
-  geom_line() + 
+  geom_line(size = 1) +
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   facet_grid(full ~ year, scales = 'free_x') + 
@@ -455,7 +455,7 @@ write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiest
 #                    linetype = treatment,
 #                    color = treatment)) +
 #   ggtitle("Rain and Surface Runoff") +
-#   geom_line() + 
+#   geom_line(size = 1) +
 #   facet_grid(full~year, scales='free_x') + 
 #   labs(x = '',  
 #        y = 'Cumulative rainfall and runoff (inches)') + 
@@ -500,7 +500,7 @@ write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiest
 #                        color = treatment,
 #                        linetype = treatment)) + 
 #   ggtitle("Surface Runoff Sediment") +
-#   geom_line() + 
+#   geom_line(size = 1) +
 #   scale_color_manual(values = colorscale) +
 #   scale_linetype_manual(values = linescale) +
 #   facet_grid(full ~ year, scales = 'free_x') + 
@@ -522,7 +522,7 @@ write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiest
 #                             color = treatment,
 #                             linetype = treatment)) + 
 #   ggtitle("Surface Runoff Nitrate - Nitrogen") +
-#   geom_line() + 
+#   geom_line(size = 1) +
 #   scale_color_manual(values = colorscale) +
 #   scale_linetype_manual(values = linescale) +
 #   facet_grid(full ~ year, scales = 'free_x') + 
