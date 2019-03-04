@@ -282,23 +282,23 @@ max2017seddate <- max(sed2$date_time[sed2$year=="2017"])
 
 max2018seddate <- max(sed2$date_time[sed2$year=="2018"])
 
-yearwatershedanalytesplit <- split(sed2, list(sed2$year, sed2$watershed, sed2$analyte))
+yearwatershedanalytesplit <- split(sed2, list(sed2$year, sed2$watershed, sed2$analyte)) #makes a list of groups of "sed2" dataset based on year, watershed, and analyte
 
 applymaxdate <- function(data) 
-{ t <- data %>%
-  select(-date_time, date_time)
-year <- max(sed2$year)
+{ t <- data %>% #reads in the data
+  select(-date_time, date_time) #this just moves date_time to end of dataset
+year <- max(sed2$year) #finds the year of the data
 
-newrow <- tail(t, 1)#t[1, ]
+newrow <- tail(t, 1)#t[1, ] #takes a copy of the last observation of the data
 
-newrow <-newrow %>%
+newrow <-newrow %>% #inserts the maxdate (eg. "max2016date") into the date_time column
   mutate(date_time = ifelse(year == 2016, "2016-11-03 06:25:00", date_time)) %>%
   mutate(date_time = ifelse(year == 2017, "2017-06-28 11:25:00", date_time)) %>%
   mutate(date_time = ifelse(year == 2018, "2018-10-11 02:30:00", date_time)) %>%
   mutate(date_time = as.POSIXct(date_time))
 
 t <- t %>%
-  rbind(newrow)
+  rbind(newrow) #adds the new row onto the end of the data
 
 }
 
