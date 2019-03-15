@@ -68,21 +68,22 @@ all <- gw2016 %>%
   full_join(gw2017) %>%
   full_join(gw2018) %>%
   filter(!is.na(id)) %>%
-  filter(!is.na(site))
+  filter(!is.na(site)) %>%
+  rename(sampleID = id)
 
 all$trt[all$position == "CTL" | all$position == "CTL-Bot" | all$position == "CTL-Top"] <- "CTL"
 all$trt[is.na(all$trt)] <- "TRT"
 all$position[all$position == "CTL"] <- "Bot"
-is.na(all$id) <- NULL
-all$year[all$id <5000] <- "2015"
-all$year[all$id >= 5000 & all$id < 6000] <- "2016"
-all$year[all$id >= 6000 & all$id < 7000] <- "2017"
-all$year[all$id >= 7000] <- "2018"
+is.na(all$sampleID) <- NULL
+all$year[all$sampleID <5000] <- "2015"
+all$year[all$sampleID >= 5000 & all$sampleID < 6000] <- "2016"
+all$year[all$sampleID >= 6000 & all$sampleID < 7000] <- "2017"
+all$year[all$sampleID >= 7000] <- "2018"
 
 # water quality - correcting typo's, wrong codes, etc. ------------------------------------
 
 fixit <- function (x) {
-   correct <- read.csv("~/prairiestrips/groundwater/data-raw/waterquality/corrections.csv", header = T) %>%
+   correct <- read.csv("~/prairiestrips/groundwater/data-raw/corrections.csv", header = T) %>%
      mutate(bad = as.character(bad),
             good = as.character(good)
      )
@@ -174,7 +175,7 @@ ggsave(filename = "./graphs/gwdrp.jpg", plot=drp, width = 6, height=8)
 library(tidyverse)
 
 fixit <- function (x) {
-  correct <- read.csv("~/prairiestrips/groundwater/data-raw/waterquality/corrections.csv", header = T) %>%
+  correct <- read.csv("~/prairiestrips/groundwater/data-raw/corrections.csv", header = T) %>%
     mutate(bad = as.character(bad),
            good = as.character(good)
     )
