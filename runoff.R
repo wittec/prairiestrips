@@ -32,7 +32,6 @@ flow <- STRIPS2Helmers::runoff %>%
          year = lubridate::year(date_time),
          watershed = as.character(watershed),
          sampleID = as.character(sampleID)) %>%
-  
   left_join(myrain, by=c("date_time", "site", "year")) %>%
   filter(!is.na(flow), !is.na(rain)) %>%
   group_by(watershed,year) %>%
@@ -45,6 +44,9 @@ flow <- STRIPS2Helmers::runoff %>%
            (acres * 6.273e6) )                 # normalize by watershed area
                                                # after converting acres to square inches
 
+flow$subtreatment <- flow$treatment 
+flow$subtreatment[flow$subtreatment != "control"] <- "prairie strip"
+flow$subtreatment[flow$watershed == "marshtrt"] <- "grass strip"
 
 # combine rain and flow data ----------------------------------------------
 
