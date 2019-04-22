@@ -21,6 +21,9 @@ rain <- STRIPS2Helmers::rain %>%
 myrain <- rain %>%
   select(-watershed, -watershed_year, -treatment, -cumulative_rain)
 
+
+saveRDS(myrain, file = "~/prairiestrips/raindataallyears.Rda")
+
 # importing flow data and clipping when there was no rain for 24 hours-------------------------------------------
 
 flow <- STRIPS2Helmers::runoff %>%
