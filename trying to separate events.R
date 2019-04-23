@@ -44,23 +44,41 @@ events <- e %>%
 
 ###NOT WORKING YET!!! #THIS PUTS IN ALL OF THE SAMPLID'S INTO EVENTS
 ids <- STRIPS2Helmers::runoff %>% filter(sampleID != "NA") %>% 
-  arrange(sampleID) %>% select(-level, -flow)
-  
-ids <- ids[match(unique(ids$sampleID), ids$sampleID),] %>%
+  arrange(sampleID) %>% select(-level, -flow) %>%
   mutate(date_time = ceiling_date(date_time, "5 minutes")) %>%
-  mutate(date_time = replace(date_time, watershed == "eiatrt" & sampleID == 1022, as.POSIXct("2016-08-12 07:00:00")))
-          #the line above - sampleID was getting clipped out so had to move it forward in time a little to fix
+  mutate(date_time = replace(date_time, watershed == "eiatrt" & sampleID == 1022, "2016-08-12 07:00:00"),
+         date_time = replace(date_time, watershed == "spirittrt" & sampleID == "SPL3307", "2018-06-30 20:40:00"))
+#   
+# ids <- ids[match(unique(ids$sampleID), ids$sampleID),] %>%
+#   mutate(date_time = ceiling_date(date_time, "5 minutes")) %>%
+#   mutate(date_time = replace(date_time, watershed == "eiatrt" & sampleID == 1022, "2016-08-12 07:00:00"),
+#          date_time = replace(date_time, watershed == "spirittrt" & sampleID == "SPL3307", "2018-06-30 20:40:00"))
+#           #the line above - sampleID was getting clipped out so had to move it forward in time a little to fix
 
-testevents <- full_join(events, ids) %>% arrange(watershed, date_time)
+# testevents <- full_join(events, ids) %>% arrange(watershed, date_time)
+
+events <- full_join(events, ids) %>% arrange(watershed, date_time)
+
+sampleids <- events %>% filter(!is.na(sampleID)) %>% 
+  select(sampleID, event, watershed) %>% 
+  filter(!is.na(site)) %>%
+  arrange(sampleID) %>%
+  unique()
+
+#####LEFT OFF HERE... NEED TO join the sampleids to events to spread the ids to all obs within event"
 
 
-test <- testevents %>% filter(!is.na(sampleID))
-test1 <- test %>% filter(is.na(flow))
-write.csv(test1, "~/prairiestrips/clippedsamples.csv")
 
-check <- rain %>% filter(watershed == "spiritctl")
 
-spl18 <- runoff %>% filter(watershed == "spiritctl")
+
+# 
+# test <- testevents %>% filter(!is.na(sampleID))
+# test1 <- test %>% filter(is.na(flow))
+# write.csv(test1, "~/prairiestrips/clippedsamples.csv")
+# 
+# check <- d %>% filter(watershed == "armctl" & year == 2016)
+# 
+# spl18 <- runoff %>% filter(watershed == "spiritctl")
 
 
 
