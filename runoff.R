@@ -245,7 +245,7 @@ sed2 <- sed %>%
   mutate(cumulative = cumsum(valueload)) %>%
   left_join(wnames)
 
-saveRDS(sed2, file = "~/prairiestrips/clippedsedandnutdataallyears.Rda")
+write.csv(sed2, file = "~/prairiestrips/sed2.csv", row.names = FALSE)
 
 
 # Sediment summary by day all years-------------------------------------------------

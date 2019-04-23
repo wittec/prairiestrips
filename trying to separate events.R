@@ -6,46 +6,91 @@ library(tidyverse)
 library(lubridate)
 
 d <- readRDS(file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
+# 
+# e <- d %>%
+#   filter(level != "NA") %>%
+#   filter(level != 0) %>%
+#   select(date_time, site, watershed, year, level) %>% 
+#   group_by(site, year) %>%
+#   
+#   spread(watershed, level) %>%
+#   ungroup %>%
+#   group_by(site, year) %>%
+#   mutate(event = (c(0, cumsum(diff(date_time) > 240))))
+# 
+# 
+# events <- e %>% 
+#   gather(watershed, level, armctl:worletrt) %>% 
+#   filter(level != "NA") %>%
+#   group_by(site, year, event) %>%
+#   mutate(maxlevel = max(level)) %>%
+#   filter(maxlevel > 0.035)  #removes all events when max flume level was under 0.035m
+
 
 e <- d %>%
-  filter(level != "NA") %>%
-  filter(level != 0) %>%
-  select(date_time, site, watershed, year, level) %>% 
+  filter(flow != "NA") %>%
+  filter(flow != 0) %>%
+  select(date_time, site, watershed, year, flow) %>%
   group_by(site, year) %>%
-  
-  spread(watershed, level) %>%
+  spread(watershed, flow) %>%
   ungroup %>%
   group_by(site, year) %>%
   mutate(event = (c(0, cumsum(diff(date_time) > 240))))
 
+events <- e %>%
+  gather(watershed, flow, armctl:worletrt) %>%
+  filter(flow != "NA") %>%
+  group_by(site, year, event)
 
-events <- e %>% 
-  gather(watershed, level, armctl:worletrt) %>% 
-  filter(level != "NA") %>%
-  group_by(site, year, event) %>%
-  mutate(maxlevel = max(level)) %>%
-  filter(maxlevel > 0.035)
+###NOT WORKING YET!!! #THIS PUTS IN ALL OF THE SAMPLID'S INTO EVENTS
+ids <- STRIPS2Helmers::runoff %>% filter(sampleID != "NA") %>% 
+  arrange(sampleID) %>% select(-level, -flow)
+  
+ids <- ids[match(unique(ids$sampleID), ids$sampleID),] %>%
+  mutate(date_time = ceiling_date(date_time, "5 minutes")) %>%
+  mutate(date_time = replace(date_time, watershed == "eiatrt" & sampleID == 1022, as.POSIXct("2016-08-12 07:00:00")))
+          #the line above - sampleID was getting clipped out so had to move it forward in time a little to fix
 
-#THIS PUTS IN ALL OF THE SAMPLID'S INTO EVENTS (SOME WERE FILTERED OUT WHEN MAKING
-#"EVENTS")
-t <- d %>% select(date_time, sampleID)
-events <- left_join(events, t)
+testevents <- full_join(events, ids) %>% arrange(watershed, date_time)
 
-#THIS ADDS  THE FLOW INTO EVENTS
-flowvariable <- d %>% select(date_time, watershed, flow)
-events <- left_join(events, flowvariable)
+
+test <- testevents %>% filter(!is.na(sampleID))
+test1 <- test %>% filter(is.na(flow))
+write.csv(test1, "~/prairiestrips/clippedsamples.csv")
+
+check <- rain %>% filter(watershed == "spiritctl")
+
+spl18 <- runoff %>% filter(watershed == "spiritctl")
+
+
+
+
+# #THIS ADDS  THE FLOW INTO EVENTS
+# flowvariable <- d %>% select(date_time, watershed, flow)
+# events <- left_join(events, flowvariable)
 
 #ADD IN THE ACRES TO EVENTS
 acres <- d %>% select(date_time, watershed, acres)
-events <- left_join(events, acres)
+events <- left_join(events, acres) %>% arrange(watershed, date_time)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #MAKE EVENTLIST TO MAP FUNTION ONTO EVENTS
 eventlist <- split(events, list(events$site, events$year, events$event)) 
 eventlist <- eventlist[sapply(eventlist, function(x) dim(x)[1]) > 0]
-
-#CAN USE IDS IN FUNCTION TO INSERT INTO GRAPHS WHEN SAMPLES WERE COLLECTED...
-#HOWEVER!!!!... CURRENTLY THE IDS ARE NOT INSERTED BY SITE, SO NOT COMPLETELY USEFUL
-ids <- STRIPS2Helmers::runoff %>% filter(sampleID != "NA")
 
 # event graphs ---------------------------------------
 
@@ -72,7 +117,7 @@ setwd("~/prairiestrips/graphs/flowevents/")
   
 graphname <- paste0(head(data[5], n=1), "_", head(data[3], n=1), "_", (head(data[4], n=1)))
 
-ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
+#ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
   
   #return(v)
 }
@@ -81,7 +126,7 @@ ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
 map(eventlist, eventgraphs)
 
 
-# find event totals of runoff, sed, nutrients -----------------------------
+# find event totals of runoff -----------------------------
 
 #TO GET EVENT FLOW SUMS, i NEED TO MAKE NEW EVENTLIST AND SPLIT BY WATERSHED NOT SITE
 flowsumeventlist <- split(events, list(events$watershed, events$year, events$event))
@@ -109,66 +154,87 @@ flowinchesbyevent <- map(flowsumeventlist, sumflow) %>%
   #bind_rows(.id = "column_label") %>%
   bind_rows() %>%
   filter(flowsum != 0) %>%
-  left_join(treatments)
+  left_join(treatments) %>%
+  unique() %>%
+  arrange(year, event)
+
 
 #do paired t test?... group by site and treatment
 
-#sed, nutrient event sums
-sed2 <- readr::read_csv("~/prairiestrips/clippedsedandnutdataallyears.Rda") %>%
 
+#  sed nutrients event sums -----------------------------------------------
 
+# rain <- STRIPS2Helmers::rain %>%
+#   mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"),
+#          site = gsub("ctl", "", watershed),
+#          site = gsub("trt", "", site),
+#          year = lubridate::year(date_time)) %>%
+#   rename(rain = `rain-m`) %>%
+#   group_by(site,year) %>%
+#   arrange(date_time) %>%
+#   mutate(cumulative_rain = cumsum(rain * 39.3701), # convert to inches
+#          watershed_year = paste(watershed,year,sep="_"))
+# 
+# myrain <- rain %>%
+#   select(-watershed, -watershed_year, -treatment, -cumulative_rain)
+# 
+# wnames <- data.frame(site = c("arm","eia","marsh","mcnay","rhodes","spirit","white","worle"),
+#                      full = c("Armstrong","E. IA Airport","Marshalltown","McNay",
+#                               "Rhodes","Spirit Lake ","Whiterock","Worle"),
+#                      codes = c("ARM", "EIA", "MAR", "MCN", "RHO", "SPL", "WHI", "WOR"))
+# 
+# wnames <- wnames %>%
+#   mutate(site = as.character(site))
+# 
+# sed <- STRIPS2Helmers::runoff %>%
+#   mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"),
+#          site = gsub("ctl", "", watershed),
+#          site = gsub("trt", "", site),
+#          year = lubridate::year(date_time),
+#          watershed = as.character(watershed),
+#          sampleID = as.character(sampleID)) %>%
+#   
+#   left_join(myrain, by=c("date_time", "site", "year")) %>%
+#   # filter(!is.na(flow), !is.na(rain_m)) %>%
+#   group_by(watershed,year) %>%
+#   do(HelmersLab::clip_flow(.))  # should we be using do() here?
+# 
+# sed$subtreatment <- sed$treatment 
+# sed$subtreatment[sed$subtreatment != "control"] <- "prairie strip"
+# sed$subtreatment[sed$watershed == "marshtrt"] <- "grass strip"
+# 
+# sed2 <- sed %>%
+#   group_by(watershed,year) %>%
+#   do(HelmersLab::spread_sampleID(.)) %>% 
+#   filter(!is.na(sampleID), !is.na(flow)) %>%
+#   left_join(STRIPS2Helmers::water_quality, by = "sampleID") %>%
+#   tidyr::gather(analyte, value,
+#                 `Nitrate + nitrite (mg N/L)`,
+#                 `Orthophosphate (mg P/L)`,
+#                 `TSS (mg/L)`) %>%
+#   left_join(readr::read_csv("~/STRIPS2Helmers/data-raw/sitenamesandwatershedsizes.csv")) %>%
+#   mutate(valueload = ((value*flow*5)/453592.37)/acres) %>%  #this converts the mg/L units of values into lbs/acre
+#   group_by(watershed, year, analyte) %>%
+#   filter(!is.na(value)) %>%
+#   mutate(cumulative = cumsum(valueload)) %>%
+#   left_join(wnames)
+sed2 <- read_csv("~/prairiestrips/sed2.csv")
+
+sampleIDs$sampleID <- as.numeric(as.character(sampleIDs$sampleID))
+
+sed2eventsums <- sed2 %>%
+  group_by(sampleID, analyte) %>%
+  summarize(sum(valueload)) %>%
+  rename(eventsum = 'sum(valueload)') %>%
+  spread(analyte, eventsum) %>%
+  left_join(sampleIDs) %>%
+  select(-level, -flow) #%>%
+  #mutate(eventstart = date_time)
+    
+#this isn't working yet
+alleventdata <- left_join(flowinchesbyevent, sed2eventsums) 
  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-myrain <- readRDS(file = "~/prairiestrips/raindataallyears.Rda")
-
-sed <- STRIPS2Helmers::runoff %>%
-  mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"),
-         site = gsub("ctl", "", watershed),
-         site = gsub("trt", "", site),
-         year = lubridate::year(date_time),
-         watershed = as.character(watershed),
-         sampleID = as.character(sampleID)) %>%
-  
-  left_join(myrain, by=c("date_time", "site", "year")) %>%
-  # filter(!is.na(flow), !is.na(rain_m)) %>%
-  group_by(watershed,year) %>%
-  do(HelmersLab::clip_flow(.))  # should we be using do() here?
-
-sed$subtreatment <- sed$treatment 
-sed$subtreatment[sed$subtreatment != "control"] <- "prairie strip"
-sed$subtreatment[sed$watershed == "marshtrt"] <- "grass strip"
-
-sed2 <- sed %>%
-  group_by(watershed,year) %>%
-  do(HelmersLab::spread_sampleID(.)) %>% 
-  #filter(!is.na(sampleID), !is.na(flow)) %>%
-  
-  left_join(STRIPS2Helmers::water_quality, by = "sampleID") %>%
-  tidyr::gather(analyte, value,
-                `Nitrate + nitrite (mg N/L)`,
-                `Orthophosphate (mg P/L)`,
-                `TSS (mg/L)`) %>%
-  left_join(readr::read_csv("../data-raw/sitenamesandwatershedsizes.csv")) %>%
-  mutate(valueload = ((value*flow*5)/453592.37)/acres) %>%  #this converts the mg/L units of values into lbs/acre
-  group_by(watershed, year, analyte) %>%
-  filter(!is.na(value)) %>%
-  mutate(cumulative = cumsum(valueload)) %>%
-  left_join(wnames)
-
-saveRDS(sed2, file = "~/prairiestrips/clippedsedandnutdataallyears.Rda")
-
+test <- d %>% select(-sampleID)#mutate(sampleID = as.numeric(sampleID))
+testjoin <- full_join(test, sed2) %>% filter(flow != 0)
