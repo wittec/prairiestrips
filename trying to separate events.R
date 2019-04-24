@@ -66,7 +66,10 @@ sampleids <- events %>% filter(!is.na(sampleID)) %>%
   unique()
 
 #####LEFT OFF HERE... NEED TO join the sampleids to events to spread the ids to all obs within event"
+<<<<<<< HEAD
 #####need to check to make sure all sampleids are included above
+=======
+>>>>>>> 66f62d4a9707b8b7d8f59d9399cea743fe1e4681
 
 
 
