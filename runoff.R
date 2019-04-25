@@ -6,8 +6,50 @@ library(tidyverse)
 library(lubridate)
 
 # importing rain data -----------------------------------------------------
+#importing "fix" data from mesonet weather stations
+#these data are fixing problems when rain gages weren't working, causing some samples to be clipped out 
+rainfixes <- read_csv("~/STRIPS2Helmers/data-raw/rain/2016/esthervilleasosfix.csv", 
+                      col_names = c("watershed", "date_time", "rain-m"), 
+                      col_types = c("ccn"), 
+                      skip = 1) %>%
+  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2017/esthervilleasosfix.csv", 
+                        col_names = c("watershed", "date_time", "rain-m"), 
+                        col_types = c("ccn"), 
+                        skip = 1)) %>%
+  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2017/esthervilleasosfix.csv", 
+                 col_names = c("watershed", "date_time", "rain-m"), 
+                 col_types = c("ccn"), 
+                 skip = 1)) %>%
+  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2018/amesasosfix.csv", 
+                 col_names = c("watershed", "date_time", "rain-m"), 
+                 col_types = c("ccn"), 
+                 skip = 1)) %>%
+  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2018/esthervilleasosfix.csv", 
+                 col_names = c("watershed", "date_time", "rain-m"), 
+                 col_types = c("ccn"), 
+                 skip = 1)) %>%
+  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2018/charitonawosfix.csv", 
+                 col_names = c("watershed", "date_time", "rain-m"), 
+                 col_types = c("ccn"), 
+                 skip = 1)) %>%
+  mutate(date_time = as.POSIXct(date_time, format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+  
 
+
+rainfixes$watershed[rainfixes$watershed=="EST"] <- "spiritctl"
+rainfixes$watershed[rainfixes$watershed=="AMW"] <- "worlectl"
+rainfixes$watershed[rainfixes$watershed=="CNC"] <- "mcnayctl"
+
+rainsub <- rainfixes %>% select(watershed, date_time) #use this to anti_join into rain below,
+                                                      #then add in rainfixes to add good data
+
+  
 rain <- STRIPS2Helmers::rain %>%
+  mutate(watershed = as.character(watershed)) %>%
+  anti_join(rainsub) %>%
+  rbind(rainfixes) %>%
   mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"),
          site = gsub("ctl", "", watershed),
          site = gsub("trt", "", site),
