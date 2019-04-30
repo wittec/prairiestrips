@@ -21,7 +21,7 @@ e <- d %>%
 events <- e %>%
   gather(watershed, flow, armctl:worletrt) %>%
   arrange(watershed, date_time) %>%
-filter(flow != "NA")
+  filter(flow != "NA")
 
 ids <- STRIPS2Helmers::runoff %>% filter(sampleID != "NA") %>% 
   arrange(sampleID) %>% select(-level, -flow) %>%
@@ -50,9 +50,6 @@ events <- events %>%
 atsfc <- d %>% select(date_time, watershed, acres, treatment, subtreatment, full, codes)
 treatments <- d %>% select(watershed, treatment) %>% unique()
 
-#ADD IN THE ACRES, etc. TO EVENTS
-atsfc <- d %>% select(date_time, watershed, acres, treatment, subtreatment, full, codes)
-treatments <- d %>% select(watershed, treatment)
 # events table ------------------------------------------------------------
 
 eventstable <- left_join(events, atsfc) %>% 
@@ -89,20 +86,7 @@ graphevents <- left_join(events, atsfc) %>%
   
 #MAKE EVENTLIST TO MAP FUNTION ONTO EVENTS
 grapheventlist <- split(graphevents, list(graphevents$site, graphevents$year, graphevents$event)) 
-<<<<<<< HEAD
 
-
-# event graphs ---------------------------------------
-
-=======
-#eventlist <- eventlist[sapply(eventlist, function(x) dim(x)[1]) > 0]
-
-# event graphs ---------------------------------------
-# 
-# 
-# 
-#... NEED TO MUTATE AN INCHES OF FLOW COLUMN AND GRAPH THAT BELOW INSTEAD OF FLOW
->>>>>>> 60f27e5f75976f9e5e81b62f5a5d978e6b3aa322
 eventgraphmaker <- function(data)
 {
   v <- ggplot(data, 
