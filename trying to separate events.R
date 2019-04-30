@@ -87,12 +87,6 @@ graphevents <- left_join(events, atsfc) %>%
 #MAKE EVENTLIST TO MAP FUNTION ONTO EVENTS
 grapheventlist <- split(graphevents, list(graphevents$site, graphevents$year, graphevents$event)) 
 
-<<<<<<< HEAD
-=======
-
-# event graphs ---------------------------------------
-
->>>>>>> 3ed06dce9de9e16af2d2d1b2d6d25e1c50f415ac
 eventgraphmaker <- function(data)
 {
   v <- ggplot(data, 
