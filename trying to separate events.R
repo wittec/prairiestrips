@@ -46,13 +46,23 @@ events <- events %>%
   mutate(sampleID = zoo::na.locf(sampleID, fromLast = TRUE, na.rm = FALSE),  # carry backward
         sampleID = zoo::na.locf(sampleID, fromLast = FALSE, na.rm = FALSE)) # carry forward
 
+events <- events %>%
+  group_by(watershed, year, event) %>%
+  mutate(sampleID = zoo::na.locf(sampleID, fromLast = TRUE, na.rm = FALSE),  # carry backward
+        sampleID = zoo::na.locf(sampleID, fromLast = FALSE, na.rm = FALSE)) # carry forward
 
 #ADD IN THE ACRES, etc. TO EVENTS
 atsfc <- d %>% select(date_time, watershed, acres, treatment, subtreatment, full, codes)
 treatments <- d %>% select(watershed, treatment) %>% unique()
 
+#ADD IN THE ACRES, etc. TO EVENTS
+atsfc <- d %>% select(date_time, watershed, acres, treatment, subtreatment, full, codes)
 
+<<<<<<< HEAD
 # events table ------------------------------------------------------------
+=======
+treatments <- d %>% select(watershed, treatment)
+>>>>>>> 60f27e5f75976f9e5e81b62f5a5d978e6b3aa322
 
 eventstable <- left_join(events, atsfc) %>% 
           left_join(treatments) %>%
@@ -71,9 +81,25 @@ eventstable <- left_join(events, atsfc) %>%
           spread(analyte, eventwqtotal) %>%                                     # after converting acres to square inches
           arrange(year, watershed)
 
+eventstable <- left_join(events, atsfc) %>% 
+              #left_join(treatments) %>%
+          arrange(watershed, date_time) %>%
+          left_join(STRIPS2Helmers::water_quality, by = "sampleID") %>%
+          tidyr::gather(analyte, value,
+                `Nitrate + nitrite (mg N/L)`,
+                `Orthophosphate (mg P/L)`,
+                `TSS (mg/L)`) %>%
+          mutate(valueload = ((value*flow*5)/453592.37)/acres,) %>% #this converts the mg/L units of values into lbs/acre
+          group_by(watershed, year, event, analyte) %>%
+          summarize(eventflow = sum(flow),
+                    eventwqtotal = sum(valueload)) %>%
+          left_join(readr::read_csv("~/STRIPS2Helmers/data-raw/sitenamesandwatershedsizes.csv")) %>%
+          mutate(eventflowinches = eventflow * 231 * 5 / (acres * 6.273e6)) %>% # convert gpm to in^3 from 5 minutes normalize by watershed area
+          spread(analyte, eventwqtotal)                                # after converting acres to square inches
 
 #do paired t test?... group by site and treatment
 
+#do paired t test?... group by site and treatment
 
 
 # event graphs ------------------------------------------------------------
@@ -90,10 +116,20 @@ graphevents <- left_join(events, atsfc) %>%
   
 #MAKE EVENTLIST TO MAP FUNTION ONTO EVENTS
 grapheventlist <- split(graphevents, list(graphevents$site, graphevents$year, graphevents$event)) 
+<<<<<<< HEAD
 
 
 # event graphs ---------------------------------------
 
+=======
+#eventlist <- eventlist[sapply(eventlist, function(x) dim(x)[1]) > 0]
+
+# event graphs ---------------------------------------
+# 
+# 
+# 
+#... NEED TO MUTATE AN INCHES OF FLOW COLUMN AND GRAPH THAT BELOW INSTEAD OF FLOW
+>>>>>>> 60f27e5f75976f9e5e81b62f5a5d978e6b3aa322
 eventgraphmaker <- function(data)
 {
   v <- ggplot(data, 
