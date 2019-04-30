@@ -5,50 +5,76 @@ rm(list=ls(all=TRUE))
 library(tidyverse)
 library(lubridate)
 
-# importing rain data -----------------------------------------------------
+#importing rain data -----------------------------------------------------
 #importing "fix" data from mesonet weather stations
-#these data are fixing problems when rain gages weren't working, causing some samples to be clipped out 
-rainfixes <- read_csv("~/STRIPS2Helmers/data-raw/rain/2016/esthervilleasosfix.csv", 
-                      col_names = c("watershed", "date_time", "rain-m"), 
-                      col_types = c("ccn"), 
-                      skip = 1) %>%
-  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2017/esthervilleasosfix.csv", 
-                        col_names = c("watershed", "date_time", "rain-m"), 
-                        col_types = c("ccn"), 
-                        skip = 1)) %>%
-  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2017/esthervilleasosfix.csv", 
-                 col_names = c("watershed", "date_time", "rain-m"), 
-                 col_types = c("ccn"), 
-                 skip = 1)) %>%
-  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2018/amesasosfix.csv", 
-                 col_names = c("watershed", "date_time", "rain-m"), 
-                 col_types = c("ccn"), 
-                 skip = 1)) %>%
-  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2018/esthervilleasosfix.csv", 
-                 col_names = c("watershed", "date_time", "rain-m"), 
-                 col_types = c("ccn"), 
-                 skip = 1)) %>%
-  rbind(read_csv("~/STRIPS2Helmers/data-raw/rain/2018/charitonawosfix.csv", 
-                 col_names = c("watershed", "date_time", "rain-m"), 
-                 col_types = c("ccn"), 
-                 skip = 1)) %>%
-  mutate(date_time = as.POSIXct(date_time, format = "%m/%d/%Y %H:%M"),
+#these data are fixing problems when rain gages weren't working, causing some samples to be clipped out
+
+spl2016fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2016/esthervilleasosfix.csv",
+                       col_names = c("watershed", "date_time", "rain-m"),
+                       col_types = c("ccn"),
+                       skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
          `rain-m` = `rain-m`/1000) %>%
   filter(!is.na(`rain-m`))
-  
 
+spl2017fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2017/esthervilleasosfix.csv",
+                       col_names = c("watershed", "date_time", "rain-m"),
+                       col_types = c("ccn"),
+                       skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+
+spl2018fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/esthervilleasosfix.csv",
+                       col_names = c("watershed", "date_time", "rain-m"),
+                       col_types = c("ccn"),
+                       skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+
+wor2018fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/amesasosfix.csv",
+                        col_names = c("watershed", "date_time", "rain-m"),
+                        col_types = c("ccn"),
+                        skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+
+wor2018fix2 <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/amesasosfix2.csv",
+                        col_names = c("watershed", "date_time", "rain-m"),
+                        col_types = c("ccn"),
+                        skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+
+mcn2018fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/charitonawosfix.csv",
+                       col_names = c("watershed", "date_time", "rain-m"),
+                       col_types = c("ccn"),
+                       skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+
+rainfixes <- rbind(spl2016fix, spl2017fix, spl2018fix, wor2018fix, wor2018fix2, mcn2018fix)
 
 rainfixes$watershed[rainfixes$watershed=="EST"] <- "spiritctl"
 rainfixes$watershed[rainfixes$watershed=="AMW"] <- "worlectl"
 rainfixes$watershed[rainfixes$watershed=="CNC"] <- "mcnayctl"
 
-rainsub <- rainfixes %>% select(watershed, date_time) #use this to anti_join into rain below,
-                                                      #then add in rainfixes to add good data
+#replacing rhodesctl rain with worlectl rain for 9/15/16
+s <- filter(STRIPS2Helmers::rain, watershed == "worlectl" & date_time >= as.Date("2016-09-15") & date_time <= as.Date("2016-09-16"))
 
-  
 rain <- STRIPS2Helmers::rain %>%
-  mutate(watershed = as.character(watershed)) %>%
-  anti_join(rainsub) %>%
+  mutate(`rain-m` = replace(`rain-m`, date_time >= as.Date("2016-09-15") & date_time <= as.Date("2016-09-16") & 
+                              watershed == "rhodestrt", s$`rain-m`)) %>% 
+  filter(!(date_time>= min(spl2016fix$date_time) & date_time <= max(spl2016fix$date_time) & watershed == "spiritctl"))%>%
+  filter(!(date_time>= min(spl2017fix$date_time) & date_time <= max(spl2017fix$date_time) & watershed == "spiritctl"))%>%
+  filter(!(date_time>= min(spl2018fix$date_time) & date_time <= max(spl2018fix$date_time) & watershed == "spiritctl"))%>%
+  filter(!(date_time>= min(mcn2018fix$date_time) & date_time <= max(mcn2018fix$date_time) & watershed == "mcnayctl"))%>%
+  filter(!(date_time>= min(wor2018fix$date_time) & date_time <= max(wor2018fix$date_time) & watershed == "worlectl"))%>%
+  filter(!(date_time>= min(wor2018fix2$date_time) & date_time <= max(wor2018fix2$date_time) & watershed == "worlectl"))%>%
   rbind(rainfixes) %>%
   mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"),
          site = gsub("ctl", "", watershed),
