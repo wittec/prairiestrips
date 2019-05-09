@@ -70,7 +70,7 @@ eventstable <- left_join(events, atsfc) %>%
   arrange(year, watershed)
 
 #do paired t test?... group by site and treatment
-
+wqsamplesonlyeventstable <- eventstable %>% filter(`TSS (mg/L)` != "NA")
 
 # event graphs ------------------------------------------------------------
 
