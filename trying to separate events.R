@@ -84,8 +84,12 @@ graphevents <- left_join(events, atsfc) %>%
   mutate(valueload = ((value*flow*5)/453592.37)/acres,
          eventflowinches = flow * 231 * 5 / (acres * 6.273e6))
   
+wqsamplesonlygraphs <- graphevents %>% filter(value != "NA")
+
 #MAKE EVENTLIST TO MAP FUNTION ONTO EVENTS
 grapheventlist <- split(graphevents, list(graphevents$site, graphevents$year, graphevents$event)) 
+
+wqsamplesonlygrapheventlist <- split(wqsamplesonlygraphs, list(wqsamplesonlygraphs$site, wqsamplesonlygraphs$year, wqsamplesonlygraphs$event)) 
 
 eventgraphmaker <- function(data)
 {
@@ -108,5 +112,31 @@ ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
 
 map(grapheventlist, eventgraphmaker)
 
+
+# event graphs with wq samples taken during event -------------------------
+
+wqsampleeventgraphmaker <- function(data)
+{
+  v <- ggplot(data, 
+              aes(x = date_time, 
+                  y = eventflowinches,
+                  group = watershed,
+                  color = watershed)) +
+    geom_line(size = 1) + 
+    scale_x_datetime(date_labels= "%m/%d/%Y %H:%M:%S")
+  
+  setwd("~/prairiestrips/graphs/wqsampleflowevents/")
+  
+  graphname <- paste0(head(data[5], n=1), "_", head(data[3], n=1), "_", (head(data[4], n=1)))
+  
+  ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
+  
+  #return(v)
+}
+
+map(wqsamplesonlygrapheventlist, wqsampleeventgraphmaker)
+
+
+# event analyses ----------------------------------------------------------
 
 
