@@ -69,8 +69,17 @@ eventstable <- left_join(events, atsfc) %>%
   spread(analyte, eventwqtotal) %>%                                     # after converting acres to square inches
   arrange(year, watershed)
 
-#do paired t test?... group by site and treatment
+# wq samples only events table--------------------------------------------------
 wqsamplesonlyeventstable <- eventstable %>% filter(`TSS (mg/L)` != "NA")
+
+# wq samples events with both ctl and trt samples table-------------------------
+filtertrtandctlevents <- wqsamplesonlyeventstable %>% ungroup() %>% select(site, year, event) %>%
+  filter(duplicated(.))
+
+wqsampletrtandctl <- filtertrtandctlevents %>% 
+  left_join(wqsamplesonlyeventstable) %>%
+  mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"))
+
 
 # event graphs ------------------------------------------------------------
 
@@ -84,12 +93,17 @@ graphevents <- left_join(events, atsfc) %>%
   mutate(valueload = ((value*flow*5)/453592.37)/acres,
          eventflowinches = flow * 231 * 5 / (acres * 6.273e6))
   
+
+# wq samples only graphs --------------------------------------------------
 wqsamplesonlygraphs <- graphevents %>% filter(value != "NA")
+
+
+# wq samples with both ctl and trt in event graphs ------------------------
+wqsampletrtandctlgraphs <- filtertrtandctlevents %>% left_join(wqsamplesonlygraphs)
+
 
 #MAKE EVENTLIST TO MAP FUNTION ONTO EVENTS
 grapheventlist <- split(graphevents, list(graphevents$site, graphevents$year, graphevents$event)) 
-
-wqsamplesonlygrapheventlist <- split(wqsamplesonlygraphs, list(wqsamplesonlygraphs$site, wqsamplesonlygraphs$year, wqsamplesonlygraphs$event)) 
 
 eventgraphmaker <- function(data)
 {
@@ -113,7 +127,8 @@ ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
 map(grapheventlist, eventgraphmaker)
 
 
-# event graphs with wq samples taken during event -------------------------
+# event graphs with wq samples taken during event-------------------------
+wqsamplesonlygrapheventlist <- split(wqsamplesonlygraphs, list(wqsamplesonlygraphs$site, wqsamplesonlygraphs$year, wqsamplesonlygraphs$event)) 
 
 wqsampleeventgraphmaker <- function(data)
 {
@@ -137,15 +152,36 @@ wqsampleeventgraphmaker <- function(data)
 map(wqsamplesonlygrapheventlist, wqsampleeventgraphmaker)
 
 
-# event analyses ----------------------------------------------------------
+# event graphs with wq samples taken during event for both ctl and --------
+wqsampletrtandctlgraphslist <- split(wqsampletrtandctlgraphs, list(wqsampletrtandctlgraphs$site, wqsampletrtandctlgraphs$year, wqsampletrtandctlgraphs$event)) 
 
-wqsampletrtandctl <- wqsamplesonlyeventstable %>% ungroup() %>% select(site, year, event)
+wqsampletrtandctlgraphmaker <- function(data)
+{
+  v <- ggplot(data, 
+              aes(x = date_time, 
+                  y = eventflowinches,
+                  group = watershed,
+                  color = watershed)) +
+    geom_line(size = 1) + 
+    scale_x_datetime(date_labels= "%m/%d/%Y %H:%M:%S") +
+    theme(legend.position = "bottom",
+          legend.title    = element_blank(),
+          axis.text.x = element_text(angle=60,hjust=1))
   
-wqsampletrtandctl <- wqsampletrtandctl %>% filter(duplicated(wqsampletrtandctl)) %>%
-  left_join(wqsamplesonlyeventstable) %>%
-  mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"))
+  setwd("~/prairiestrips/graphs/wqsampletrtandctlevents/")
   
+  graphname <- paste0(head(data[1], n=1), "_", head(data[2], n=1), "_", (head(data[3], n=1)))
+  
+  ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
+  
+  #return(v)
+}
 
+map(wqsampletrtandctlgraphslist, wqsampletrtandctlgraphmaker)
+
+
+# event statistical analyses ----------------------------------------------------------
+ #doesn't deal with repeated measures!!!!!
 anova <- aov(`TSS (mg/L)` ~ site + treatment + year, data = wqsampletrtandctl)
 
 sjstats::anova_stats(anova)
