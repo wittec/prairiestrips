@@ -139,8 +139,19 @@ map(wqsamplesonlygrapheventlist, wqsampleeventgraphmaker)
 
 # event analyses ----------------------------------------------------------
 
-wqsampletrtandctl <- wqsamplesonlyeventstable %>% ungroup() %>% select(site, year, event) %>%
-  filter(duplicated(wqsampletrtandctl)) %>%
-  left_join(wqsamplesonlyeventstable)
+wqsampletrtandctl <- wqsamplesonlyeventstable %>% ungroup() %>% select(site, year, event)
+  
+wqsampletrtandctl <- wqsampletrtandctl %>% filter(duplicated(wqsampletrtandctl)) %>%
+  left_join(wqsamplesonlyeventstable) %>%
+  mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"))
+  
 
+anova <- aov(`TSS (mg/L)` ~ site + treatment + year, data = wqsampletrtandctl)
 
+sjstats::anova_stats(anova)
+
+apa.aov.table(anova, filename = "wqsampletrtandctlanova.doc")
+
+ggplot(wqsampletrtandctl, aes(x=treatment, y=`Orthophosphate (mg P/L)`)) +
+  geom_boxplot() +
+  facet_grid(site ~ year)
