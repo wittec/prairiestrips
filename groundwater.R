@@ -109,7 +109,7 @@ all <- all %>%
 
 # graphing water quality ----------------------------------------------------------------
 
-all$order <- factor(all$month, levels = c("Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
+all$order <- factor(all$month, levels = c("Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
 
 # Customized colors
 colorscale <- c(TRT = "blue", 
@@ -145,7 +145,7 @@ setwd("~/prairiestrips")
 
 ggsave(filename = "./graphs/gwno3.jpg", plot=no3, width = 6, height=8)
 
-drpdata <- filter(all, year=="2017", drpmgL!="NA")
+drpdata <- filter(all, year>="2017", drpmgL!="NA")
 drpdata$drpmgL <- as.numeric(drpdata$drpmgL)
 
 drp <- ggplot(drpdata, aes(x = order, 
@@ -196,7 +196,9 @@ gwdepth2017 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data
 
 gwdepth2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2018/2018strips2gwdepth.csv", header = T) 
 
-gwdepth <- rbind(gwdepth2016, gwdepth2017, gwdepth2018) %>%
+gwdepth2019 <- read.csv("C:/Users/Chris/Documents/prairiestrips/groundwater/data-raw/depth/2019/2019strips2gwdepth.csv", header = T) 
+
+gwdepth <- rbind(gwdepth2016, gwdepth2017, gwdepth2018, gwdepth2019) %>%
   mutate(month = as.character(month)) %>%
   select(-X)
 
