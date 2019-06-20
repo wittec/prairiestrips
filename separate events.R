@@ -186,7 +186,7 @@ anova <- aov(`TSS (mg/L)` ~ site + treatment + year, data = wqsampletrtandctl)
 
 sjstats::anova_stats(anova)
 
-apa.aov.table(anova, filename = "wqsampletrtandctlanova.doc")
+apaTables::apa.aov.table(anova, filename = "wqsampletrtandctlanova.doc")
 
 ggplot(wqsampletrtandctl, aes(x=treatment, y=`Orthophosphate (mg P/L)`)) +
   geom_boxplot() +
@@ -210,19 +210,61 @@ mr <- lmer(log(`TSS (mg/L)`) ~ treatment + year + (1|site), data = wqsampletrtan
 #######
 # Model ratio
 
-wqsampletrtandctl2 <- wqsampletrtandctl %>%
+tssratio <- wqsampletrtandctl %>%
+  select(site, year, event, treatment, `TSS (mg/L)`) %>% 
   spread(treatment, `TSS (mg/L)`) %>%
-  mutate(ratio = ctl / trt)
+  mutate(ratio = control / treatment)
 
-ggplot(wqsampletrtandctl2, aes(year, ratio)) + 
+ggplot(tssratio, aes(year, ratio)) + 
   geom_jitter() + 
   facet_wrap(~site) + 
-  theme_bw()
+  theme_bw()+
+  geom_hline(yintercept = 1)
 
-# Models
+
+no3ratio <- wqsampletrtandctl %>%
+  select(site, year, event, treatment, `Nitrate + nitrite (mg N/L)`) %>% 
+  spread(treatment, `Nitrate + nitrite (mg N/L)`) %>%
+  mutate(ratio = control / treatment) #%>% 
+  #slice(-3:-4)
+
+ggplot(no3ratio, aes(year, ratio), yscale ) + 
+  geom_jitter() + 
+  facet_wrap(~site) + 
+  theme_bw() +
+  geom_hline(yintercept = 1)
+
+po4ratio <- wqsampletrtandctl %>%
+  select(site, year, event, treatment, `Orthophosphate (mg P/L)`) %>% 
+  spread(treatment, `Orthophosphate (mg P/L)`) %>%
+  mutate(ratio = control / treatment)
+
+ggplot(po4ratio, aes(year, ratio)) + 
+  geom_jitter() + 
+  facet_wrap(~site) + 
+  theme_bw()+
+  geom_hline(yintercept = 1)
+
+flowratio <- wqsampletrtandctl %>%
+  select(site, year, event, treatment, eventflowinches) %>% 
+  spread(treatment, eventflowinches) %>%
+  mutate(ratio = control / treatment) 
+
+ggplot(flowratio, aes(year, ratio), yscale ) + 
+  geom_jitter() + 
+  facet_wrap(~site) + 
+  theme_bw() +
+  geom_hline(yintercept = 1)
+  
+
+  # Models
 
 
-mf <- lm(  log(ratio) ~ year +    site,  data = wqsampletrtandctl)
+
+
+
+#LEFT OFF HERE
+mf <- lm(  log(flowratio) ~ year +    site,  data = wqsampletrtandctl)
 
 # diagnostics
 opar = par(mfrow=c(2,2))
