@@ -343,8 +343,8 @@ ggsave(filename = "armgwdepth.jpg", plot=armgwdepthplot, width = 6, height=6)
 
 # year specific gw depth graph --------------------------------------------
 
-y2018 <- gwdepth %>%
-  filter(year == "2018")
+y2019 <- gwdepth %>%
+  filter(year == "2019")
 
 
 # Customized colors
@@ -353,7 +353,7 @@ colorscale <- c(TRT = "blue",
 linescale <- c(Top = "dashed",
                Bot = "solid")
 
-yeargwdepthplot <- ggplot(y2018, aes(x = order, 
+yeargwdepthplot <- ggplot(y2019, aes(x = order, 
                                    y = negadjdepthft, 
                                    group = wellid,
                                    linetype = pos,
