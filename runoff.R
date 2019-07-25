@@ -9,7 +9,7 @@ library(lubridate)
 #importing "fix" data from mesonet weather stations
 #these data are fixing problems when rain gages weren't working, causing some samples to be clipped out
 
-spl2016fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2016/esthervilleasosfix.csv",
+spl2016fix <- read_csv("~/STRIPS2Helmers/rain-fixes/2016/esthervilleasosfix.csv",
                        col_names = c("watershed", "date_time", "rain-m"),
                        col_types = c("ccn"),
                        skip = 1) %>%
@@ -17,7 +17,7 @@ spl2016fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2016/esthervilleasosfix.c
          `rain-m` = `rain-m`/1000) %>%
   filter(!is.na(`rain-m`))
 
-spl2017fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2017/esthervilleasosfix.csv",
+spl2017fix <- read_csv("~/STRIPS2Helmers/rain-fixes/2017/esthervilleasosfix.csv",
                        col_names = c("watershed", "date_time", "rain-m"),
                        col_types = c("ccn"),
                        skip = 1) %>%
@@ -25,7 +25,7 @@ spl2017fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2017/esthervilleasosfix.c
          `rain-m` = `rain-m`/1000) %>%
   filter(!is.na(`rain-m`))
 
-spl2018fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/esthervilleasosfix.csv",
+spl2018fix <- read_csv("~/STRIPS2Helmers/rain-fixes/2018/esthervilleasosfix.csv",
                        col_names = c("watershed", "date_time", "rain-m"),
                        col_types = c("ccn"),
                        skip = 1) %>%
@@ -33,7 +33,7 @@ spl2018fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/esthervilleasosfix.c
          `rain-m` = `rain-m`/1000) %>%
   filter(!is.na(`rain-m`))
 
-wor2018fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/amesasosfix.csv",
+wor2018fix <- read_csv("~/STRIPS2Helmers/rain-fixes/2018/amesasosfix.csv",
                         col_names = c("watershed", "date_time", "rain-m"),
                         col_types = c("ccn"),
                         skip = 1) %>%
@@ -41,7 +41,7 @@ wor2018fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/amesasosfix.csv",
          `rain-m` = `rain-m`/1000) %>%
   filter(!is.na(`rain-m`))
 
-wor2018fix2 <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/amesasosfix2.csv",
+wor2018fix2 <- read_csv("~/STRIPS2Helmers/rain-fixes/2018/amesasosfix2.csv",
                         col_names = c("watershed", "date_time", "rain-m"),
                         col_types = c("ccn"),
                         skip = 1) %>%
@@ -49,7 +49,7 @@ wor2018fix2 <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/amesasosfix2.csv",
          `rain-m` = `rain-m`/1000) %>%
   filter(!is.na(`rain-m`))
 
-mcn2018fix <- read_csv("~/STRIPS2Helmers/data-raw/rain/2018/charitonawosfix.csv",
+mcn2018fix <- read_csv("~/STRIPS2Helmers/rain-fixes/2018/charitonawosfix.csv",
                        col_names = c("watershed", "date_time", "rain-m"),
                        col_types = c("ccn"),
                        skip = 1) %>%
@@ -221,7 +221,7 @@ g <- ggplot(d, aes(x = date_time,
 
 g
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2018.jpg", plot=g, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2019.jpg", plot=g, width = 6, height=8)
 
 # create table of final cumulative values for rain and flow in 2016---------------
 
@@ -260,8 +260,20 @@ e1 <- e1 %>%
 
 write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
 
+# create table of final cumulative values for rain and flow in 2019---------------
+
+endtable <- d %>% filter(year=="2019") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
+e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
+e1$rain <- e2$rain
+e1 <- e1 %>% 
+  mutate_if(is.numeric, round, 2) %>%
+  rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
+
+write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2019.csv")
+
 #MAKING TABLE WITH 3 LETTER CODES INSTEAD OF FULL NAMES OF SITES
-endtable <- d %>% filter(year=="2018") %>% group_by(codes, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+endtable <- d %>% filter(year=="2019") %>% group_by(codes, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
 e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
 e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
 e1$rain <- e2$rain
@@ -269,7 +281,7 @@ e1 <- e1 %>%
   mutate_if(is.numeric, round, 2) %>%
   rename(Site = codes, Rain = rain, Control = control, Treatment = treatment)
 
-write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018sitecodes.csv")
+write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2019sitecodes.csv")
 
 
 # water quality (tss, no3, orthop, tn, tp) ----------------------------------------------------------------

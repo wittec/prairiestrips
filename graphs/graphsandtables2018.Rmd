@@ -137,6 +137,38 @@ flex
 ```
 
 
+This is the rain and runoff table for 2019 with site codes:
+```{r echo=FALSE}
+require(knitr)
+require(kableExtra)
+require(dplyr)
+require(officer)
+require(flextable)
+require(tidyverse)
+noborder <- fp_border(width = 0)
+std_border = fp_border(color="black", width = 1)
+colkeys = c("Rain", "Control", "Treatment")
+
+rainrun2019codes <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2019sitecodes.csv")
+
+flex <- flextable(rainrun2019codes) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  vline(j=1, border = std_border, part = "body") %>%
+  vline(j=2, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2) %>%
+  set_header_labels(Rain = "Rain (in.)") %>%
+  add_header(Control = "Runoff (in.)", top = TRUE) %>% 
+  bold(part = "header") %>%
+  merge_at(i=1, j=3:4, part = "header") %>%
+  hline(i=1, j=1:2, border = noborder, part = "header") %>%
+  align(align = "center", part = "all") %>%
+  height(i=1, 0.25, part = "header") %>%
+  font(fontname = "calibri", part = "all")
+
+flex
+```
+
+
  Here is the nutrient table from 2016:
 
 ```{r echo=FALSE}
