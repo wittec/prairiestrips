@@ -1,242 +1,242 @@
-2018 STRIPS GW Codes,,,,,,,
-,,,,,,,
-year,month,site,trt,position,Sample Source,Date,ID#
-2018,1,arm,TRT,top,groundwater,Jan. 2018,7000
-2018,1,arm,TRT,bot,groundwater,Jan. 2018,7001
-2018,1,arm,CTL,bot,groundwater,Jan. 2018,7002
-2018,1,eia,TRT,bot,groundwater,Jan. 2018,7003
-2018,1,eia,TRT,top,groundwater,Jan. 2018,7004
-2018,1,eia,CTL,bot,groundwater,Jan. 2018,7005
-2018,1,mcnay,ctl,bot,groundwater,Jan. 2018,7006
-2018,1,mcnay,trt,bot,groundwater,Jan. 2018,7007
-2018,1,rhodes,TRT,top,groundwater,Jan. 2018,7008
-2018,1,rhodes,TRT,bot,groundwater,Jan. 2018,7009
-2018,1,rhodes,CTL,bot,groundwater,Jan. 2018,7010
-2018,1,spirit,trt,top,groundwater,Jan. 2018,7011
-2018,1,spirit,TRT,bot,groundwater,Jan. 2018,7012
-2018,1,spirit,ctl,bot,groundwater,Jan. 2018,7013
-2018,1,spirit,ctl,top,groundwater,Jan. 2018,7014
-2018,1,white,ctl,bot,groundwater,Jan. 2018,7015
-2018,1,worle,TRT,top,groundwater,Jan. 2018,7016
-2018,1,worle,TRT,bot,groundwater,Jan. 2018,7017
-2018,1,worle,CTL,bot,groundwater,Jan. 2018,7018
-2018,2,arm,TRT,top,groundwater,Feb. 2018,7019
-2018,2,arm,TRT,bot,groundwater,Feb. 2018,7020
-2018,2,arm,CTL,bot,groundwater,Feb. 2018,7021
-2018,2,eia,TRT,bot,groundwater,Feb. 2018,7022
-2018,2,eia,TRT,top,groundwater,Feb. 2018,7023
-2018,2,eia,CTL,bot,groundwater,Feb. 2018,7024
-2018,2,mcnay,ctl,bot,groundwater,Feb. 2018,7025
-2018,2,mcnay,trt,bot,groundwater,Feb. 2018,7026
-2018,2,rhodes,TRT,top,groundwater,Feb. 2018,7027
-2018,2,rhodes,TRT,bot,groundwater,Feb. 2018,7028
-2018,2,rhodes,CTL,bot,groundwater,Feb. 2018,7029
-2018,2,spirit,ctl,bot,groundwater,Feb. 2018,7030
-2018,2,white,ctl,bot,groundwater,Feb. 2018,7031
-2018,2,worle,TRT,top,groundwater,Feb. 2018,7032
-2018,2,worle,TRT,bot,groundwater,Feb. 2018,7033
-2018,2,worle,CTL,bot,groundwater,Feb. 2018,7034
-2018,3,arm,TRT,top,groundwater,Mar-18,7035
-2018,3,arm,TRT,bot,groundwater,Mar-18,7036
-2018,3,arm,CTL,bot,groundwater,Mar-18,7037
-2018,3,eia,TRT,bot,groundwater,Mar-18,7038
-2018,3,eia,TRT,top,groundwater,Mar-18,7039
-2018,3,eia,CTL,bot,groundwater,Mar-18,7040
-2018,3,mcnay,ctl,bot,groundwater,Mar-18,7041
-2018,3,mcnay,trt,bot,groundwater,Mar-18,7042
-2018,3,rhodes,TRT,top,groundwater,Mar-18,7043
-2018,3,rhodes,TRT,bot,groundwater,Mar-18,7044
-2018,3,rhodes,CTL,bot,groundwater,Mar-18,7045
-2018,3,spirit,ctl,bot,groundwater,Mar-18,7046
-2018,3,spirit,ctl,top,groundwater,Mar-18,7047
-2018,3,white,ctl,bot,groundwater,Mar-18,7048
-2018,3,worle,TRT,top,groundwater,Mar-18,7049
-2018,3,worle,TRT,bot,groundwater,Mar-18,7050
-2018,3,worle,CTL,bot,groundwater,Mar-18,7051
-2018,3,guthrie,trt,top,groundwater,Mar-18,7052
-2018,3,guthrie,trt,bot,groundwater,Mar-18,7053
-2018,4,arm,TRT,top,groundwater,Apr-18,7054
-2018,4,arm,TRT,bot,groundwater,Apr-18,7055
-2018,4,arm,CTL,bot,groundwater,Apr-18,7056
-2018,4,eia,TRT,bot,groundwater,Apr-18,7057
-2018,4,eia,TRT,top,groundwater,Apr-18,7058
-2018,4,eia,CTL,bot,groundwater,Apr-18,7059
-2018,4,mcnay,ctl,bot,groundwater,Apr-18,7060
-2018,4,mcnay,trt,bot,groundwater,Apr-18,7061
-2018,4,rhodes,TRT,top,groundwater,Apr-18,7062
-2018,4,rhodes,TRT,bot,groundwater,Apr-18,7063
-2018,4,rhodes,CTL,bot,groundwater,Apr-18,7064
-2018,4,spirit,ctl,bot,groundwater,Apr-18,7065
-2018,4,spirit,ctl,top,groundwater,Apr-18,7066
-2018,4,spirit,TRT,top,groundwater,Apr-18,7067
-2018,4,spirit,TRT,bot,groundwater,Apr-18,7068
-2018,4,white,ctl,bot,groundwater,Apr-18,7069
-2018,4,worle,TRT,top,groundwater,Apr-18,7070
-2018,4,worle,TRT,bot,groundwater,Apr-18,7071
-2018,4,worle,CTL,bot,groundwater,Apr-18,7072
-2018,5,arm,TRT,top,groundwater,May-18,7073
-2018,5,arm,TRT,bot,groundwater,May-18,7074
-2018,5,arm,CTL,bot,groundwater,May-18,7075
-2018,5,eia,TRT,bot,groundwater,May-18,7076
-2018,5,eia,TRT,top,groundwater,May-18,7077
-2018,5,eia,CTL,bot,groundwater,May-18,7078
-2018,5,mcnay,CTL,bot,groundwater,May-18,7079
-2018,5,mcnay,TRT,bot,groundwater,May-18,7080
-2018,5,rhodes,TRT,top,groundwater,May-18,7081
-2018,5,rhodes,TRT,bot,groundwater,May-18,7082
-2018,5,rhodes,CTL,bot,groundwater,May-18,7083
-2018,5,spirit,TRT,top,groundwater,May-18,7084
-2018,5,spirit,TRT,bot,groundwater,May-18,7085
-2018,5,spirit,CTL,bot,groundwater,May-18,7086
-2018,5,spirit,CTL,top,groundwater,May-18,7087
-2018,5,white,TRT,top,groundwater,May-18,7088
-2018,5,white,TRT,bot,groundwater,May-18,7089
-2018,5,white,CTL,bot,groundwater,May-18,7090
-2018,5,worle,TRT,top,groundwater,May-18,7091
-2018,5,worle,TRT,bot,groundwater,May-18,7092
-2018,5,worle,CTL,bot,groundwater,May-18,7093
-2018,6,arm,TRT,top,groundwater,Jun-18,7094
-2018,6,arm,TRT,bot,groundwater,Jun-18,7095
-2018,6,arm,CTL,bot,groundwater,Jun-18,7096
-2018,6,eia,TRT,bot,groundwater,Jun-18,7097
-2018,6,eia,TRT,top,groundwater,Jun-18,7098
-2018,6,eia,CTL,bot,groundwater,Jun-18,7099
-2018,6,mcnay,CTL,bot,groundwater,Jun-18,7100
-2018,6,mcnay,TRT,bot,groundwater,Jun-18,7101
-2018,6,rhodes,TRT,top,groundwater,Jun-18,7102
-2018,6,rhodes,TRT,bot,groundwater,Jun-18,7103
-2018,6,rhodes,CTL,bot,groundwater,Jun-18,7104
-2018,6,spirit,TRT,top,groundwater,Jun-18,7105
-2018,6,spirit,TRT,bot,groundwater,Jun-18,7106
-2018,6,spirit,CTL,bot,groundwater,Jun-18,7107
-2018,6,spirit,CTL,top,groundwater,Jun-18,7108
-2018,6,white,TRT,top,groundwater,Jun-18,7109
-2018,6,white,CTL,bot,groundwater,Jun-18,7110
-2018,6,worle,TRT,top,groundwater,Jun-18,7111
-2018,6,worle,TRT,bot,groundwater,Jun-18,7112
-2018,6,worle,CTL,bot,groundwater,Jun-18,7113
-2018,6,guthrie,TRT,top,groundwater,Jun-18,7114
-2018,6,guthrie,TRT,bot,groundwater,Jun-18,7115
-2018,7,arm,TRT,top,groundwater,Jul-18,7116
-2018,7,arm,TRT,bot,groundwater,Jul-18,7117
-2018,7,arm,CTL,bot,groundwater,Jul-18,7118
-2018,7,eia,TRT,bot,groundwater,Jul-18,7119
-2018,7,eia,TRT,top,groundwater,Jul-18,7120
-2018,7,eia,CTL,bot,groundwater,Jul-18,7121
-2018,7,mcnay,CTL,bot,groundwater,Jul-18,7122
-2018,7,mcnay,TRT,bot,groundwater,Jul-18,7123
-2018,7,rhodes,TRT,top,groundwater,Jul-18,7124
-2018,7,rhodes,TRT,bot,groundwater,Jul-18,7125
-2018,7,rhodes,CTL,bot,groundwater,Jul-18,7126
-2018,7,spirit,TRT,top,groundwater,Jul-18,7127
-2018,7,spirit,TRT,bot,groundwater,Jul-18,7128
-2018,7,spirit,CTL,bot,groundwater,Jul-18,7129
-2018,7,spirit,CTL,top,groundwater,Jul-18,7130
-2018,7,white,TRT,top,groundwater,Jul-18,7131
-2018,7,white,TRT,bot,groundwater,Jul-18,7132
-2018,7,white,CTL,bot,groundwater,Jul-18,7133
-2018,7,worle,TRT,top,groundwater,Jul-18,7134
-2018,7,worle,TRT,bot,groundwater,Jul-18,7135
-2018,7,worle,CTL,bot,groundwater,Jul-18,7136
-2018,8,arm,TRT,top,groundwater,Aug-18,7137
-2018,8,arm,TRT,bot,groundwater,Aug-18,7138
-2018,8,arm,CTL,bot,groundwater,Aug-18,7139
-2018,8,eia,TRT,bot,groundwater,Aug-18,7140
-2018,8,eia,TRT,top,groundwater,Aug-18,7141
-2018,8,eia,CTL,bot,groundwater,Aug-18,7142
-2018,8,mcnay,CTL,bot,groundwater,Aug-18,7143
-2018,8,mcnay,TRT,bot,groundwater,Aug-18,7144
-2018,8,rhodes,TRT,top,groundwater,Aug-18,7145
-2018,8,rhodes,TRT,bot,groundwater,Aug-18,7146
-2018,8,rhodes,CTL,bot,groundwater,Aug-18,7147
-2018,8,spirit,TRT,top,groundwater,Aug-18,7148
-2018,8,spirit,TRT,bot,groundwater,Aug-18,7149
-2018,8,spirit,CTL,bot,groundwater,Aug-18,7150
-2018,8,spirit,CTL,top,groundwater,Aug-18,7151
-2018,8,white,CTL,bot,groundwater,Aug-18,7152
-2018,8,worle,TRT,top,groundwater,Aug-18,7153
-2018,8,worle,TRT,bot,groundwater,Aug-18,7154
-2018,8,worle,CTL,bot,groundwater,Aug-18,7155
-2018,9,arm,TRT,top,groundwater,Sep-18,7156
-2018,9,arm,TRT,bot,groundwater,Sep-18,7157
-2018,9,arm,CTL,bot,groundwater,Sep-18,7158
-2018,9,eia,TRT,bot,groundwater,Sep-18,7159
-2018,9,eia,TRT,top,groundwater,Sep-18,7160
-2018,9,eia,CTL,bot,groundwater,Sep-18,7161
-2018,9,mcnay,CTL,bot,groundwater,Sep-18,7162
-2018,9,mcnay,TRT,bot,groundwater,Sep-18,7163
-2018,9,rhodes,TRT,top,groundwater,Sep-18,7164
-2018,9,rhodes,TRT,bot,groundwater,Sep-18,7165
-2018,9,rhodes,CTL,bot,groundwater,Sep-18,7166
-2018,9,spirit,TRT,top,groundwater,Sep-18,7167
-2018,9,spirit,TRT,bot,groundwater,Sep-18,7168
-2018,9,spirit,CTL,bot,groundwater,Sep-18,7169
-2018,9,spirit,CTL,top,groundwater,Sep-18,7170
-2018,9,white,CTL,bot,groundwater,Sep-18,7171
-2018,9,worle,TRT,top,groundwater,Sep-18,7172
-2018,9,worle,TRT,bot,groundwater,Sep-18,7173
-2018,9,worle,CTL,bot,groundwater,Sep-18,7174
-2018,9,guthrie,TRT,top,groundwater,Sep-18,7175
-2018,9,guthrie,TRT,bot,groundwater,Sep-18,7176
-2018,10,arm,TRT,top,groundwater,Oct-18,7177
-2018,10,arm,TRT,bot,groundwater,Oct-18,7178
-2018,10,arm,CTL,bot,groundwater,Oct-18,7179
-2018,10,eia,TRT,bot,groundwater,Oct-18,7180
-2018,10,eia,TRT,top,groundwater,Oct-18,7181
-2018,10,eia,CTL,bot,groundwater,Oct-18,7182
-2018,10,mcnay,CTL,bot,groundwater,Oct-18,7183
-2018,10,mcnay,TRT,bot,groundwater,Oct-18,7184
-2018,10,rhodes,TRT,top,groundwater,Oct-18,7185
-2018,10,rhodes,TRT,bot,groundwater,Oct-18,7186
-2018,10,rhodes,CTL,bot,groundwater,Oct-18,7187
-2018,10,spirit,TRT,top,groundwater,Oct-18,7188
-2018,10,spirit,TRT,bot,groundwater,Oct-18,7189
-2018,10,spirit,CTL,bot,groundwater,Oct-18,7190
-2018,10,spirit,CTL,top,groundwater,Oct-18,7191
-2018,10,white,TRT,top,groundwater,Oct-18,7192
-2018,10,white,TRT,bot,groundwater,Oct-18,7193
-2018,10,white,CTL,bot,groundwater,Oct-18,7194
-2018,10,worle,TRT,top,groundwater,Oct-18,7195
-2018,10,worle,TRT,bot,groundwater,Oct-18,7196
-2018,10,worle,CTL,bot,groundwater,Oct-18,7197
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
+2018 STRIPS GW Codes,,,,,,,,
+,,,,,,,,
+year,month,site,trt,position,Sample Source,Date,ID#,
+2018,1,arm,TRT,top,groundwater,Jan. 2018,7000,
+2018,1,arm,TRT,bot,groundwater,Jan. 2018,7001,
+2018,1,arm,CTL,bot,groundwater,Jan. 2018,7002,
+2018,1,eia,TRT,bot,groundwater,Jan. 2018,7003,
+2018,1,eia,TRT,top,groundwater,Jan. 2018,7004,
+2018,1,eia,CTL,bot,groundwater,Jan. 2018,7005,
+2018,1,mcnay,ctl,bot,groundwater,Jan. 2018,7006,
+2018,1,mcnay,trt,bot,groundwater,Jan. 2018,7007,
+2018,1,rhodes,TRT,top,groundwater,Jan. 2018,7008,
+2018,1,rhodes,TRT,bot,groundwater,Jan. 2018,7009,
+2018,1,rhodes,CTL,bot,groundwater,Jan. 2018,7010,
+2018,1,spirit,trt,top,groundwater,Jan. 2018,7011,
+2018,1,spirit,TRT,bot,groundwater,Jan. 2018,7012,
+2018,1,spirit,ctl,bot,groundwater,Jan. 2018,7013,
+2018,1,spirit,ctl,top,groundwater,Jan. 2018,7014,
+2018,1,white,ctl,bot,groundwater,Jan. 2018,7015,
+2018,1,worle,TRT,top,groundwater,Jan. 2018,7016,
+2018,1,worle,TRT,bot,groundwater,Jan. 2018,7017,
+2018,1,worle,CTL,bot,groundwater,Jan. 2018,7018,
+2018,2,arm,TRT,top,groundwater,Feb. 2018,7019,
+2018,2,arm,TRT,bot,groundwater,Feb. 2018,7020,
+2018,2,arm,CTL,bot,groundwater,Feb. 2018,7021,
+2018,2,eia,TRT,bot,groundwater,Feb. 2018,7022,
+2018,2,eia,TRT,top,groundwater,Feb. 2018,7023,
+2018,2,eia,CTL,bot,groundwater,Feb. 2018,7024,
+2018,2,mcnay,ctl,bot,groundwater,Feb. 2018,7025,
+2018,2,mcnay,trt,bot,groundwater,Feb. 2018,7026,
+2018,2,rhodes,TRT,top,groundwater,Feb. 2018,7027,
+2018,2,rhodes,TRT,bot,groundwater,Feb. 2018,7028,
+2018,2,rhodes,CTL,bot,groundwater,Feb. 2018,7029,
+2018,2,spirit,ctl,bot,groundwater,Feb. 2018,7030,
+2018,2,white,ctl,bot,groundwater,Feb. 2018,7031,
+2018,2,worle,TRT,top,groundwater,Feb. 2018,7032,
+2018,2,worle,TRT,bot,groundwater,Feb. 2018,7033,
+2018,2,worle,CTL,bot,groundwater,Feb. 2018,7034,
+2018,3,arm,TRT,top,groundwater,March 2018,7035,
+2018,3,arm,TRT,bot,groundwater,March 2018,7036,
+2018,3,arm,CTL,bot,groundwater,March 2018,7037,
+2018,3,eia,TRT,bot,groundwater,March 2018,7038,
+2018,3,eia,TRT,top,groundwater,March 2018,7039,
+2018,3,eia,CTL,bot,groundwater,March 2018,7040,
+2018,3,mcnay,ctl,bot,groundwater,March 2018,7041,
+2018,3,mcnay,trt,bot,groundwater,March 2018,7042,
+2018,3,rhodes,TRT,top,groundwater,March 2018,7043,
+2018,3,rhodes,TRT,bot,groundwater,March 2018,7044,
+2018,3,rhodes,CTL,bot,groundwater,March 2018,7045,
+2018,3,spirit,ctl,bot,groundwater,March 2018,7046,
+2018,3,spirit,ctl,top,groundwater,March 2018,7047,
+2018,3,white,ctl,bot,groundwater,March 2018,7048,
+2018,3,worle,TRT,top,groundwater,March 2018,7049,
+2018,3,worle,TRT,bot,groundwater,March 2018,7050,
+2018,3,worle,CTL,bot,groundwater,March 2018,7051,
+2018,3,guthrie,trt,top,groundwater,March 2018,7052,
+2018,3,guthrie,trt,bot,groundwater,March 2018,7053,
+2018,4,arm,TRT,top,groundwater,April 2018,7054,
+2018,4,arm,TRT,bot,groundwater,April 2018,7055,
+2018,4,arm,CTL,bot,groundwater,April 2018,7056,
+2018,4,eia,TRT,bot,groundwater,April 2018,7057,
+2018,4,eia,TRT,top,groundwater,April 2018,7058,
+2018,4,eia,CTL,bot,groundwater,April 2018,7059,
+2018,4,mcnay,ctl,bot,groundwater,April 2018,7060,
+2018,4,mcnay,trt,bot,groundwater,April 2018,7061,
+2018,4,rhodes,TRT,top,groundwater,April 2018,7062,
+2018,4,rhodes,TRT,bot,groundwater,April 2018,7063,
+2018,4,rhodes,CTL,bot,groundwater,April 2018,7064,
+2018,4,spirit,ctl,bot,groundwater,April 2018,7065,
+2018,4,spirit,ctl,top,groundwater,April 2018,7066,
+2018,4,spirit,TRT,top,groundwater,April 2018,7067,
+2018,4,spirit,TRT,bot,groundwater,April 2018,7068,
+2018,4,white,ctl,bot,groundwater,April 2018,7069,
+2018,4,worle,TRT,top,groundwater,April 2018,7070,
+2018,4,worle,TRT,bot,groundwater,April 2018,7071,
+2018,4,worle,CTL,bot,groundwater,April 2018,7072,
+2018,5,arm,TRT,top,groundwater,May 2018,7073,
+2018,5,arm,TRT,bot,groundwater,May 2018,7074,
+2018,5,arm,CTL,bot,groundwater,May 2018,7075,
+2018,5,eia,TRT,bot,groundwater,May 2018,7076,
+2018,5,eia,TRT,top,groundwater,May 2018,7077,
+2018,5,eia,CTL,bot,groundwater,May 2018,7078,
+2018,5,mcnay,CTL,bot,groundwater,May 2018,7079,
+2018,5,mcnay,TRT,bot,groundwater,May 2018,7080,
+2018,5,rhodes,TRT,top,groundwater,May 2018,7081,
+2018,5,rhodes,TRT,bot,groundwater,May 2018,7082,
+2018,5,rhodes,CTL,bot,groundwater,May 2018,7083,
+2018,5,spirit,TRT,top,groundwater,May 2018,7084,
+2018,5,spirit,TRT,bot,groundwater,May 2018,7085,
+2018,5,spirit,CTL,bot,groundwater,May 2018,7086,
+2018,5,spirit,CTL,top,groundwater,May 2018,7087,
+2018,5,white,TRT,top,groundwater,May 2018,7088,
+2018,5,white,TRT,bot,groundwater,May 2018,7089,
+2018,5,white,CTL,bot,groundwater,May 2018,7090,
+2018,5,worle,TRT,top,groundwater,May 2018,7091,
+2018,5,worle,TRT,bot,groundwater,May 2018,7092,
+2018,5,worle,CTL,bot,groundwater,May 2018,7093,
+2018,6,arm,TRT,top,groundwater,June 2018,7094,
+2018,6,arm,TRT,bot,groundwater,June 2018,7095,
+2018,6,arm,CTL,bot,groundwater,June 2018,7096,
+2018,6,eia,TRT,bot,groundwater,June 2018,7097,
+2018,6,eia,TRT,top,groundwater,June 2018,7098,
+2018,6,eia,CTL,bot,groundwater,June 2018,7099,
+2018,6,mcnay,CTL,bot,groundwater,June 2018,7100,
+2018,6,mcnay,TRT,bot,groundwater,June 2018,7101,
+2018,6,rhodes,TRT,top,groundwater,June 2018,7102,
+2018,6,rhodes,TRT,bot,groundwater,June 2018,7103,
+2018,6,rhodes,CTL,bot,groundwater,June 2018,7104,
+2018,6,spirit,TRT,top,groundwater,June 2018,7105,
+2018,6,spirit,TRT,bot,groundwater,June 2018,7106,
+2018,6,spirit,CTL,bot,groundwater,June 2018,7107,
+2018,6,spirit,CTL,top,groundwater,June 2018,7108,
+2018,6,white,TRT,top,groundwater,June 2018,7109,
+2018,6,white,CTL,bot,groundwater,June 2018,7110,
+2018,6,worle,TRT,top,groundwater,June 2018,7111,
+2018,6,worle,TRT,bot,groundwater,June 2018,7112,
+2018,6,worle,CTL,bot,groundwater,June 2018,7113,
+2018,6,guthrie,TRT,top,groundwater,June 2018,7114,
+2018,6,guthrie,TRT,bot,groundwater,June 2018,7115,
+2018,7,arm,TRT,top,groundwater,July 2018,7116,
+2018,7,arm,TRT,bot,groundwater,July 2018,7117,
+2018,7,arm,CTL,bot,groundwater,July 2018,7118,
+2018,7,eia,TRT,bot,groundwater,July 2018,7119,
+2018,7,eia,TRT,top,groundwater,July 2018,7120,
+2018,7,eia,CTL,bot,groundwater,July 2018,7121,
+2018,7,mcnay,CTL,bot,groundwater,July 2018,7122,
+2018,7,mcnay,TRT,bot,groundwater,July 2018,7123,
+2018,7,rhodes,TRT,top,groundwater,July 2018,7124,
+2018,7,rhodes,TRT,bot,groundwater,July 2018,7125,
+2018,7,rhodes,CTL,bot,groundwater,July 2018,7126,
+2018,7,spirit,TRT,top,groundwater,July 2018,7127,
+2018,7,spirit,TRT,bot,groundwater,July 2018,7128,
+2018,7,spirit,CTL,bot,groundwater,July 2018,7129,
+2018,7,spirit,CTL,top,groundwater,July 2018,7130,
+2018,7,white,TRT,top,groundwater,July 2018,7131,
+2018,7,white,TRT,bot,groundwater,July 2018,7132,
+2018,7,white,CTL,bot,groundwater,July 2018,7133,
+2018,7,worle,TRT,top,groundwater,July 2018,7134,
+2018,7,worle,TRT,bot,groundwater,July 2018,7135,
+2018,7,worle,CTL,bot,groundwater,July 2018,7136,
+2018,8,arm,TRT,top,groundwater,August 2018,7137,
+2018,8,arm,TRT,bot,groundwater,August 2018,7138,
+2018,8,arm,CTL,bot,groundwater,August 2018,7139,
+2018,8,eia,TRT,bot,groundwater,August 2018,7140,
+2018,8,eia,TRT,top,groundwater,August 2018,7141,
+2018,8,eia,CTL,bot,groundwater,August 2018,7142,
+2018,8,mcnay,CTL,bot,groundwater,August 2018,7143,
+2018,8,mcnay,TRT,bot,groundwater,August 2018,7144,
+2018,8,rhodes,TRT,top,groundwater,August 2018,7145,
+2018,8,rhodes,TRT,bot,groundwater,August 2018,7146,
+2018,8,rhodes,CTL,bot,groundwater,August 2018,7147,
+2018,8,spirit,TRT,top,groundwater,August 2018,7148,
+2018,8,spirit,TRT,bot,groundwater,August 2018,7149,
+2018,8,spirit,CTL,bot,groundwater,August 2018,7150,
+2018,8,spirit,CTL,top,groundwater,August 2018,7151,
+2018,8,white,CTL,bot,groundwater,August 2018,7152,
+2018,8,worle,TRT,top,groundwater,August 2018,7153,
+2018,8,worle,TRT,bot,groundwater,August 2018,7154,
+2018,8,worle,CTL,bot,groundwater,August 2018,7155,
+2018,9,arm,TRT,top,groundwater,September 2018,7156,
+2018,9,arm,TRT,bot,groundwater,September 2018,7157,
+2018,9,arm,CTL,bot,groundwater,September 2018,7158,
+2018,9,eia,TRT,bot,groundwater,September 2018,7159,
+2018,9,eia,TRT,top,groundwater,September 2018,7160,
+2018,9,eia,CTL,bot,groundwater,September 2018,7161,
+2018,9,mcnay,CTL,bot,groundwater,September 2018,7162,
+2018,9,mcnay,TRT,bot,groundwater,September 2018,7163,
+2018,9,rhodes,TRT,top,groundwater,September 2018,7164,
+2018,9,rhodes,TRT,bot,groundwater,September 2018,7165,
+2018,9,rhodes,CTL,bot,groundwater,September 2018,7166,
+2018,9,spirit,TRT,top,groundwater,September 2018,7167,
+2018,9,spirit,TRT,bot,groundwater,September 2018,7168,
+2018,9,spirit,CTL,bot,groundwater,September 2018,7169,
+2018,9,spirit,CTL,top,groundwater,September 2018,7170,
+2018,9,white,CTL,bot,groundwater,September 2018,7171,
+2018,9,worle,TRT,top,groundwater,September 2018,7172,
+2018,9,worle,TRT,bot,groundwater,September 2018,7173,
+2018,9,worle,CTL,bot,groundwater,September 2018,7174,
+2018,9,guthrie,TRT,top,groundwater,September 2018,7175,
+2018,9,guthrie,TRT,bot,groundwater,September 2018,7176,
+2018,10,arm,TRT,top,groundwater,October 2018,7177,
+2018,10,arm,TRT,bot,groundwater,October 2018,7178,
+2018,10,arm,CTL,bot,groundwater,October 2018,7179,
+2018,10,eia,TRT,bot,groundwater,October 2018,7180,
+2018,10,eia,TRT,top,groundwater,October 2018,7181,
+2018,10,eia,CTL,bot,groundwater,October 2018,7182,
+2018,10,mcnay,CTL,bot,groundwater,October 2018,7183,
+2018,10,mcnay,TRT,bot,groundwater,October 2018,7184,
+2018,10,rhodes,TRT,top,groundwater,October 2018,7185,
+2018,10,rhodes,TRT,bot,groundwater,October 2018,7186,
+2018,10,rhodes,CTL,bot,groundwater,October 2018,7187,
+2018,10,spirit,TRT,top,groundwater,October 2018,7188,
+2018,10,spirit,TRT,bot,groundwater,October 2018,7189,
+2018,10,spirit,CTL,bot,groundwater,October 2018,7190,
+2018,10,spirit,CTL,top,groundwater,October 2018,7191,
+2018,10,white,TRT,top,groundwater,October 2018,7192,
+2018,10,white,TRT,bot,groundwater,October 2018,7193,
+2018,10,white,CTL,bot,groundwater,October 2018,7194,
+2018,10,worle,TRT,top,groundwater,October 2018,7195,
+2018,10,worle,TRT,bot,groundwater,October 2018,7196,
+2018,10,worle,CTL,bot,groundwater,October 2018,7197,
+2018,11,arm,TRT,top,groundwater,November 2018,7198,
+2018,11,arm,TRT,bot,groundwater,November 2018,7199,
+2018,11,arm,CTL,bot,groundwater,November 2018,7200,
+2018,11,eia,TRT,bot,groundwater,November 2018,7201,
+2018,11,eia,TRT,top,groundwater,November 2018,7202,
+2018,11,eia,CTL,bot,groundwater,November 2018,7203,
+2018,11,mcnay,CTL,bot,groundwater,November 2018,7204,
+2018,11,mcnay,TRT,bot,groundwater,November 2018,7205,
+2018,11,rhodes,TRT,top,groundwater,November 2018,7206,
+2018,11,rhodes,TRT,bot,groundwater,November 2018,7207,
+2018,11,rhodes,CTL,bot,groundwater,November 2018,7208,
+2018,11,spirit,TRT,top,groundwater,November 2018,7209,
+2018,11,spirit,TRT,bot,groundwater,November 2018,7210,
+2018,11,spirit,CTL,bot,groundwater,November 2018,7211,
+2018,11,spirit,CTL,top,groundwater,November 2018,7212,
+2018,11,white,TRT,top,groundwater,November 2018,7213,
+2018,11,white,TRT,bot,groundwater,November 2018,7214,
+2018,11,white,CTL,bot,groundwater,November 2018,7215,
+2018,11,worle,TRT,top,groundwater,November 2018,7216,
+2018,11,worle,TRT,bot,groundwater,November 2018,7217,
+2018,11,worle,CTL,bot,groundwater,November 2018,7218,
+2018,12,arm,TRT,top,groundwater,December 2018,7219,
+2018,12,arm,TRT,bot,groundwater,December 2018,7220,
+2018,12,arm,CTL,bot,groundwater,December 2018,7221,
+2018,12,mcnay,CTL,bot,groundwater,December 2018,7222,
+2018,12,mcnay,TRT,bot,groundwater,December 2018,7223,
+2018,12,rhodes,TRT,top,groundwater,December 2018,7224,
+2018,12,rhodes,TRT,bot,groundwater,December 2018,7225,
+2018,12,rhodes,CTL,bot,groundwater,December 2018,7226,
+2018,12,spirit,TRT,top,groundwater,December 2018,7227,
+2018,12,spirit,TRT,bot,groundwater,December 2018,7228,
+2018,12,spirit,CTL,bot,groundwater,December 2018,7229,
+2018,12,spirit,CTL,top,groundwater,December 2018,7230,
+2018,12,white,TRT,top,groundwater,December 2018,7231,
+2018,12,white,TRT,bot,groundwater,December 2018,7232,
+2018,12,white,CTL,bot,groundwater,December 2018,7233,
+2018,12,worle,TRT,top,groundwater,December 2018,7234,
+2018,12,worle,TRT,bot,groundwater,December 2018,7235,
+2018,12,worle,CTL,bot,groundwater,December 2018,7236,
+2018,12,guthrie,TRT,top,groundwater,December 2018,7237,
+2018,12,guthrie,TRT,bot,groundwater,December 2018,7238,
