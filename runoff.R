@@ -203,6 +203,31 @@ linescale <- c(rain = "dotted",
 
 # runoff and rain graph, all years -------------------------------
 
+#d <- readRDS(file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
+
+f <- ggplot(d %>% filter(treatment != "rain"), aes(x = date_time, 
+                   y = y, 
+                   group = watershed, 
+                   linetype = treatment,
+                   color = treatment)) +
+  geom_line(size = 1) + 
+  facet_grid(full~year, scales='free_x') + 
+  labs(x = '',  
+       y = 'Cumulative rainfall and runoff (inches)') + 
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+f
+
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2019without rain.jpg", plot=f, width = 6, height=8)
+
+
+
+
 g <- ggplot(d, aes(x = date_time, 
                    y = y, 
                    group = watershed, 
