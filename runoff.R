@@ -386,6 +386,9 @@ library(lubridate)
 library(zoo)
 library(purrr)
 
+#sed2 <- read.csv(file = "~/prairiestrips/sed2.csv") %>%
+        mutate(date_time = ymd_hms(date_time))
+
 sed2 <- sed2 %>%
   mutate(date = date(date_time)) %>%
   arrange(date_time)
@@ -478,7 +481,7 @@ tssgraph <- ggplot(sed3 %>%
   geom_line(size = 1) +
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
-  facet_grid(full ~ year, scales = 'free_x') + 
+  facet_grid(codes ~ year, scales = 'free_x') + 
   labs(x = '',  
        y = 'Runoff Total Suspended Solids (lbs/ac)') + 
   theme_bw() + 
