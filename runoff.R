@@ -193,9 +193,9 @@ saveRDS(d, file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
 
 # custom settings for graphs ----------------------------------------------
 
-colorscale <- c(rain = "blue", 
-                control = "black",
-                treatment = "seagreen")
+colorscale <- c(rain = "seagreen", 
+                control = "red",
+                treatment = "blue")
 linescale <- c(rain = "dotted",
                control = "solid",
                treatment = "dashed")
@@ -386,8 +386,8 @@ library(lubridate)
 library(zoo)
 library(purrr)
 
-#sed2 <- read.csv(file = "~/prairiestrips/sed2.csv") %>%
-        mutate(date_time = ymd_hms(date_time))
+# sed2 <- read.csv(file = "~/prairiestrips/sed2.csv") %>%
+#         mutate(date_time = ymd_hms(date_time))
 
 sed2 <- sed2 %>%
   mutate(date = date(date_time)) %>%
@@ -563,92 +563,95 @@ write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiest
 
 
 # site specific graphs, can edit for which site you want --------
-# 
-# setwd("C:/Users/Chris/Documents/prairiestrips/graphs/")
-#
-# siterainrunplot <- ggplot(d %>% filter(site=="white"), aes(x = date_time, 
-#                    y = y, 
-#                    group = watershed, 
-#                    linetype = treatment,
-#                    color = treatment)) +
-#   ggtitle("Rain and Surface Runoff") +
-#   geom_line(size = 1) +
-#   facet_grid(full~year, scales='free_x') + 
-#   labs(x = '',  
-#        y = 'Cumulative rainfall and runoff (inches)') + 
-#   scale_color_manual(values = colorscale) +
-#   scale_linetype_manual(values = linescale) +
-#   theme_bw() +
-#   theme(plot.title = element_text(hjust = 0.5)) +
-#   theme(legend.position = "bottom",
-#         legend.title    = element_blank())
-# 
-# ggsave(filename = "whiterunoff.jpg", plot=siterainrunplot, width = 6, height=8)
-# 
-# 
-#
-# siteorthopgraph <- ggplot(sed3 %>% 
-#                         filter(site=="white", analyte == "Orthophosphate (mg P/L)"), 
-#                       aes(x = date_time, 
-#                           y = cumulative,
-#                           group = treatment,
-#                           color = treatment,
-#                           linetype = treatment)) + 
-#   ggtitle("Surface Runoff Orthophosphate") +
-#   geom_line() + 
-#   scale_color_manual(values = colorscale) +
-#   scale_linetype_manual(values = linescale) +
-#   facet_grid(full ~ year, scales = 'free_x') + 
-#   labs(x = '',  
-#        y = 'Cumulative Dissolved Nitrogen (lbs/ac)') + 
-#   theme_bw() +
-#   theme(plot.title = element_text(hjust = 0.5)) +
-#   theme(legend.position = "bottom",
-#         legend.title    = element_blank())
-# 
-# ggsave(filename = "whiteorthop.jpg", plot=siteorthopgraph, width = 6, height=8)
-# 
-# 
-# sitetssgraph <- ggplot(sed3 %>% 
-#                      filter(site=="white", analyte == "TSS (mg/L)"), 
-#                    aes(x = date_time, 
-#                        y = cumulative,
-#                        group = treatment,
-#                        color = treatment,
-#                        linetype = treatment)) + 
-#   ggtitle("Surface Runoff Sediment") +
-#   geom_line(size = 1) +
-#   scale_color_manual(values = colorscale) +
-#   scale_linetype_manual(values = linescale) +
-#   facet_grid(full ~ year, scales = 'free_x') + 
-#   labs(x = '',  
-#        y = 'Cumulative Total Suspended Solids (lbs/ac)') + 
-#   theme_bw() +
-#   theme(plot.title = element_text(hjust = 0.5)) +
-#   theme(legend.position = "bottom",
-#         legend.title    = element_blank())
-# 
-# ggsave(filename = "whitetss.jpg", plot=sitetssgraph, width = 6, height=8)
-# 
-# 
-# siteno3graph <- ggplot(sed3 %>% 
-#                           filter(site=="white", analyte == "Nitrate + nitrite (mg N/L)"), 
-#                         aes(x = date_time, 
-#                             y = cumulative,
-#                             group = treatment,
-#                             color = treatment,
-#                             linetype = treatment)) + 
-#   ggtitle("Surface Runoff Nitrate - Nitrogen") +
-#   geom_line(size = 1) +
-#   scale_color_manual(values = colorscale) +
-#   scale_linetype_manual(values = linescale) +
-#   facet_grid(full ~ year, scales = 'free_x') + 
-#   labs(x = '',  
-#        y = 'Cumulative Runoff Nitrate - Nitrogen (lbs/ac)') + 
-#   theme_bw() +
-#   theme(plot.title = element_text(hjust = 0.5)) +
-#   theme(legend.position = "bottom",
-#         legend.title    = element_blank())
-# 
-# ggsave(filename = "whiteno3.jpg", plot=siteno3graph, width = 6, height=8)
-# 
+
+d <- readRDS(file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
+
+
+setwd("C:/Users/Chris/Documents/prairiestrips/graphs/")
+
+siterainrunplot <- ggplot(d %>% filter(site=="spirit"), aes(x = date_time,
+                   y = y,
+                   group = watershed,
+                   linetype = treatment,
+                   color = treatment)) +
+  ggtitle("Rain and Surface Runoff") +
+  geom_line(size = 1) +
+  facet_grid(full~year, scales='free_x') +
+  labs(x = '',
+       y = 'Cumulative rainfall and runoff (inches)') +
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "spiritrunoff.jpg", plot=siterainrunplot, width = 6, height=8)
+
+
+
+siteorthopgraph <- ggplot(sed3 %>%
+                        filter(site=="spirit", analyte == "Orthophosphate (mg P/L)"),
+                      aes(x = date_time,
+                          y = cumulative,
+                          group = treatment,
+                          color = treatment,
+                          linetype = treatment)) +
+  ggtitle("Surface Runoff Orthophosphate") +
+  geom_line() +
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_grid(full ~ year, scales = 'free_x') +
+  labs(x = '',
+       y = 'Cumulative Dissolved Nitrogen (lbs/ac)') +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "spiritorthop.jpg", plot=siteorthopgraph, width = 6, height=8)
+
+
+sitetssgraph <- ggplot(sed3 %>%
+                     filter(site=="spirit", analyte == "TSS (mg/L)"),
+                   aes(x = date_time,
+                       y = cumulative,
+                       group = treatment,
+                       color = treatment,
+                       linetype = treatment)) +
+  ggtitle("Surface Runoff Sediment") +
+  geom_line(size = 1) +
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_grid(full ~ year, scales = 'free_x') +
+  labs(x = '',
+       y = 'Cumulative Total Suspended Solids (lbs/ac)') +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "spirittss.jpg", plot=sitetssgraph, width = 6, height=8)
+
+
+siteno3graph <- ggplot(sed3 %>%
+                          filter(site=="spirit", analyte == "Nitrate + nitrite (mg N/L)"),
+                        aes(x = date_time,
+                            y = cumulative,
+                            group = treatment,
+                            color = treatment,
+                            linetype = treatment)) +
+  ggtitle("Surface Runoff Nitrate - Nitrogen") +
+  geom_line(size = 1) +
+  scale_color_manual(values = colorscale) +
+  scale_linetype_manual(values = linescale) +
+  facet_grid(full ~ year, scales = 'free_x') +
+  labs(x = '',
+       y = 'Cumulative Runoff Nitrate - Nitrogen (lbs/ac)') +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank())
+
+ggsave(filename = "spiritno3.jpg", plot=siteno3graph, width = 6, height=8)
+

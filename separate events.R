@@ -188,7 +188,7 @@ sjstats::anova_stats(anova)
 
 apaTables::apa.aov.table(anova, filename = "wqsampletrtandctlanova.doc")
 
-ggplot(wqsampletrtandctl, aes(x=treatment, y=`Orthophosphate (mg P/L)`)) +
+ggplot(wqsampletrtandctl, aes(x=treatment, y=`TSS (mg/L)`)) +
   geom_boxplot() +
   facet_grid(site ~ year)
 
@@ -196,14 +196,14 @@ ggplot(wqsampletrtandctl, aes(x=treatment, y=`Orthophosphate (mg P/L)`)) +
 # below from Jared's "site as random effect" script --------------------------------------------------------
 library("lme4")
 mf <- lm(  log(`TSS (mg/L)`) ~ treatment + year +    site,  data = wqsampletrtandctl)
-
+mf
 # diagnostics
 opar = par(mfrow=c(2,2))
 plot(mf, 1:4, ask=FALSE)
 par(opar)
 
 mr <- lmer(log(`TSS (mg/L)`) ~ treatment + year + (1|site), data = wqsampletrtandctl)
-
+mr
 # diagnostics?
 
 

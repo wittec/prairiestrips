@@ -389,4 +389,65 @@ nut <- flextable(armnut) %>%
 
 nut
 ```
+
+
+ 
+  Runoff table for the Spirit Lake:
+```{r echo=FALSE}
+splrun <- filter(rainrun2016, Site == "Spirit Lake ") %>%
+  rbind(filter(rainrun2017,  Site == "Spirit Lake ")) %>%
+  rbind(filter(rainrun2018,  Site == "Spirit Lake ")) %>%
+  mutate(Year = c(2016:2018)) %>%
+  select(-Site) %>%
+  select(Year, everything())
+
+colkeys = c("Rain", "Control", "Treatment")
+
+flex <- flextable(splrun) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  #vline(j=1, border = std_border, part = "body") %>%
+  #vline(j=2, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2) %>%
+  set_header_labels(Rain = "Rain (in.)") %>%
+  add_header(Control = "Runoff (in.)", top = TRUE) %>% 
+  merge_at(i=1, j=3:4, part = "header") %>%
+  bold(part = "header") %>%
+  hline(i=1, j=1:2, border = noborder, part = "header") %>%
+  align(align = "center", part = "all") %>%
+  height(i=1, 0.25, part = "header")
+
+flex
+```
+   
+      
+Nutrient export table for Spirit Lake:      
+```{r echo=FALSE}
+splnut <- filter(nutrients2016, site == "Spirit Lake ") %>%
+  rbind(filter(nutrients2017, site == "Spirit Lake ")) %>%
+  rbind(filter(nutrients2018, site == "Spirit Lake ")) %>%
+  mutate(Year = c(2016:2018)) %>%
+  select(-site, -orthoctl, -orthotrt) %>%
+  select(Year, everything())
+
+noborder <- fp_border(width = 0)
+std_border = fp_border(color="black", width = 1)
+colkeys = c("no3ctl", "no3trt", "tssctl", "tsstrt")
+
+nut <- flextable(splnut) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  vline(j=1, border = std_border, part = "body") %>%
+  vline(j=3, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2, na_str = "NA") %>%
+  set_header_labels(no3ctl = "Control", no3trt = "Treatment", tssctl = "Control", tsstrt = "Treatment") %>%
+  add_header(no3ctl = "Nitrate (lbs/ac)", tssctl = "Total Suspended Solids (lbs/ac)") %>%
+  bold(part = "header") %>%
+  hline(i=1, j=1, border = noborder, part = "header") %>%
+  merge_at(i=1, j=2:3, part = "header") %>% 
+  merge_at(i=1, j=4:5, part = "header") %>% 
+  #merge_at(i=1, j=6:7, part = "header") %>%
+  align(align = "center", part = "all")
+  
+
+nut
+```
  
