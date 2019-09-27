@@ -1,0 +1,16 @@
+watershed,maxpeakcfs,flumesize,flumemaxcfs,Difference between  max peak flow and flume's max flow
+rhodesctl,12.5,2,19.3,6.8
+rhodestrt,10.4,2.5,11.1,0.7
+worlectl,19.2,2.5,19.3,0.1
+worletrt,16.4,2.5,19.3,2.9
+whitectl,22.3,,,
+whitetrt,19.1,,,
+mcnayctl,26.2,2.5,19.3,-6.9
+mcnaytrt,9.8,2,11.1,1.3
+armctl,25.7,2.5,19.3,-6.4
+armtrt,26,2.5,19.3,-6.7
+eiactl,17.4,2.5,19.3,1.9
+eiatrt,28.3,2.5,19.3,-9
+marshctl,,2.5,19.3,
+marshtrt,,2.5,19.3,
+spiritctl,,2.5,19.3,

@@ -81,8 +81,7 @@ wqsampletrtandctl <- filtertrtandctlevents %>%
   mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"))
 
 
-# event graphs ------------------------------------------------------------
-
+# data to graph events ------------------------------------------------------------
 graphevents <- left_join(events, atsfc) %>% 
   arrange(watershed, date_time) %>%
   left_join(STRIPS2Helmers::water_quality, by = "sampleID") %>%
@@ -94,67 +93,71 @@ graphevents <- left_join(events, atsfc) %>%
          eventflowinches = flow * 231 * 5 / (acres * 6.273e6))
   
 
-# wq samples only graphs --------------------------------------------------
+# event data to graph where wq samples were collected --------------------------------------------------
 wqsamplesonlygraphs <- graphevents %>% filter(value != "NA")
 
 
-# wq samples with both ctl and trt in event graphs ------------------------
+# event data to graoh where wq samples were collected from both ctl and trt ------------------------
 wqsampletrtandctlgraphs <- filtertrtandctlevents %>% left_join(wqsamplesonlygraphs)
 
 
 #MAKE EVENTLIST TO MAP FUNTION ONTO EVENTS
 grapheventlist <- split(graphevents, list(graphevents$site, graphevents$year, graphevents$event)) 
 
-eventgraphmaker <- function(data)
-{
-  v <- ggplot(data, 
-              aes(x = date_time, 
-                  y = eventflowinches,
-                  group = watershed,
-                  color = watershed)) +
-    geom_line(size = 1) + 
-    scale_x_datetime(date_labels= "%m/%d/%Y %H:%M:%S")
-  
-setwd("~/prairiestrips/graphs/flowevents/")
-  
-graphname <- paste0(head(data[5], n=1), "_", head(data[3], n=1), "_", (head(data[4], n=1)))
+#FUNCTION TO MAKE EVENT GRAPHS AND AUTOMATICALLY SAVE THEM 
 
-ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
-  
-  #return(v)
-}
-
-map(grapheventlist, eventgraphmaker)
+# eventgraphmaker <- function(data)
+# {
+#   v <- ggplot(data, 
+#               aes(x = date_time, 
+#                   y = eventflowinches,
+#                   group = watershed,
+#                   color = watershed)) +
+#     geom_line(size = 1) + 
+#     scale_x_datetime(date_labels= "%m/%d/%Y %H:%M:%S")
+#   
+# setwd("~/prairiestrips/graphs/flowevents/")
+#   
+# graphname <- paste0(head(data[5], n=1), "_", head(data[3], n=1), "_", (head(data[4], n=1)))
+# 
+# ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
+#   
+#   #return(v)
+# }
+# 
+# map(grapheventlist, eventgraphmaker)
 
 
 # event graphs with wq samples taken during event-------------------------
-wqsamplesonlygrapheventlist <- split(wqsamplesonlygraphs, list(wqsamplesonlygraphs$site, wqsamplesonlygraphs$year, wqsamplesonlygraphs$event)) 
 
-wqsampleeventgraphmaker <- function(data)
-{
-  v <- ggplot(data, 
-              aes(x = date_time, 
-                  y = eventflowinches,
-                  group = watershed,
-                  color = watershed)) +
-    geom_line(size = 1) + 
-    scale_x_datetime(date_labels= "%m/%d/%Y %H:%M:%S")
-  
-  setwd("~/prairiestrips/graphs/wqsampleflowevents/")
-  
-  graphname <- paste0(head(data[5], n=1), "_", head(data[3], n=1), "_", (head(data[4], n=1)))
-  
-  ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
-  
-  #return(v)
-}
+# wqsamplesonlygrapheventlist <- split(wqsamplesonlygraphs, list(wqsamplesonlygraphs$site, wqsamplesonlygraphs$year, wqsamplesonlygraphs$event)) 
+# 
+# wqsampleeventgraphmaker <- function(data)
+# {
+#   v <- ggplot(data, 
+#               aes(x = date_time, 
+#                   y = eventflowinches,
+#                   group = watershed,
+#                   color = watershed)) +
+#     geom_line(size = 1) + 
+#     scale_x_datetime(date_labels= "%m/%d/%Y %H:%M:%S")
+#   
+#   setwd("~/prairiestrips/graphs/wqsampleflowevents/")
+#   
+#   graphname <- paste0(head(data[5], n=1), "_", head(data[3], n=1), "_", (head(data[4], n=1)))
+#   
+#   ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
+#   
+#   #return(v)
+# }
+# 
+# map(wqsamplesonlygrapheventlist, wqsampleeventgraphmaker)
 
-map(wqsamplesonlygrapheventlist, wqsampleeventgraphmaker)
 
-
-# event graphs with wq samples taken during event for both ctl and --------
+# event graphs with wq samples taken during event for both ctl and trt--------
 wqsampletrtandctlgraphslist <- split(wqsampletrtandctlgraphs, list(wqsampletrtandctlgraphs$site, wqsampletrtandctlgraphs$year, wqsampletrtandctlgraphs$event)) 
 
+library(cowplot)
 wqsampletrtandctlgraphmaker <- function(data)
 {
   v <- ggplot(data, 
@@ -164,9 +167,12 @@ wqsampletrtandctlgraphmaker <- function(data)
                   color = watershed)) +
     geom_line(size = 1) + 
     scale_x_datetime(date_labels= "%m/%d/%Y %H:%M:%S") +
+    theme_cowplot(12) +
     theme(legend.position = "bottom",
           legend.title    = element_blank(),
-          axis.text.x = element_text(angle=60,hjust=1))
+          axis.text.x = element_text(angle=60,hjust=1, size = 6),
+          axis.title.x = element_blank())
+    
   
   setwd("~/prairiestrips/graphs/wqsampletrtandctlevents/")
   
@@ -178,6 +184,41 @@ wqsampletrtandctlgraphmaker <- function(data)
 }
 
 map(wqsampletrtandctlgraphslist, wqsampletrtandctlgraphmaker)
+
+
+# trying to subset a list.. maybe to create a subset of graphs lat --------
+
+test <- wqsampletrtandctlgraphslist %>% keep(~ "ARM" %in% .x$codes)
+
+testgraphmaker <- function(data)
+{
+  v <- ggplot(data, 
+              aes(x = date_time, 
+                  y = eventflowinches,
+                  group = watershed,
+                  color = watershed)) +
+    geom_line(size = 1) + 
+    scale_x_datetime(date_labels= "%m/%d/%Y %H:%M:%S") +
+    theme_cowplot(12) +
+    theme(legend.position = "bottom",
+          legend.title    = element_blank(),
+          axis.text.x = element_text(angle=60,hjust=1, size = 6),
+          axis.title.x = element_blank())
+  
+  dirtest <- paste0("C:/Users/Chris/Documents/prairiestrips/graphs/wqsampletrtandctlevents/", head(data[1], n=1))
+  
+  setwd(dirtest)
+  
+  graphname <- paste0(head(data[1], n=1), "_", head(data[2], n=1), "_", (head(data[3], n=1)))
+  
+  ggsave(v, file=paste0(graphname,".jpg"), width = 6, height = 8)
+  
+  #return(v)
+}
+
+map(wqsampletrtandctlgraphslist, testgraphmaker)
+
+
 
 
 # event statistical analyses ----------------------------------------------------------
