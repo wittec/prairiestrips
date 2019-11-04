@@ -57,24 +57,76 @@ mcn2018fix <- read_csv("~/STRIPS2Helmers/rain-fixes/2018/charitonawosfix.csv",
          `rain-m` = `rain-m`/1000) %>%
   filter(!is.na(`rain-m`))
 
-rainfixes <- rbind(spl2016fix, spl2017fix, spl2018fix, wor2018fix, wor2018fix2, mcn2018fix)
+whi2019fix <- read_csv("~/STRIPS2Helmers/rain-fixes/2019/audubonawosfix.csv",
+                       col_names = c("watershed", "date_time", "rain-m"),
+                       col_types = c("ccn"),
+                       skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+
+whi2019fix1 <- read_csv("~/STRIPS2Helmers/rain-fixes/2019/audubonawosfix1.csv",
+                       col_names = c("watershed", "date_time", "rain-m"),
+                       col_types = c("ccn"),
+                       skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+
+mcn2019fix <- read_csv("~/STRIPS2Helmers/rain-fixes/2019/charitonawosfix.csv",
+                       col_names = c("watershed", "date_time", "rain-m"),
+                       col_types = c("ccn"),
+                       skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+
+mar2019fix <- read_csv("~/STRIPS2Helmers/rain-fixes/2019/marshalltownasosfix.csv",
+                       col_names = c("watershed", "date_time", "rain-m"),
+                       col_types = c("ccn"),
+                       skip = 1) %>%
+  mutate(date_time = as.POSIXct(date_time, tz = "UTC", format = "%m/%d/%Y %H:%M"),
+         `rain-m` = `rain-m`/1000) %>%
+  filter(!is.na(`rain-m`))
+
+rainfixes <- rbind(spl2016fix, spl2017fix, spl2018fix, wor2018fix, wor2018fix2, mcn2018fix,
+                   whi2019fix, whi2019fix1, mcn2019fix, mar2019fix)
 
 rainfixes$watershed[rainfixes$watershed=="EST"] <- "spiritctl"
 rainfixes$watershed[rainfixes$watershed=="AMW"] <- "worlectl"
 rainfixes$watershed[rainfixes$watershed=="CNC"] <- "mcnayctl"
+rainfixes$watershed[rainfixes$watershed=="ADU"] <- "whitetrt"
+rainfixes$watershed[rainfixes$watershed=="MIW"] <- "marshctl"
 
 #replacing rhodesctl rain with worlectl rain for 9/15/16
-s <- filter(STRIPS2Helmers::rain, watershed == "worlectl" & date_time >= as.Date("2016-09-15") & date_time <= as.Date("2016-09-16"))
+s <- filter(STRIPS2Helmers::rain, watershed == "worlectl" & date_time >= as.Date("2016-09-15") & 
+              date_time <= as.Date("2016-09-16"))
 
 rain <- STRIPS2Helmers::rain %>%
-  mutate(`rain-m` = replace(`rain-m`, date_time >= as.Date("2016-09-15") & date_time <= as.Date("2016-09-16") & 
+  mutate(`rain-m` = replace(`rain-m`, date_time >= as.Date("2016-09-15") & 
+                              date_time <= as.Date("2016-09-16") & 
                               watershed == "rhodestrt", s$`rain-m`)) %>% 
-  filter(!(date_time>= min(spl2016fix$date_time) & date_time <= max(spl2016fix$date_time) & watershed == "spiritctl"))%>%
-  filter(!(date_time>= min(spl2017fix$date_time) & date_time <= max(spl2017fix$date_time) & watershed == "spiritctl"))%>%
-  filter(!(date_time>= min(spl2018fix$date_time) & date_time <= max(spl2018fix$date_time) & watershed == "spiritctl"))%>%
-  filter(!(date_time>= min(mcn2018fix$date_time) & date_time <= max(mcn2018fix$date_time) & watershed == "mcnayctl"))%>%
-  filter(!(date_time>= min(wor2018fix$date_time) & date_time <= max(wor2018fix$date_time) & watershed == "worlectl"))%>%
-  filter(!(date_time>= min(wor2018fix2$date_time) & date_time <= max(wor2018fix2$date_time) & watershed == "worlectl"))%>%
+  filter(!(date_time>= min(spl2016fix$date_time) & date_time <= max(spl2016fix$date_time) & 
+             watershed == "spiritctl"))%>%
+  filter(!(date_time>= min(spl2017fix$date_time) & date_time <= max(spl2017fix$date_time) & 
+             watershed == "spiritctl"))%>%
+  filter(!(date_time>= min(spl2018fix$date_time) & date_time <= max(spl2018fix$date_time) & 
+             watershed == "spiritctl"))%>%
+  filter(!(date_time>= min(mcn2018fix$date_time) & date_time <= max(mcn2018fix$date_time) & 
+             watershed == "mcnayctl"))%>%
+  filter(!(date_time>= min(wor2018fix$date_time) & date_time <= max(wor2018fix$date_time) & 
+             watershed == "worlectl"))%>%
+  filter(!(date_time>= min(wor2018fix2$date_time) & date_time <= max(wor2018fix2$date_time) & 
+             watershed == "worlectl"))%>%
+  filter(!(date_time>= min(whi2019fix$date_time) & date_time <= max(whi2019fix$date_time) & 
+             watershed == "whitetrt"))%>%
+  filter(!(date_time>= min(whi2019fix1$date_time) & date_time <= max(whi2019fix1$date_time) & 
+             watershed == "whitetrt"))%>%
+  filter(!(date_time>= min(mcn2019fix$date_time) & date_time <= max(mcn2019fix$date_time) & 
+             watershed == "mcnayctl"))%>%
+  filter(!(date_time>= min(mar2019fix$date_time) & date_time <= max(mar2019fix$date_time) & 
+             watershed == "marshctl"))%>%
+  
   rbind(rainfixes) %>%
   mutate(treatment = ifelse(grepl("ctl", watershed), "control", "treatment"),
          site = gsub("ctl", "", watershed),
