@@ -425,7 +425,7 @@ dayrainflowsed <- d %>%
   select(-treatment) %>%
   left_join(daysed)
 # 
-# write.csv(dayrainflow, file = ("C:/Users/Chris/Documents/prairiestrips/dailyflowrainandsed.csv"))
+# write.csv(dayrainflowsed, file = ("C:/Users/Chris/Documents/prairiestrips/dayrainflowsed.csv"))
 #  
 
 
@@ -451,6 +451,8 @@ max2017seddate <- max(sed2$date_time[sed2$year=="2017"])
 
 max2018seddate <- max(sed2$date_time[sed2$year=="2018"])
 
+max2019seddate <- max(sed2$date_time[sed2$year=="2019"])
+
 yearwatershedanalytesplit <- split(sed2, list(sed2$year, sed2$watershed, sed2$analyte)) #makes a list of groups of "sed2" dataset based on year, watershed, and analyte
 
 applymaxdate <- function(data) 
@@ -464,6 +466,7 @@ newrow <-newrow %>% #inserts the maxdate (eg. "max2016date") into the date_time 
   mutate(date_time = ifelse(year == 2016, "2016-11-03 06:25:00", date_time)) %>%
   mutate(date_time = ifelse(year == 2017, "2017-06-28 11:25:00", date_time)) %>%
   mutate(date_time = ifelse(year == 2018, "2018-10-11 02:30:00", date_time)) %>%
+  mutate(date_time = ifelse(year == 2019, "2019-10-21 20:00:00", date_time)) %>%
   mutate(date_time = as.POSIXct(date_time))
 
 t <- t %>%
@@ -495,7 +498,7 @@ no3graph <- ggplot(sed3 %>%
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/no32018.jpg", plot=no3graph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/no32019.jpg", plot=no3graph, width = 6, height=8)
 
 
 # orthophosphate graph all years----------------------------------------------------
@@ -518,7 +521,7 @@ orthopgraph <- ggplot(sed3 %>%
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/orthop2018.jpg", plot=orthopgraph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/orthop2019.jpg", plot=orthopgraph, width = 6, height=8)
 
 
 # tss graph all years---------------------------------------------------------------
@@ -541,7 +544,7 @@ tssgraph <- ggplot(sed3 %>%
       legend.title    = element_blank(),
       axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss2018.jpg", plot=tssgraph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss2019.jpg", plot=tssgraph, width = 6, height=8)
 
 # create table of final cumulative values for nutrients in 2016 ---------------
 
@@ -593,8 +596,6 @@ allnuttable <- no3table %>%
   rename(site = full, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
-write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018.csv")
-
 #MAKING 2018 TABLE WITH THE SITE CODES INSTEAD OF FULL NAMES
 
 nuttable <- sed2 %>% group_by(codes, treatment, analyte) %>% filter(year=="2018") %>% summarize_at(c("cumulative"), max, na.rm = T)
@@ -611,6 +612,44 @@ allnuttable <- no3table %>%
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
 write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018sitecodes.csv")
+
+
+# create table of final cumulative values for nutrients in 2019 ---------------
+
+nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2019") %>% summarize_at(c("cumulative"), max, na.rm = T)
+n1 <- nuttable %>% spread(analyte, cumulative)
+no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+
+allnuttable <- no3table %>%
+  left_join(orthotable, by = "full") %>%
+  left_join(tsstable, by = "full") %>%
+  mutate_if(is.numeric, round, 2) %>%
+  rename(site = full, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
+         orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
+
+
+write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2019.csv")
+
+
+#MAKING 2019 TABLE WITH THE SITE CODES INSTEAD OF FULL NAMES
+
+nuttable <- sed2 %>% group_by(codes, treatment, analyte) %>% filter(year=="2019") %>% summarize_at(c("cumulative"), max, na.rm = T)
+n1 <- nuttable %>% spread(analyte, cumulative)
+no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+
+allnuttable <- no3table %>%
+  left_join(orthotable, by = "codes") %>%
+  left_join(tsstable, by = "codes") %>%
+  mutate_if(is.numeric, round, 2) %>%
+  rename(site = codes, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
+         orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
+
+write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2019sitecodes.csv")
+
 
 
 
