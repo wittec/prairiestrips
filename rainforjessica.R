@@ -35,5 +35,5 @@ write.csv(rain2017, file = "C:/Users/Chris/Documents/prairiestrips/2017rain.csv"
 rain2018 <- myrain %>% filter(year==2018)
 write.csv(rain2018, file = "C:/Users/Chris/Documents/prairiestrips/2018rain.csv")
 
-# rain2019 <- myrain %>% filter(year==2019)
-# write.csv(rain2019, file = "C:/Users/Chris/Documents/prairiestrips/2019rainforjessica.csv")
+rain2019 <- myrain %>% filter(year==2019)
+write.csv(rain2019, file = "C:/Users/Chris/Documents/prairiestrips/2019rain.csv")
