@@ -47,6 +47,17 @@ gw2018 <- read.csv("./2018/groundwater.csv", skip = 2, header = T) %>%
   select(Sample.ID., NOx.result..mg.N.L., DRP.result..mg.P.L.) %>%
   rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
 
+gw2019codes <- read.csv("./2019/groundwater_codes.csv", skip = 2)[ , 1:8] %>%
+  select(year, month, site, trt, position, ID.) %>%
+  rename(id = ID.) %>%
+  filter(id != "NA") %>%
+  mutate(id = as.numeric(as.character(id)))
+
+gw2019 <- read.csv("./2019/groundwater.csv", skip = 2, header = T) %>%
+  select(Sample.ID., NOx.result..mg.N.L., DRP.result..mg.P.L.) %>%
+  rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
+
+
 gw2016 <- gw2016 %>%
   rbind(gw2016a) %>%
   full_join(gw2016codes) %>%
@@ -64,9 +75,17 @@ gw2018 <- gw2018 %>%
          drpmgL = as.numeric(as.character(drpmgL))
         )
 
+gw2019 <- gw2019 %>%
+  full_join(gw2019codes) %>%
+  mutate(month = as.character(month),
+         no3mgL = as.numeric(as.character(no3mgL)),
+         drpmgL = as.numeric(as.character(drpmgL))
+  )
+
 all <- gw2016 %>%
   full_join(gw2017) %>%
   full_join(gw2018) %>%
+  full_join(gw2019) %>%
   filter(!is.na(id)) %>%
   filter(!is.na(site)) %>%
   rename(sampleID = id)
@@ -78,7 +97,8 @@ is.na(all$sampleID) <- NULL
 all$year[all$sampleID <5000] <- "2015"
 all$year[all$sampleID >= 5000 & all$sampleID < 6000] <- "2016"
 all$year[all$sampleID >= 6000 & all$sampleID < 7000] <- "2017"
-all$year[all$sampleID >= 7000] <- "2018"
+all$year[all$sampleID >= 7000 & all$sampleID <8000] <- "2018"
+all$year[all$sampleID >= 8000] <- "2019"
 
 # water quality - correcting typo's, wrong codes, etc. ------------------------------------
 

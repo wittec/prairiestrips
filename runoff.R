@@ -117,9 +117,15 @@ linescale <- c(rain = "dotted",
                treatment = "dashed")
 
 
-# runoff and rain graph, all years -------------------------------
+# runoff only (no rain) graph, all years -------------------------------
 
 #d <- readRDS(file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
+
+colorscale1 <- c(control = "red",
+                treatment = "blue")
+linescale1 <- c(control = "solid",
+               treatment = "dashed")
+
 
 f <- ggplot(d %>% filter(treatment != "rain"), aes(x = date_time, 
                    y = y, 
@@ -127,11 +133,11 @@ f <- ggplot(d %>% filter(treatment != "rain"), aes(x = date_time,
                    linetype = treatment,
                    color = treatment)) +
   geom_line(size = 1) + 
-  facet_grid(full~year, scales='free_x') + 
+  facet_grid(codes~year, scales='free_x') + 
   labs(x = '',  
-       y = 'Cumulative rainfall and runoff (inches)') + 
-  scale_color_manual(values = colorscale) +
-  scale_linetype_manual(values = linescale) +
+       y = 'Cumulative Runoff (inches)') + 
+  scale_color_manual(values = colorscale1) +
+  scale_linetype_manual(values = linescale1) +
   theme_bw() +
   theme(legend.position = "bottom",
         legend.title    = element_blank(),
@@ -143,6 +149,7 @@ ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2019witho
 
 
 
+# runoff and rain graph, all years -------------------------------
 
 g <- ggplot(d, aes(x = date_time, 
                    y = y, 
@@ -302,8 +309,7 @@ library(lubridate)
 library(zoo)
 library(purrr)
 
-# sed2 <- read.csv(file = "~/prairiestrips/sed2.csv") %>%
-#         mutate(date_time = ymd_hms(date_time))
+# sed2 <- read.csv(file = "~/prairiestrips/sed2.csv") %>% mutate(date_time = ymd_hms(date_time))
 
 sed2 <- sed2 %>%
   mutate(date = date(date_time)) %>%
