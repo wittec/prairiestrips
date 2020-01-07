@@ -33,7 +33,7 @@ require(tidyverse)
 
 
 This is the rain and runoff table for 2016:
-```{r echo=FALSE}
+```{r rain and runoff table for 2016, echo=FALSE}
 noborder <- fp_border(width = 0)
 std_border = fp_border(color="black", width = 1)
 colkeys = c("Rain", "Control", "Treatment")
@@ -58,7 +58,7 @@ flex
 
 
 This is the rain and runoff table for 2017:
-```{r echo=FALSE}
+```{r rain and runoff table for 2017, echo=FALSE}
 noborder <- fp_border(width = 0)
 std_border = fp_border(color="black", width = 1)
 colkeys = c("Rain", "Control", "Treatment")
@@ -83,7 +83,7 @@ flex
 
 
 This is the rain and runoff table for 2018:
-```{r echo=FALSE}
+```{r rain and runoff table for 2018, echo=FALSE}
 noborder <- fp_border(width = 0)
 std_border = fp_border(color="black", width = 1)
 colkeys = c("Rain", "Control", "Treatment")
@@ -107,7 +107,7 @@ flex
 ```
 
 This is the rain and runoff table for 2018 with site codes:
-```{r echo=FALSE}
+```{r rain and runoff table for 2018 with site codes, echo=FALSE}
 require(knitr)
 require(kableExtra)
 require(dplyr)
@@ -138,7 +138,7 @@ flex
 
 
 This is the rain and runoff table for 2019 with site codes:
-```{r echo=FALSE}
+```{r rain and runoff table for 2019 with site codes, echo=FALSE}
 require(knitr)
 require(kableExtra)
 require(dplyr)
@@ -168,10 +168,40 @@ flex <- flextable(rainrun2019codes) %>%
 flex
 ```
 
+Here is the table summing the rain and runoff over the years 2016-present:
+```{r table summing the rain and runoff over the years 2016-present, echo=FALSE}
+require(knitr)
+require(kableExtra)
+require(dplyr)
+require(officer)
+require(flextable)
+require(tidyverse)
+noborder <- fp_border(width = 0)
+std_border = fp_border(color="black", width = 1)
+colkeys = c("Rain", "Control", "Treatment")
+
+rainrunallcodes <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/rainrunoffallyearscumulative.csv")
+
+flex <- flextable(rainrunallcodes) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  vline(j=1, border = std_border, part = "body") %>%
+  vline(j=2, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2) %>%
+  set_header_labels(Rain = "Rain (in.)") %>%
+  add_header(Control = "Runoff (in.)", top = TRUE) %>% 
+  bold(part = "header") %>%
+  merge_at(i=1, j=3:4, part = "header") %>%
+  hline(i=1, j=1:2, border = noborder, part = "header") %>%
+  align(align = "center", part = "all") %>%
+  height(i=1, 0.25, part = "header") %>%
+  font(fontname = "calibri", part = "all")
+
+flex
+```
 
  Here is the nutrient table from 2016:
 
-```{r echo=FALSE}
+```{r nutrient table from 2016, echo=FALSE}
 nutrients2016 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/nutrients2016.csv")
 noborder <- fp_border(width = 0)
 std_border = fp_border(color="black", width = 1)
@@ -200,7 +230,7 @@ nut
   
   
   Here is the nutrient table from 2017:
-```{r echo=FALSE}
+```{r nutrient table from 2017, echo=FALSE}
 nutrients2017 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/nutrients2017.csv")
 noborder <- fp_border(width = 0)
 std_border = fp_border(color="black", width = 1)
@@ -229,7 +259,7 @@ nut
   
   This is the nutrient loss table for 2018:
 
-```{r echo=FALSE}
+```{r nutrient loss table for 2018, echo=FALSE}
 nutrients2018 <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018.csv")
 noborder <- fp_border(width = 0)
 std_border = fp_border(color="black", width = 1)
@@ -258,7 +288,7 @@ nut
 
   This is the nutrient loss table for 2018 with site codes instead of full names:
 
-```{r echo=FALSE}
+```{r nutrient loss table for 2018 with site codes, echo=FALSE}
 
 require(knitr)
 require(kableExtra)
@@ -295,7 +325,7 @@ nut
 
   This is the nutrient loss table for 2019 with site codes instead of full names:
 
-```{r echo=FALSE}
+```{r nutrient loss table for 2019 with site codes, echo=FALSE}
 
 require(knitr)
 require(kableExtra)
@@ -329,6 +359,43 @@ nut <- flextable(nutrients2019codes) %>%
 nut
 
 ```
+
+This is a table of the cumulative nutrient losses for 2016-present:
+```{r table of cumulative nutrient losses for 2016-present, echo=FALSE}
+
+require(knitr)
+require(kableExtra)
+require(dplyr)
+require(officer)
+require(flextable)
+require(tidyverse)
+
+allyearsnuttable <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/nutrientsallyearscumulative.csv")
+noborder <- fp_border(width = 0)
+std_border = fp_border(color="black", width = 1)
+colkeys = c("no3ctl", "no3trt", "orthoctl", "orthotrt", "tssctl", "tsstrt")
+
+nut <- flextable(allyearsnuttable) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  vline(j=1, border = std_border, part = "body") %>%
+  vline(j=3, border = std_border, part = "body") %>%
+  vline(j=5, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2, na_str = "NA") %>%
+  set_header_labels(Site = "Site", no3ctl = "Control", no3trt = "Treatment", orthoctl = "Control", orthotrt = "Treatment", tssctl = "Control", tsstrt = "Treatment") %>%
+  add_header(no3ctl = "Nitrate-N (lbs/ac)", orthoctl = "Orthophosphate (lbs/ac)", tssctl = "Total Suspended Solids (lbs/ac)") %>% 
+  bold(part = "header") %>%
+  hline(i=1, j=1, border = noborder, part = "header") %>%
+  merge_at(i=1, j=2:3, part = "header") %>% 
+  merge_at(i=1, j=4:5, part = "header") %>% 
+  merge_at(i=1, j=6:7, part = "header") %>%
+  align(align = "center", part = "all")
+  
+
+nut
+
+```
+
+
 
 <!-- ```{r, echo=FALSE} -->
 

@@ -173,52 +173,65 @@ ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2019.jpg"
 
 # create table of final cumulative values for rain and flow in 2016---------------
 
-endtable <- d %>% filter(year=="2016") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
-e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
-e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
-e1$rain <- e2$rain
-e1 <- e1 %>% 
+endtable2016 <- d %>% filter(year=="2016") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+e20161 <- endtable2016 %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
+e20162 <- endtable2016 %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
+e20161$rain <- e20162$rain
+e20161 <- e20161 %>% 
   mutate_if(is.numeric, round, 2) %>%
   rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
 
-write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2016.csv")
+write.csv(e20161, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2016.csv")
 
 # create table of final cumulative values for rain and flow in 2017---------------
 
-endtable <- d %>% filter(year=="2017") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
-e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
-e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
-e1$rain <- e2$rain
-e1 <- e1 %>% 
+endtable2017 <- d %>% filter(year=="2017") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+e20171 <- endtable2017 %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
+e20172 <- endtable2017 %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
+e20171$rain <- e20172$rain
+e20171 <- e20171 %>% 
   mutate_if(is.numeric, round, 2) %>%
   rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
 
-write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2017.csv")
+write.csv(e20171, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2017.csv")
 
 
 # create table of final cumulative values for rain and flow in 2018---------------
 
-endtable <- d %>% filter(year=="2018") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
-e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
-e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
-e1$rain <- e2$rain
-e1 <- e1 %>% 
+endtable2018 <- d %>% filter(year=="2018") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+e20181 <- endtable2018 %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
+e20182 <- endtable2018 %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
+e20181$rain <- e20182$rain
+e20181 <- e20181 %>% 
   mutate_if(is.numeric, round, 2) %>%
   rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
 
-write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
+write.csv(e20181, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2018.csv")
 
 # create table of final cumulative values for rain and flow in 2019---------------
 
-endtable <- d %>% filter(year=="2019") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
-e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
-e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
-e1$rain <- e2$rain
-e1 <- e1 %>% 
+endtable2019 <- d %>% filter(year=="2019") %>% group_by(full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+e20191 <- endtable2019 %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
+e20192 <- endtable2019 %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
+e20191$rain <- e20192$rain
+e20191 <- e20191 %>% 
   mutate_if(is.numeric, round, 2) %>%
   rename(Site = full, Rain = rain, Control = control, Treatment = treatment)
 
-write.csv(e1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2019.csv")
+write.csv(e20191, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2019.csv")
+
+# TABLE OF CUMULATIVE RAIN AND FLOW VALUES FOR YEARS 2016 - PRESENT
+
+allyearstable <- e20161 %>% rbind(e20171, e20181, e20191) %>% group_by(Site) %>% 
+  summarise_at(c("Rain", "Control", "Treatment"), sum)
+  
+allyearstable1 <- left_join(allyearstable, d, by = c("Site" = "full")) %>%
+  select(codes, Rain, Control, Treatment) %>%
+  unique() %>%
+  rename(Site = codes)
+
+write.csv(allyearstable1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/rainrunoffallyearscumulative.csv")
+
 
 #MAKING TABLE WITH 3 LETTER CODES INSTEAD OF FULL NAMES OF SITES
 endtable <- d %>% filter(year=="2019") %>% group_by(codes, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
@@ -418,107 +431,120 @@ ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss2019.jpg", p
 
 # create table of final cumulative values for nutrients in 2016 ---------------
 
-nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2016") %>% summarize_at(c("cumulative"), max, na.rm = T)
-n1 <- nuttable %>% spread(analyte, cumulative)
-no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
-orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
-tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+nuttable2016 <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2016") %>% summarize_at(c("cumulative"), max, na.rm = T)
+n12016 <- nuttable2016 %>% spread(analyte, cumulative)
+no3table2016 <- n12016 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable2016 <- n12016 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable2016 <- n12016 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
 
-allnuttable <- no3table %>%
-  left_join(orthotable, by = "full") %>%
-  left_join(tsstable, by = "full") %>%
+allnuttable2016 <- no3table2016 %>%
+  left_join(orthotable2016, by = "full") %>%
+  left_join(tsstable2016, by = "full") %>%
   mutate_if(is.numeric, round, 2) %>%
   rename(site = full, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
-write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2016.csv")
+write.csv(allnuttable2016, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2016.csv")
 
 
 # create table of final cumulative values for nutrients in 2017 ---------------
 
-nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2017") %>% summarize_at(c("cumulative"), max, na.rm = T)
-n1 <- nuttable %>% spread(analyte, cumulative)
-no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
-orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
-tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+nuttable2017 <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2017") %>% summarize_at(c("cumulative"), max, na.rm = T)
+n12017 <- nuttable2017 %>% spread(analyte, cumulative)
+no3table2017 <- n12017 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable2017 <- n12017 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable2017 <- n12017 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
 
-allnuttable <- no3table %>%
-  left_join(orthotable, by = "full") %>%
-  left_join(tsstable, by = "full") %>%
+allnuttable2017 <- no3table2017 %>%
+  left_join(orthotable2017, by = "full") %>%
+  left_join(tsstable2017, by = "full") %>%
   mutate_if(is.numeric, round, 2) %>%
   rename(site = full, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
-write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2017.csv")
+write.csv(allnuttable2017, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2017.csv")
 
 # create table of final cumulative values for nutrients in 2018 ---------------
 
-nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2018") %>% summarize_at(c("cumulative"), max, na.rm = T)
-n1 <- nuttable %>% spread(analyte, cumulative)
-no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
-orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
-tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+nuttable2018 <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2018") %>% summarize_at(c("cumulative"), max, na.rm = T)
+n12018 <- nuttable2018 %>% spread(analyte, cumulative)
+no3table2018 <- n12018 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable2018 <- n12018 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable2018 <- n12018 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
 
-allnuttable <- no3table %>%
-  left_join(orthotable, by = "full") %>%
-  left_join(tsstable, by = "full") %>%
+allnuttable2018 <- no3table2018 %>%
+  left_join(orthotable2018, by = "full") %>%
+  left_join(tsstable2018, by = "full") %>%
   mutate_if(is.numeric, round, 2) %>%
   rename(site = full, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
 #MAKING 2018 TABLE WITH THE SITE CODES INSTEAD OF FULL NAMES
 
-nuttable <- sed2 %>% group_by(codes, treatment, analyte) %>% filter(year=="2018") %>% summarize_at(c("cumulative"), max, na.rm = T)
-n1 <- nuttable %>% spread(analyte, cumulative)
-no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
-orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
-tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+nuttable2018 <- sed2 %>% group_by(codes, treatment, analyte) %>% filter(year=="2018") %>% summarize_at(c("cumulative"), max, na.rm = T)
+n12018 <- nuttable2018 %>% spread(analyte, cumulative)
+no3table2018 <- n12018 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable2018 <- n12018 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable2018 <- n12018 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
 
-allnuttable <- no3table %>%
-  left_join(orthotable, by = "codes") %>%
-  left_join(tsstable, by = "codes") %>%
+allnuttable2018codes <- no3table2018 %>%
+  left_join(orthotable2018, by = "codes") %>%
+  left_join(tsstable2018, by = "codes") %>%
   mutate_if(is.numeric, round, 2) %>%
   rename(site = codes, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
-write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018sitecodes.csv")
+write.csv(allnuttable2018codes, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2018sitecodes.csv")
 
 
 # create table of final cumulative values for nutrients in 2019 ---------------
 
-nuttable <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2019") %>% summarize_at(c("cumulative"), max, na.rm = T)
-n1 <- nuttable %>% spread(analyte, cumulative)
-no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
-orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
-tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+nuttable2019 <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2019") %>% summarize_at(c("cumulative"), max, na.rm = T)
+n12019 <- nuttable2019 %>% spread(analyte, cumulative)
+no3table2019 <- n12019 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable2019 <- n12019 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable2019 <- n12019 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
 
-allnuttable <- no3table %>%
-  left_join(orthotable, by = "full") %>%
-  left_join(tsstable, by = "full") %>%
+allnuttable2019 <- no3table2019 %>%
+  left_join(orthotable2019, by = "full") %>%
+  left_join(tsstable2019, by = "full") %>%
   mutate_if(is.numeric, round, 2) %>%
   rename(site = full, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
 
-write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2019.csv")
+write.csv(allnuttable2019, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2019.csv")
 
 
 #MAKING 2019 TABLE WITH THE SITE CODES INSTEAD OF FULL NAMES
 
-nuttable <- sed2 %>% group_by(codes, treatment, analyte) %>% filter(year=="2019") %>% summarize_at(c("cumulative"), max, na.rm = T)
-n1 <- nuttable %>% spread(analyte, cumulative)
-no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
-orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
-tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+nuttable2019 <- sed2 %>% group_by(codes, treatment, analyte) %>% filter(year=="2019") %>% summarize_at(c("cumulative"), max, na.rm = T)
+n12019 <- nuttable2019 %>% spread(analyte, cumulative)
+no3table2019 <- n12019 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable2019 <- n12019 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable2019 <- n12019 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
 
-allnuttable <- no3table %>%
-  left_join(orthotable, by = "codes") %>%
-  left_join(tsstable, by = "codes") %>%
+allnuttable2019codes <- no3table2019 %>%
+  left_join(orthotable2019, by = "codes") %>%
+  left_join(tsstable2019, by = "codes") %>%
   mutate_if(is.numeric, round, 2) %>%
   rename(site = codes, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment)
 
-write.csv(allnuttable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2019sitecodes.csv")
+write.csv(allnuttable2019codes, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrients2019sitecodes.csv")
+
+# MAKING CUMULATIVE NUTRIENT TABLE WITH SITE CODES FOR YEARS 2016-PRESENT
+
+allyearsnuttable <- allnuttable2016 %>% rbind(allnuttable2017, allnuttable2018, allnuttable2019) %>% group_by(site) %>% 
+  summarise_at(c("no3ctl", "no3trt", "orthoctl", "orthotrt", "tssctl", "tsstrt"), sum, na.rm = T) %>%
+  mutate_at(vars(tssctl, tsstrt), funs(round(., 0)))
+
+allyearsnuttable1 <- left_join(allyearsnuttable, d, by = c("site" = "full")) %>%
+  select(codes, no3ctl, no3trt, orthoctl, orthotrt, tssctl, tsstrt) %>%
+  unique() %>%
+  rename(Site = codes)
+
+write.csv(allyearsnuttable1, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/nutrientsallyearscumulative.csv")
 
 
 

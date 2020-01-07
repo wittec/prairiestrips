@@ -1,6 +1,4 @@
 
-# setwd("~/prairiestrips/groundwater/data-raw/waterquality/")
-
 rm(list=ls(all=TRUE))
 
 source("~/prairiestrips/groundwater/groundwaterwrangle.R")
@@ -42,6 +40,37 @@ no3 <- ggplot(no3data, aes(x = order,
 ggsave(filename = "~/prairiestrips/graphs/gwno3.jpg", plot=no3, width = 6, height=8)
 
 
+# graphing no3 data without ctl----------------------------------------------------------------
+
+colorscalenoctl <- c(Top = "red", 
+                Bot = "blue")
+
+no3datanoctl <- all %>%
+  filter(no3mgL!="NA" & year != "2015" & trt != "CTL")
+
+no3noctl <- ggplot(no3datanoctl, aes(x = order, 
+                           y = no3mgL, 
+                           group = pos,
+                           #linetype = position,
+                           color = position)) +
+  geom_line(size = 1) + 
+  geom_point(size= 1.5) +
+  #add in next line for max concentration limit for drinking water 
+  #geom_hline(aes(color = "MCL", yintercept = 10)) +
+  facet_grid(site~year, scales='free_x') + 
+  labs(x = '',  
+       y = 'Groundwater Nitrate - Nitrogen (mg/L)') + 
+  scale_color_manual(values = colorscalenoctl) +
+  #scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+
+ggsave(filename = "~/prairiestrips/graphs/gwno3noctl.jpg", plot=no3noctl, width = 6, height=8)
+
+
 # graphing drp data ----------------------------------------------------------------
 
 drpdata <- filter(all, year>="2017", drpmgL!="NA")
@@ -68,7 +97,6 @@ ggsave(filename = "~/prairiestrips/graphs/gwdrp.jpg", plot=drp, width = 6, heigh
 
 
 # gwdepth graph -----------------------------------------------------------
-
 gwdepthplot <- ggplot(gwdepth, aes(x = order, 
                            y = negadjdepthft, 
                            group = wellid,
@@ -79,7 +107,7 @@ gwdepthplot <- ggplot(gwdepth, aes(x = order,
   facet_grid(site~year, scales='free_x') + 
   labs(x = '',  
        y = 'Groundwater Depth From Ground Surface (ft)') + 
-  scale_color_manual(values = colorscale) +
+  scale_color_manual(values = colorscalenoctl) +
   scale_linetype_manual(values = linescale) +
   theme_bw() +
   theme(legend.position = "bottom",
@@ -88,6 +116,34 @@ gwdepthplot <- ggplot(gwdepth, aes(x = order,
 
 
 ggsave(filename = "~/prairiestrips/graphs/gwdepth.jpg", plot=gwdepthplot, width = 6, height=8)
+
+# gwdepth graph without top-----------------------------------------------------------
+
+colorscalenotop <- c(CTL = "red", 
+                     TRT = "blue")
+
+gwdepthnotop <- gwdepth %>% filter(pos != "Top")
+
+gwdepthplotnotop <- ggplot(gwdepthnotop, aes(x = order, 
+                                   y = negadjdepthft, 
+                                   group = wellid,
+                                   #linetype = pos,
+                                   color = trt)) +
+  geom_line(size = 1) + 
+  geom_point(size= 1.5) +
+  facet_grid(site~year, scales='free_x') + 
+  labs(x = '',  
+       y = 'Groundwater Depth From Ground Surface (ft)') + 
+  scale_color_manual(values = colorscalenotop) +
+  #scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+
+ggsave(filename = "~/prairiestrips/graphs/gwdepthnotop.jpg", plot=gwdepthplotnotop, width = 6, height=8)
+
 
 # site specific graphs ----------------------------------------------------
 
