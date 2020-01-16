@@ -168,6 +168,38 @@ flex <- flextable(rainrun2019codes) %>%
 flex
 ```
 
+This is the rain and runoff table for 2019 with site names:
+```{r rain and runoff table for 2019 with site names, echo=FALSE}
+require(knitr)
+require(kableExtra)
+require(dplyr)
+require(officer)
+require(flextable)
+require(tidyverse)
+noborder <- fp_border(width = 0)
+std_border = fp_border(color="black", width = 1)
+colkeys = c("Rain", "Control", "Treatment")
+
+rainrun2019codes <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/rainrunoff2019.csv")
+
+flex <- flextable(rainrun2019codes) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  vline(j=1, border = std_border, part = "body") %>%
+  vline(j=2, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2) %>%
+  set_header_labels(Rain = "Rain (in.)") %>%
+  add_header(Control = "Runoff (in.)", top = TRUE) %>% 
+  bold(part = "header") %>%
+  merge_at(i=1, j=3:4, part = "header") %>%
+  hline(i=1, j=1:2, border = noborder, part = "header") %>%
+  align(align = "center", part = "all") %>%
+  height(i=1, 0.25, part = "header") %>%
+  font(fontname = "calibri", part = "all")
+
+flex
+```
+
+
 Here is the table summing the rain and runoff over the years 2016-present:
 ```{r table summing the rain and runoff over the years 2016-present, echo=FALSE}
 require(knitr)
@@ -322,6 +354,44 @@ nut <- flextable(nutrients2018codes) %>%
 nut
 
 ```
+
+ This is the nutrient loss table for 2019 with site full names:
+
+```{r nutrient loss table for 2019 with site full names, echo=FALSE}
+
+require(knitr)
+require(kableExtra)
+require(dplyr)
+require(officer)
+require(flextable)
+require(tidyverse)
+
+nutrients2019codes <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/nutrients2019.csv")
+noborder <- fp_border(width = 0)
+std_border = fp_border(color="black", width = 1)
+colkeys = c("no3ctl", "no3trt", "orthoctl", "orthotrt", "tssctl", "tsstrt")
+
+nut <- flextable(nutrients2019codes) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  vline(j=1, border = std_border, part = "body") %>%
+  vline(j=3, border = std_border, part = "body") %>%
+  vline(j=5, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2, na_str = "NA") %>%
+  set_header_labels(site = "Site", no3ctl = "Control", no3trt = "Treatment", orthoctl = "Control", 
+         orthotrt = "Treatment", tssctl = "Control", tsstrt = "Treatment") %>%
+  add_header(no3ctl = "Nitrate-N (lbs/ac)", orthoctl = "Orthophosphate (lbs/ac)", tssctl = "Total Suspended Solids (lbs/ac)") %>% 
+  bold(part = "header") %>%
+  hline(i=1, j=1, border = noborder, part = "header") %>%
+  merge_at(i=1, j=2:3, part = "header") %>% 
+  merge_at(i=1, j=4:5, part = "header") %>% 
+  merge_at(i=1, j=6:7, part = "header") %>%
+  align(align = "center", part = "all")
+  
+
+nut
+
+```
+
 
   This is the nutrient loss table for 2019 with site codes instead of full names:
 
