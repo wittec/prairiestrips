@@ -549,14 +549,14 @@ write.csv(allyearsnuttable1, row.names = F, file = "C:/Users/Chris/Documents/pra
 
 
 
-# site specific graphs, can edit for which site you want --------
+# site specific rain and runoff graph --------
 
 d <- readRDS(file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
 
 
 setwd("C:/Users/Chris/Documents/prairiestrips/graphs/")
 
-siterainrunplot <- ggplot(d %>% filter(site=="spirit"), aes(x = date_time,
+siterainrunplot <- ggplot(d %>% filter(site=="arm" & treatment != "rain"), aes(x = date_time,
                    y = y,
                    group = watershed,
                    linetype = treatment,
@@ -571,14 +571,16 @@ siterainrunplot <- ggplot(d %>% filter(site=="spirit"), aes(x = date_time,
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position = "bottom",
-        legend.title    = element_blank())
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "spiritrunoff.jpg", plot=siterainrunplot, width = 6, height=8)
+ggsave(filename = "armrunoff2019.jpg", plot=siterainrunplot, width = 6, height=8)
 
 
+# site specific orthop graph --------
 
 siteorthopgraph <- ggplot(sed3 %>%
-                        filter(site=="spirit", analyte == "Orthophosphate (mg P/L)"),
+                        filter(site=="arm", analyte == "Orthophosphate (mg P/L)"),
                       aes(x = date_time,
                           y = cumulative,
                           group = treatment,
@@ -594,13 +596,17 @@ siteorthopgraph <- ggplot(sed3 %>%
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position = "bottom",
-        legend.title    = element_blank())
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "spiritorthop.jpg", plot=siteorthopgraph, width = 6, height=8)
+ggsave(filename = "armorthop2019.jpg", plot=siteorthopgraph, width = 6, height=8)
+
+
+# site specific tss graph --------
 
 
 sitetssgraph <- ggplot(sed3 %>%
-                     filter(site=="spirit", analyte == "TSS (mg/L)"),
+                     filter(site=="arm", analyte == "TSS (mg/L)"),
                    aes(x = date_time,
                        y = cumulative,
                        group = treatment,
@@ -616,13 +622,16 @@ sitetssgraph <- ggplot(sed3 %>%
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position = "bottom",
-        legend.title    = element_blank())
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "spirittss.jpg", plot=sitetssgraph, width = 6, height=8)
+ggsave(filename = "armtss2019.jpg", plot=sitetssgraph, width = 6, height=8)
 
+
+# site specific no3 graph --------
 
 siteno3graph <- ggplot(sed3 %>%
-                          filter(site=="spirit", analyte == "Nitrate + nitrite (mg N/L)"),
+                          filter(site=="arm", analyte == "Nitrate + nitrite (mg N/L)"),
                         aes(x = date_time,
                             y = cumulative,
                             group = treatment,
@@ -638,7 +647,43 @@ siteno3graph <- ggplot(sed3 %>%
   theme_bw() +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position = "bottom",
-        legend.title    = element_blank())
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "spiritno3.jpg", plot=siteno3graph, width = 6, height=8)
+ggsave(filename = "armno32019.jpg", plot=siteno3graph, width = 6, height=8)
+
+
+# site specific table of everything by year --------
+
+#d <- readRDS(file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
+
+endtable <- d %>% filter(full == "Armstrong") %>% group_by(year, full, treatment) %>% summarize_at(c("cumulative_rain", "cumulative_flow"), max, na.rm = T)
+e1 <- endtable %>% select(-cumulative_rain) %>% spread(treatment, cumulative_flow)
+e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rain)
+e1$rain <- e2$rain
+e1 <- e1 %>% 
+  mutate_if(is.numeric, round, 2) %>%
+  rename(Year = year, Site = full, Rain = rain, Control = control, Treatment = treatment)
+
+
+nuttable <- sed2 %>% filter(full == "Armstrong") %>% group_by(year, full, treatment, analyte) %>% summarize_at(c("cumulative"), max, na.rm = T)
+n1<- nuttable %>% spread(analyte, cumulative)
+no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
+orthotable <- n1 %>% select(-`Nitrate + nitrite (mg N/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Orthophosphate (mg P/L)`)
+tsstable <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`Nitrate + nitrite (mg N/L)`) %>% spread(treatment, `TSS (mg/L)`)
+
+allnuttable <- no3table %>%
+  left_join(orthotable, by = "year") %>%
+  left_join(tsstable, by = "year") %>%
+  mutate_if(is.numeric, round, 2) %>%
+  rename(Site = full.x, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
+         orthotrt = treatment.y, tssctl = control, tsstrt = treatment) %>%
+  select(-full, -full.y)
+
+completetable <- e1%>% cbind(allnuttable) %>%
+  ungroup() %>%
+  select(-year, -Site, -Site1)
+
+write.csv(completetable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/sitecompletetable.csv")
+#this is finished table in graphsandtables****.Rmd
 

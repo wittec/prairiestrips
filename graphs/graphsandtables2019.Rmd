@@ -466,6 +466,45 @@ nut
 ```
 
 
+ This is the site specific table for rain, runoff, and nutrients for all years with site full names (check runoff.R for what site this is):
+
+```{r site specific table for rain, runoff, and nutrients for all years with site full names, echo=FALSE}
+
+require(knitr)
+require(kableExtra)
+require(dplyr)
+require(officer)
+require(flextable)
+require(tidyverse)
+
+sitecomplete <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/sitecompletetable.csv")
+noborder <- fp_border(width = 0)
+std_border = fp_border(color="black", width = 1)
+colkeys = c("Rain", "Control", "Treatment", "no3ctl", "no3trt", "orthoctl", "orthotrt", "tssctl", "tsstrt")
+
+complete <- flextable(sitecomplete) %>% 
+  hline_top(border = noborder, part = "header") %>%
+  vline(j=1, border = std_border, part = "body") %>%
+  vline(j=2, border = std_border, part = "body") %>%
+  vline(j=4, border = std_border, part = "body") %>%
+  vline(j=6, border = std_border, part = "body") %>%
+  vline(j=8, border = std_border, part = "body") %>%
+  colformat_num(col_keys = colkeys, digits = 2, na_str = "NA") %>%
+  set_header_labels(Year = "Year", Rain = "Rain", Control = "Control", Treatment = "Treatment", no3ctl = "Control", no3trt = "Treatment", orthoctl = "Control", orthotrt = "Treatment", tssctl = "Control", tsstrt = "Treatment") %>%
+  add_header(Control = "Runoff (in.)", no3ctl = "Nitrate-N (lbs/ac)", orthoctl = "Orthophosphate (lbs/ac)", tssctl = "Total Suspended Solids (lbs/ac)") %>% 
+  bold(part = "header") %>%
+  hline(i=1, j=1, border = noborder, part = "header") %>%
+  merge_at(i=1, j=3:4, part = "header") %>% 
+  merge_at(i=1, j=5:6, part = "header") %>% 
+  merge_at(i=1, j=7:8, part = "header") %>%
+  merge_at(i=1, j=9:10, part = "header") %>%
+  align(align = "center", part = "all")
+  
+
+complete
+
+```
+
 
 <!-- ```{r, echo=FALSE} -->
 
