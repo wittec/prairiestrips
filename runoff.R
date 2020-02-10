@@ -663,8 +663,11 @@ e2 <- endtable %>% select(-cumulative_flow) %>% spread(treatment, cumulative_rai
 e1$rain <- e2$rain
 e1 <- e1 %>% 
   mutate_if(is.numeric, round, 2) %>%
+  mutate(rain = round(rain, 1)) %>%
   rename(Year = year, Site = full, Rain = rain, Control = control, Treatment = treatment)
 
+
+sed2 <- read.csv(file = "C:/Users/Chris/Documents/prairiestrips/sed2.csv")
 
 nuttable <- sed2 %>% filter(full == "Armstrong") %>% group_by(year, full, treatment, analyte) %>% summarize_at(c("cumulative"), max, na.rm = T)
 n1<- nuttable %>% spread(analyte, cumulative)

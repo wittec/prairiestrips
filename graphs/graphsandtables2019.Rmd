@@ -480,7 +480,8 @@ require(tidyverse)
 sitecomplete <- read.csv("C:/Users/Chris/Documents/prairiestrips/tables/sitecompletetable.csv")
 noborder <- fp_border(width = 0)
 std_border = fp_border(color="black", width = 1)
-colkeys = c("Rain", "Control", "Treatment", "no3ctl", "no3trt", "orthoctl", "orthotrt", "tssctl", "tsstrt")
+colkeys = c("Control", "Treatment", "no3ctl", "no3trt", "orthoctl", "orthotrt", "tssctl", "tsstrt")
+colkeys1 = c("Rain")
 
 complete <- flextable(sitecomplete) %>% 
   hline_top(border = noborder, part = "header") %>%
@@ -490,7 +491,8 @@ complete <- flextable(sitecomplete) %>%
   vline(j=6, border = std_border, part = "body") %>%
   vline(j=8, border = std_border, part = "body") %>%
   colformat_num(col_keys = colkeys, digits = 2, na_str = "NA") %>%
-  set_header_labels(Year = "Year", Rain = "Rain", Control = "Control", Treatment = "Treatment", no3ctl = "Control", no3trt = "Treatment", orthoctl = "Control", orthotrt = "Treatment", tssctl = "Control", tsstrt = "Treatment") %>%
+  colformat_num(col_keys = colkeys1, digits = 1) %>%
+  set_header_labels(Year = "Year", Rain = "Rain (in.)", Control = "Control", Treatment = "Treatment", no3ctl = "Control", no3trt = "Treatment", orthoctl = "Control", orthotrt = "Treatment", tssctl = "Control", tsstrt = "Treatment") %>%
   add_header(Control = "Runoff (in.)", no3ctl = "Nitrate-N (lbs/ac)", orthoctl = "Orthophosphate (lbs/ac)", tssctl = "Total Suspended Solids (lbs/ac)") %>% 
   bold(part = "header") %>%
   hline(i=1, j=1, border = noborder, part = "header") %>%
