@@ -61,55 +61,8 @@ d <- bind_rows(flow,rain) %>%
 
 
 saveRDS(d, file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
-<<<<<<< HEAD
+
 #write.csv(d, file = "C:/Users/Chris/Documents/prairiestrips/clippedrainandflowdataallyears.csv")
-=======
-write.csv(d, file = "C:/Users/Chris/Documents/prairiestrips/clippedrainandflowdataallyears.csv")
-
-# COMMENTED OUT BECAUSE I DON'T KNOW IF THIS IS WHAT WE WANT FOR FLOW - fixing up rain and flow graph lines ---------------------------------------------------
-#IF I DO USE THIS, NEED TO CHANGE THE REFERENCED DATASET IN THE GRAPH PLOTS TO D2!!!
-
-#THIS ADDS THE LAST DATE OF THE MONITORING SEASON TO EACH OF THE WATERSHEDS...THIS HELPS FOR GRAPHING PURPOSES,
-#AS IT DRAWS ALL OF THE GRAPH LINES THE SAME LENGTH
-# 
-# library(tidyverse)
-# library(lubridate)
-# library(zoo)
-# library(purrr)
-# 
-# d <- d %>%
-#   mutate(date = date(date_time)) %>%
-#   arrange(date_time)
-# 
-# max2016flowdate <- max(d$date_time[d$year=="2016"])
-# 
-# max2017flowdate <- max(d$date_time[d$year=="2017"])
-# 
-# max2018flowdate <- max(d$date_time[d$year=="2018"])
-# 
-# yearwatershedanalytesplit <- split(d, list(d$year, d$watershed))
-# 
-# applymaxdate <- function(data) 
-# { t <- data %>%
-#   select(-date_time, date_time)
-# year <- max(d$year)
-# 
-# newrow <- tail(t, 1)#t[1, ]
-# 
-# newrow <-newrow %>%
-#   mutate(date_time = ifelse(year == 2016, "2016-11-18 12:25:00", date_time)) %>%
-#   mutate(date_time = ifelse(year == 2017, "2017-11-14 14:30:00", date_time)) %>%
-#   mutate(date_time = ifelse(year == 2018, "2018-10-24 12:15:00", date_time)) %>%
-#   mutate(date_time = as.POSIXct(date_time))
-# 
-# t <- t %>%
-#   rbind(newrow)
-# 
-# }
-# 
-# d2 <- map_dfr(yearwatershedanalytesplit, applymaxdate)
->>>>>>> 2eff118ccfc71e9d6b3e43dc44bac6e007d73dd8
-
 
 # custom settings for graphs ----------------------------------------------
 
