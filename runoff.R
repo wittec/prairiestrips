@@ -61,7 +61,7 @@ d <- bind_rows(flow,rain) %>%
 
 
 saveRDS(d, file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
-
+write.csv(d, file = "C:/Users/Chris/Documents/prairiestrips/clippedrainandflowdataallyears.csv")
 
 # COMMENTED OUT BECAUSE I DON'T KNOW IF THIS IS WHAT WE WANT FOR FLOW - fixing up rain and flow graph lines ---------------------------------------------------
 #IF I DO USE THIS, NEED TO CHANGE THE REFERENCED DATASET IN THE GRAPH PLOTS TO D2!!!
@@ -549,7 +549,7 @@ write.csv(allyearsnuttable1, row.names = F, file = "C:/Users/Chris/Documents/pra
 
 
 
-# site specific rain and runoff graph --------
+# site specific runoff graph --------
 
 d <- readRDS(file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
 
@@ -561,11 +561,11 @@ siterainrunplot <- ggplot(d %>% filter(site=="arm" & treatment != "rain"), aes(x
                    group = watershed,
                    linetype = treatment,
                    color = treatment)) +
-  ggtitle("Rain and Surface Runoff") +
+  ggtitle("Surface Runoff") +
   geom_line(size = 1) +
   facet_grid(full~year, scales='free_x') +
   labs(x = '',
-       y = 'Cumulative rainfall and runoff (inches)') +
+       y = 'Cumulative runoff (inches)') +
   scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   theme_bw() +
