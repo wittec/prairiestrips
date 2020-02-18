@@ -95,7 +95,7 @@ trts <- as.list(unique(data$trt))
 
 poss <- as.list(unique(data$pos))
 
-all <- sites, trts, poss
+#all <- sites, trts, poss
 
 ##########################################################################
 #CHAPTER 3 IN RFORDATASCIENCE
