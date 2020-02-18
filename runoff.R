@@ -102,7 +102,7 @@ f <- ggplot(d %>% filter(treatment != "rain"), aes(x = date_time,
 
 f
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2019without rain.jpg", plot=f, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff2019withoutrain.jpg", plot=f, width = 6, height=8)
 
 
 
