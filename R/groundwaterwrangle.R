@@ -131,7 +131,7 @@ all <- all %>%
 all$order <- factor(all$month, levels = c("Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
 
 write.csv(all, file = "C:/Users/Chris/Documents/prairiestrips/groundwater/allgwnutrients.csv")
-saveRDS(all, file = "C:/Users/Chris/Documents/prairiestrips/data/gwall.rda")
+save(all, file = "C:/Users/Chris/Documents/prairiestrips/data/gwall.rda")
 # gw depth data manip -------------------------------------------
 
 # fixit <- function (x) {
