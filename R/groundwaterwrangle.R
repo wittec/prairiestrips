@@ -187,6 +187,6 @@ gwdepth$negadjdepthft <- -(gwdepth$adjdepthft)
 gwdepth$order <- factor(gwdepth$month, levels = c("Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
 
 write.csv(gwdepth, file = "C:/Users/Chris/Documents/prairiestrips/groundwater/gwdepth.csv")
-saveRDS(gwdepth, file = "C:/Users/Chris/Documents/prairiestrips/data/gwdepth.rda")
+save(gwdepth, file = "C:/Users/Chris/Documents/prairiestrips/data/gwdepth.rds")
 
 rm(list=setdiff(ls(), c("all", "gwdepth")))

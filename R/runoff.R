@@ -6,7 +6,7 @@ library(tidyverse)
 library(lubridate)
 
 #running script to fix the missing/incorrect rain data
-source("~/prairiestrips/rainfix.R")
+source("~/prairiestrips/R/rainfix.R")
 
 # importing flow data and clipping when there was no rain for 24 hours-------------------------------------------
 
@@ -60,7 +60,7 @@ d <- bind_rows(flow,rain) %>%
   left_join(wnames)
 
 
-saveRDS(d, file = "~/prairiestrips/clippedrainandflowdataallyears.Rda")
+save(d, file = "~/prairiestrips/data/clippedrainandflowdataallyears.rda")
 
 #write.csv(d, file = "C:/Users/Chris/Documents/prairiestrips/clippedrainandflowdataallyears.csv")
 

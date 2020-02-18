@@ -154,7 +154,7 @@ myrain <- rain %>%
   select(-watershed, -watershed_year, -treatment, -cumulative_rain)
 
 
-saveRDS(myrain, file = "~/prairiestrips/raindataallyears.Rda")
+save(myrain, file = "~/prairiestrips/data/raindataallyears.Rda")
 
 rm(list=setdiff(ls(), c("rain", "myrain")))
 
