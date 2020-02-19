@@ -1,7 +1,7 @@
 
 rm(list=ls(all=TRUE))
 
-source("~/prairiestrips/groundwater/groundwaterwrangle.R")
+source("~/prairiestrips/R/groundwaterwrangle.R")
 
 # Customized graph settings ------------------------------------------------------
 colorscale <- c(TRT = "blue", 
