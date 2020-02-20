@@ -1,0 +1,21 @@
+---
+title: "prairiestrips/groundwater/data-raw/depth/ README"
+author: "witte"
+date: "3/15/2019"
+output: html_document
+---
+The groundwater files here are originally created as google spreadsheets. They are then exported as csv. 
+These files have the first row indicating the column names and data in the following format:
+
+  * year (4-digit year)   
+  * month (1-12)   
+  * site (name format varies, and is standardized in script)  
+  * trt (may vary in early years, but should be CTL or TRT. Standardized in script)  
+  * pos (This is position of well, whether is at top of strip or bottom. Should be "top" or "bot", and is standardized in script)  
+  * uncorrected depth (this is the direct reading of the sensor at top of the well sleeve (doesn't subract the amount of sleeve sticking above the ground surface. Measured in hundredths of ft)  
+  * date measured (This is just a note of the specific day measured. Not used in analyses)   
+    
+  The "depthadjustment.csv" file lists how far the well sleeve sticks above ground surface. This is needed to correct the depth measurements. The first row has the following column names:
+  
+  * wellid (well name comprised of the site, treatment, and position in strip, eg. RHOCTLTop)  
+  * abovegroundin (inches well sleeve sticks above ground. )

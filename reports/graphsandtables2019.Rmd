@@ -518,27 +518,27 @@ complete
 <!-- ``` -->
 
 ```{r echo=FALSE}
-include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/runoff2018.jpg")
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/runoff/runoff2018.jpg")
 ```
 
 
 ```{r echo=FALSE}
-include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/no32018.jpg")
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/runoff/no32018.jpg")
 ```
 
 
 ```{r echo=FALSE}
-include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/orthop2018.jpg")
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/runoff/orthop2018.jpg")
 ```
 
 
 ```{r echo=FALSE}
-include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/tss2018.jpg")
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/runoff/tss2018.jpg")
 ```
 
 
 ```{r echo=FALSE}
-include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/gwdepth.jpg")
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/gw/gwdepth.jpg")
 ```
   
   Runoff table for the Armstrong report:
