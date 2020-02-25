@@ -48,9 +48,7 @@ splrunoff <- spl2018wq %>%
 bla <-rep(NA,dim(splrunoff)[2])
 bla <- rbind(bla, bla, bla)
 
-write.table(bla, file = "~/STRIPS2Helmers/data-raw/water_quality/2018/splrunofftest.csv", sep = ",", row.names = F)
-write.table(splrunoff, file = "~/STRIPS2Helmers/data-raw/water_quality/2018/splrunofftest.csv", append = TRUE, sep = ",", row.names = F)
-
-#GOING TO FORMAT THIS DATA (add 4 rows above column headers) AND PUT IT INTO DATA-RAW/2018/SPLRUNOFF.CSV
+write.table(bla, file = "~/STRIPS2Helmers/data-raw/water_quality/2018/splrunoff.csv", sep = ",", row.names = F)
+write.table(splrunoff, file = "~/STRIPS2Helmers/data-raw/water_quality/2018/splrunoff.csv", append = TRUE, sep = ",", row.names = F)
 
 
