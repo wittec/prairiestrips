@@ -1,12 +1,13 @@
-# setwd("~/STRIPS2Helmers/vignettes/")
-
+# 
 rm(list=ls(all=TRUE))
 
 library(tidyverse)
 library(lubridate)
 
 #running script to fix the missing/incorrect rain data
-source("~/prairiestrips/R/rainfix.R")
+source("~/STRIPS2Helmers/rain-fixes/rainfix.R")
+
+setwd("~/STRIPS2Helmers/vignettes/")
 
 # importing flow data and clipping when there was no rain for 24 hours-------------------------------------------
 
