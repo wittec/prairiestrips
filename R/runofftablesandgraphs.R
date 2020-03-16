@@ -4,8 +4,8 @@ rm(list=ls(all=TRUE))
 library(tidyverse)
 
 
-d <- readRDS(file = "C:/Users/Chris/Documents/prairiestrips/data/clippedrainandflowdataallyears.rds")
-sed3 <- readRDS(file = "C:/Users/Chris/Documents/prairiestrips/data/sed3.rds")
+load(file = "C:/Users/Chris/Documents/prairiestrips/data/clippedrainandflowdataallyears.rds")
+load(file = "C:/Users/Chris/Documents/prairiestrips/data/sed3.rds")
 
 
 # custom settings for graphs ----------------------------------------------
@@ -165,7 +165,7 @@ no3graph <- ggplot(sed3 %>%
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/no32019.jpg", plot=no3graph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff/no32019.jpg", plot=no3graph, width = 6, height=8)
 
 
 # orthophosphate graph all years----------------------------------------------------
@@ -188,7 +188,7 @@ orthopgraph <- ggplot(sed3 %>%
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/orthop2019.jpg", plot=orthopgraph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff/orthop2019.jpg", plot=orthopgraph, width = 6, height=8)
 
 
 # tss graph all years---------------------------------------------------------------
@@ -211,9 +211,10 @@ tssgraph <- ggplot(sed3 %>%
       legend.title    = element_blank(),
       axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/tss2019.jpg", plot=tssgraph, width = 6, height=8)
+ggsave(filename = "C:/Users/Chris/Documents/prairiestrips/graphs/runoff/tss2019.jpg", plot=tssgraph, width = 6, height=8)
 
 # create table of final cumulative values for nutrients in 2016 ---------------
+load(file = "C:/Users/Chris/Documents/prairiestrips/data/sed2.rds")
 
 nuttable2016 <- sed2 %>% group_by(full, treatment, analyte) %>% filter(year=="2016") %>% summarize_at(c("cumulative"), max, na.rm = T)
 n12016 <- nuttable2016 %>% spread(analyte, cumulative)
@@ -444,7 +445,7 @@ e1 <- e1 %>%
   rename(Year = year, Site = full, Rain = rain, Control = control, Treatment = treatment)
 
 
-sed2 <- load(file = "C:/Users/Chris/Documents/prairiestrips/data/sed2.rds")
+#sed2 <- load(file = "C:/Users/Chris/Documents/prairiestrips/data/sed2.rds")
 
 nuttable <- sed2 %>% filter(full == "Armstrong") %>% group_by(year, full, treatment, analyte) %>% summarize_at(c("cumulative"), max, na.rm = T)
 n1<- nuttable %>% spread(analyte, cumulative)
