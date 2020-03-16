@@ -4,10 +4,13 @@ rm(list=ls(all=TRUE))
 library(tidyverse)
 library(lubridate)
 
+#THIS IS MOVED INTO THE STRIPS2HELMERS "RAIN-READ" SCRIPT SO GOOD RAIN DATA ENDS UP IN THE "DATA" FOLDER!...
 #running script to fix the missing/incorrect rain data
-source("~/STRIPS2Helmers/rain-fixes/rainfix.R")
+#source("~/STRIPS2Helmers/rain-fixes/rainfix.R")
 
 setwd("~/STRIPS2Helmers/vignettes/")
+
+load("~/prairiestrips/data/raindataallyears.rds")
 
 # importing flow data and clipping when there was no rain for 24 hours-------------------------------------------
 
@@ -37,6 +40,7 @@ flow$subtreatment[flow$subtreatment != "control"] <- "prairie strip"
 flow$subtreatment[flow$watershed == "marshtrt"] <- "grass strip"
 
 # combine rain and flow data ----------------------------------------------
+load("~/STRIPS2Helmers/data/rain.rda")
 
 rain <- rain %>%
   mutate(treatment = "rain",
@@ -61,7 +65,7 @@ d <- bind_rows(flow,rain) %>%
   left_join(wnames)
 
 
-saveRDS(d, file = "~/prairiestrips/data/clippedrainandflowdataallyears.rds")
+save(d, file = "~/prairiestrips/data/clippedrainandflowdataallyears.rds")
 #csv file below is too big to commit to git
 write.csv(d, file = "C:/Users/Chris/Documents/prairiestrips/csvdata/clippedrainandflowdataallyears.csv")
 
@@ -109,7 +113,7 @@ sed2 <- sed %>%
   left_join(wnames)
 
 write.csv(sed2, file = "~/prairiestrips/csvdata/sed2.csv", row.names = FALSE)
-saveRDS(sed2, file = "~/prairiestrips/data/sed2.rds")
+save(sed2, file = "~/prairiestrips/data/sed2.rds")
 
 # Sediment summary by day all years-------------------------------------------------
 
@@ -180,5 +184,5 @@ t <- t %>%
 }
 
 sed3 <- map_dfr(yearwatershedanalytesplit, applymaxdate)
-saveRDS(sed3, file = "C:/Users/Chris/Documents/prairiestrips/data/sed3.rds")
+save(sed3, file = "C:/Users/Chris/Documents/prairiestrips/data/sed3.rds")
 write.csv(sed3, file = "C:/Users/Chris/Documents/prairiestrips/csvdata/sed3.csv")
