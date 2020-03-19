@@ -99,7 +99,7 @@ gw2019 <- gw2019 %>%
   mutate(month = as.character(month),
          no3mgL = as.numeric(as.character(no3mgL)),
          drpmgL = as.numeric(as.character(drpmgL)),
-         year = "2016"
+         year = "2019"
   )
 
 all <- gw2016 %>%
