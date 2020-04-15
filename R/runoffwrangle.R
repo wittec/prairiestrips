@@ -4,10 +4,6 @@ rm(list=ls(all=TRUE))
 library(tidyverse)
 library(lubridate)
 
-#THIS IS MOVED INTO THE STRIPS2HELMERS "RAIN-READ" SCRIPT SO GOOD RAIN DATA ENDS UP IN THE "DATA" FOLDER!...
-#running script to fix the missing/incorrect rain data
-#source("~/STRIPS2Helmers/rain-fixes/rainfix.R")
-
 setwd("~/STRIPS2Helmers/vignettes/")
 
 load("~/prairiestrips/data/raindataallyears.rds")
