@@ -107,7 +107,7 @@ gwdepthplot <- ggplot(gwdepth, aes(x = order,
   facet_grid(site~year, scales='free_x') + 
   labs(x = '',  
        y = 'Groundwater Depth From Ground Surface (ft)') + 
-  scale_color_manual(values = colorscalenoctl) +
+  scale_color_manual(values = colorscale) +
   scale_linetype_manual(values = linescale) +
   theme_bw() +
   theme(legend.position = "bottom",
@@ -116,6 +116,32 @@ gwdepthplot <- ggplot(gwdepth, aes(x = order,
 
 
 ggsave(filename = "~/prairiestrips/graphs/gw/gwdepth.jpg", plot=gwdepthplot, width = 6, height=8)
+
+# gwdepth graph without control-----------------------------------------------------------
+
+gwdepthnoctl <- gwdepth %>% filter(trt != "CTL")
+
+
+gwdepthnoctlplot <- ggplot(gwdepthnoctl, aes(x = order, 
+                                   y = negadjdepthft, 
+                                   group = wellid,
+                                   #linetype = pos,
+                                   color = pos)) +
+  geom_line(size = 1) + 
+  geom_point(size= 1.5) +
+  facet_grid(site~year, scales='free_x') + 
+  labs(x = '',  
+       y = 'Groundwater Depth From Ground Surface (ft)') + 
+  scale_color_manual(values = colorscalenoctl) +
+  scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+
+ggsave(filename = "~/prairiestrips/graphs/gw/gwdepthnoctl.jpg", plot=gwdepthnoctlplot, width = 6, height=8)
+
 
 # gwdepth graph without top-----------------------------------------------------------
 
@@ -229,8 +255,8 @@ ggsave(filename = "~/prairiestrips/graphs/gw/armgwdepth.jpg", plot=armgwdepthplo
 
 # year specific gw depth graph --------------------------------------------
 
-y2019 <- gwdepth %>%
-  filter(year == "2019")
+y2020 <- gwdepth %>%
+  filter(year == "2020")
 
 
 # Customized colors
@@ -239,7 +265,7 @@ colorscale <- c(TRT = "blue",
 linescale <- c(Top = "dashed",
                Bot = "solid")
 
-yeargwdepthplot <- ggplot(y2019, aes(x = order, 
+yeargwdepthplot <- ggplot(y2020, aes(x = order, 
                                    y = negadjdepthft, 
                                    group = wellid,
                                    linetype = pos,
@@ -258,6 +284,8 @@ yeargwdepthplot <- ggplot(y2019, aes(x = order,
 
 yeargwdepthplot
 
+
+ggsave(filename = "~/prairiestrips/graphs/gw/2020gwdepth.jpg", plot=yeargwdepthplot, width = 6, height=6)
 
 
 

@@ -145,7 +145,10 @@ gwdepth2018 <- read.csv("~/prairiestrips/data-raw/groundwater/depth/2018/2018str
 
 gwdepth2019 <- read.csv("~/prairiestrips/data-raw/groundwater/depth/2019/2019strips2gwdepth.csv", header = T) 
 
-gwdepth <- rbind(gwdepth2016, gwdepth2017, gwdepth2018, gwdepth2019) %>%
+gwdepth2020 <- read.csv("~/prairiestrips/data-raw/groundwater/depth/2020/2020strips2gwdepth.csv", header = T) %>%
+    mutate(uncorrected.depth..ft. = as.factor(uncorrected.depth..ft.))
+
+gwdepth <- rbind(gwdepth2016, gwdepth2017, gwdepth2018, gwdepth2019, gwdepth2020) %>%
   mutate(month = as.character(month)) %>%
   select(-X)
 
