@@ -63,7 +63,7 @@ d <- bind_rows(flow,rain) %>%
 
 save(d, file = "~/prairiestrips/data/clippedrainandflowdataallyears.rds")
 #csv file below is too big to commit to git
-write.csv(d, file = "C:/Users/Chris/Documents/prairiestrips/csvdata/clippedrainandflowdataallyears.csv")
+#write.csv(d, file = "C:/Users/Chris/Documents/prairiestrips/csvdata/clippedrainandflowdataallyears.csv")
 
 
 
@@ -158,6 +158,8 @@ max2018seddate <- max(sed2$date_time[sed2$year=="2018"])
 
 max2019seddate <- max(sed2$date_time[sed2$year=="2019"])
 
+max2020seddate <- max(sed2$date_time[sed2$year=="2020"])
+
 yearwatershedanalytesplit <- split(sed2, list(sed2$year, sed2$watershed, sed2$analyte)) #makes a list of groups of "sed2" dataset based on year, watershed, and analyte
 
 applymaxdate <- function(data) 
@@ -172,6 +174,7 @@ newrow <-newrow %>% #inserts the maxdate (eg. "max2016date") into the date_time 
   mutate(date_time = ifelse(year == 2017, "2017-06-28 11:25:00", date_time)) %>%
   mutate(date_time = ifelse(year == 2018, "2018-10-11 02:30:00", date_time)) %>%
   mutate(date_time = ifelse(year == 2019, "2019-10-21 20:00:00", date_time)) %>%
+  mutate(date_time = ifelse(year == 2020, "2020-06-22 21:10:00", date_time)) %>%
   mutate(date_time = as.POSIXct(date_time))
 
 t <- t %>%
