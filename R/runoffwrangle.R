@@ -63,7 +63,7 @@ d <- bind_rows(flow,rain) %>%
 
 save(d, file = "~/prairiestrips/data/clippedrainandflowdataallyears.rds")
 #csv file below is too big to commit to git
-#write.csv(d, file = "C:/Users/Chris/Documents/prairiestrips/csvdata/clippedrainandflowdataallyears.csv")
+write.csv(d, file = "C:/Users/Chris/Documents/prairiestrips/csvdata/clippedrainandflowdataallyears.csv")
 
 
 
