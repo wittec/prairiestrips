@@ -8,6 +8,8 @@ setwd("~/STRIPS2Helmers/vignettes/")
 
 load("~/prairiestrips/data/raindataallyears.rds")
 
+#write.csv(myrain, file = "C:/Users/Chris/Documents/prairiestrips/csvdata/strips2rainallyearsfixed.csv")
+
 # importing flow data and clipping when there was no rain for 24 hours-------------------------------------------
 
 flow <- STRIPS2Helmers::runoff %>%
@@ -131,7 +133,7 @@ dayrainflowsed <- d %>%
   select(-treatment) %>%
   left_join(daysed)
 # 
-# write.csv(dayrainflowsed, file = ("C:/Users/Chris/Documents/prairiestrips/dayrainflowsed.csv"))
+# write.csv(dayrainflowsed, file = ("C:/Users/Chris/Documents/prairiestrips/csvdata/dayrainflowsed.csv"))
 #  
 
 
