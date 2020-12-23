@@ -30,7 +30,7 @@ no3 <- ggplot(no3data, aes(x = order,
   labs(x = '',  
        y = 'Groundwater Nitrate - Nitrogen (mg/L)') + 
   scale_color_manual(values = colorscale) +
-  scale_linetype_manual(values = linescale) +
+  #scale_linetype_manual(values = linescale) + #NOT SURE WHY THIS IS NOT WORKING NOW (12/23/2020)
   theme_bw() +
   theme(legend.position = "bottom",
         legend.title    = element_blank(),

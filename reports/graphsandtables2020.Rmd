@@ -675,9 +675,13 @@ complete
 ```{r echo=FALSE}
 include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/gw/gwdepth.jpg")
 ```
-  
-  Runoff table for the Armstrong report:
+
 ```{r echo=FALSE}
+include_graphics("C:/Users/Chris/Documents/prairiestrips/graphs/gw/gwno3.jpg")
+```
+
+  Runoff table for the Armstrong report:
+```{r site specific runoff table (ARM), echo=FALSE}
 armrun <- filter(rainrun2016, Site == "Armstrong") %>%
   rbind(filter(rainrun2017,  Site == "Armstrong")) %>%
   rbind(filter(rainrun2018,  Site == "Armstrong")) %>%
@@ -706,7 +710,7 @@ flex
       
       
 Nutrient export table for Armstrong 2018:      
-```{r echo=FALSE}
+```{r site specific nutrient export table (ARM), echo=FALSE}
 armnut <- filter(nutrients2016, site == "Armstrong") %>%
   rbind(filter(nutrients2017, site == "Armstrong")) %>%
   rbind(filter(nutrients2018, site == "Armstrong")) %>%
@@ -741,7 +745,7 @@ nut
 
  
   Runoff table for the Spirit Lake:
-```{r echo=FALSE}
+```{r site specific runoff table (SPL), echo=FALSE}
 splrun <- filter(rainrun2016, Site == "Spirit Lake ") %>%
   rbind(filter(rainrun2017,  Site == "Spirit Lake ")) %>%
   rbind(filter(rainrun2018,  Site == "Spirit Lake ")) %>%
@@ -769,7 +773,7 @@ flex
    
       
 Nutrient export table for Spirit Lake:      
-```{r echo=FALSE}
+```{r site specific nutrient export table (SPL), echo=FALSE}
 splnut <- filter(nutrients2016, site == "Spirit Lake ") %>%
   rbind(filter(nutrients2017, site == "Spirit Lake ")) %>%
   rbind(filter(nutrients2018, site == "Spirit Lake ")) %>%

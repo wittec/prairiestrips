@@ -71,6 +71,17 @@ gw2019 <- read.csv("~/prairiestrips/data-raw/groundwater/waterquality/2019/groun
   select(Sample.ID., NOx.result..mg.N.L., DRP.result..mg.P.L.) %>%
   rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
 
+gw2020codes <- read.csv("~/prairiestrips/data-raw/groundwater/waterquality/2020/groundwater_codes.csv", skip = 2)[ , 1:8] %>%
+  select(year, month, site, trt, position, ID.) %>%
+  rename(id = ID.) %>%
+  filter(id != "NA") %>%
+  mutate(id = as.numeric(as.character(id)))
+
+gw2020 <- read.csv("~/prairiestrips/data-raw/groundwater/waterquality/2020/groundwater.csv", skip = 2, header = T) %>%
+  select(Sample.ID., NOx.result..mg.N.L., DRP.result..mg.P.L.) %>%
+  rename(id = Sample.ID., no3mgL = NOx.result..mg.N.L., drpmgL = DRP.result..mg.P.L.)
+
+
 # joining the codes and results files ------------------------------------------------
 gw2016 <- gw2016 %>%
   rbind(gw2016a) %>%
@@ -102,10 +113,19 @@ gw2019 <- gw2019 %>%
          year = "2019"
   )
 
+gw2020 <- gw2020 %>%
+  full_join(gw2020codes) %>%
+  mutate(month = as.character(month),
+         no3mgL = as.numeric(as.character(no3mgL)),
+         drpmgL = as.numeric(as.character(drpmgL)),
+         year = "2020"
+  )
+
 all <- gw2016 %>%
   full_join(gw2017) %>%
   full_join(gw2018) %>%
   full_join(gw2019) %>%
+  full_join(gw2020) %>%
   filter(!is.na(id)) %>%
   filter(!is.na(site)) %>%
   rename(sampleID = id)
