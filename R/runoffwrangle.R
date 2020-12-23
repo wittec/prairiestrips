@@ -146,7 +146,8 @@ library(lubridate)
 library(zoo)
 library(purrr)
 
-# sed2 <- read.csv(file = "~/prairiestrips/sed2.csv") %>% mutate(date_time = ymd_hms(date_time))
+# sed2 <- read.csv(file = "~/prairiestrips/csvdata/sed2.csv") %>% mutate(date_time = ymd_hms(date_time))
+#load(file = "~/prairiestrips/data/sed2.rds")
 
 sed2 <- sed2 %>%
   mutate(date = date(date_time)) %>%
