@@ -157,44 +157,35 @@ saveRDS(all, file = "C:/Users/Chris/Documents/prairiestrips/data/allgwnutrients.
 
 # gw depth wrangle --------------------------------------------------------
 
-gwdepth2016 <- read.csv("~/prairiestrips/data-raw/groundwater/depth/2016/2016strips2gwdepth.csv", header = T)
+#FILE IMPORTING
+setwd("~/prairiestrips/data-raw/groundwater/depth")
 
-gwdepth2017 <- read.csv("~/prairiestrips/data-raw/groundwater/depth/2017/2017strips2gwdepth.csv", header = T) 
+gwdepthfileslist <- list.files(pattern = "*.csv", recursive = TRUE, full.names = TRUE)
 
-gwdepth2018 <- read.csv("~/prairiestrips/data-raw/groundwater/depth/2018/2018strips2gwdepth.csv", header = T) 
-
-gwdepth2019 <- read.csv("~/prairiestrips/data-raw/groundwater/depth/2019/2019strips2gwdepth.csv", header = T) 
-
-gwdepth2020 <- read.csv("~/prairiestrips/data-raw/groundwater/depth/2020/2020strips2gwdepth.csv", header = T) %>%
-    mutate(uncorrected.depth..ft. = as.factor(uncorrected.depth..ft.))
-
-gwdepth <- rbind(gwdepth2016, gwdepth2017, gwdepth2018, gwdepth2019, gwdepth2020) %>%
-  mutate(month = as.character(month)) %>%
-  select(-X)
-
-#changing dry wells to depth of 15
-gwdepth$uncorrected.depth..ft. <- as.character(gwdepth$uncorrected.depth..ft.)
-gwdepth$uncorrected.depth..ft.[gwdepth$uncorrected.depth..ft.== "dry"] <- 15
-gwdepth$uncorrected.depth..ft. <- as.numeric(gwdepth$uncorrected.depth..ft.)
+gwdepth <- map_dfr(gwdepthfileslist, read.csv) %>% 
+  mutate(month = as.character(month), uncorrecteddepthft = as.character(uncorrected.depth..ft.)) %>%
+  select(-X, -uncorrected.depth..ft.) %>%
+  mutate(uncorrecteddepthft = as.numeric(replace(uncorrecteddepthft, uncorrecteddepthft == "dry", 15)))
 
 
-correcteddepth <- as.data.frame(lapply(gwdepth[c(2:5)], fixit)) %>%
-  rename(month = x, site = x.1, trt = x.2, pos = x.3)
+# correcting typo's  ------------------------------------------------------
 
-gwdepth$month <- correcteddepth$month
-gwdepth$site <- correcteddepth$site
-gwdepth$trt <- correcteddepth$trt
-gwdepth$pos <- correcteddepth$pos
-gwdepth <- gwdepth %>%
-  mutate(wellid = paste(site, trt, pos, sep = ""),
-         uncorrected.depth..ft. = as.numeric(as.character(uncorrected.depth..ft.)))
+correctedtypo <- map_dfc(gwdepth[c(2:5)], fixit)%>%
+  rename(month = x...1, site = x...2, trt = x...3, pos = x...4)
 
-depthadj <- read.csv("~/prairiestrips/data-raw/groundwater/depth/depthadjustment.csv", header = T) %>%
+gwdepth <- gwdepth %>% select(-c(2:5)) %>% cbind(correctedtypo) %>%
+  relocate(c(4:7), .after = year) %>%
+  mutate(wellid = paste(site, trt, pos, sep = ""))
+
+# correcting depth values due to well height above ground -----------------
+
+depthadj <- read.csv("~/prairiestrips/data-raw/groundwater/depthadjustment.csv", header = T) %>%
   select(wellid, abovegroundin)
-gwdepth <- left_join(gwdepth, depthadj) %>%
-  mutate(adjdepthft = round(uncorrected.depth..ft. - (abovegroundin/12), digits = 2))
 
-gwdepth$negadjdepthft <- -(gwdepth$adjdepthft)
+gwdepth <- left_join(gwdepth, depthadj) %>%
+  select(-c(10:12)) %>%
+  mutate(adjdepthft = round(uncorrecteddepthft - (abovegroundin/12), digits = 2)) %>%
+  mutate(negadjdepthft = -(adjdepthft))
 
 gwdepth$order <- factor(gwdepth$month, levels = c("Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."))
 
