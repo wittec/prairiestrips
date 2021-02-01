@@ -406,7 +406,7 @@ siterainrunplot <- ggplot(d %>% filter(site=="arm" & treatment != "rain"), aes(x
         legend.title    = element_blank(),
         axis.text.x = element_text(angle=60,hjust=1))
 
-ggsave(filename = "~/prairiestrips/graphs/runoff/armrunoff2019.jpg", plot=siterainrunplot, width = 6, height=8)
+ggsave(filename = "~/prairiestrips/graphs/runoff/armrunoff2020.jpg", plot=siterainrunplot, width = 6, height=8)
 
 
 # site specific orthop graph --------
@@ -494,11 +494,12 @@ e1$rain <- e2$rain
 e1 <- e1 %>% 
   mutate_if(is.numeric, round, 2) %>%
   mutate(rain = round(rain, 1)) %>%
-  rename(Year = year, Site = full, Rain = rain, Control = control, Treatment = treatment)
+  rename(Year = year, Site = full, Rain = rain, Control = control, Treatment = treatment) %>%
+  mutate(Site = as.character(Site))
 
 
-#sed2 <- load(file = "C:/Users/Chris/Documents/prairiestrips/data/sed2.rds")
-
+#load(file = "C:/Users/Chris/Documents/prairiestrips/data/sed2.rds")
+         
 nuttable <- sed2 %>% filter(full == "Armstrong") %>% group_by(year, full, treatment, analyte) %>% summarize_at(c("cumulative"), max, na.rm = T)
 n1<- nuttable %>% spread(analyte, cumulative)
 no3table <- n1 %>% select(-`Orthophosphate (mg P/L)`, -`TSS (mg/L)`) %>% spread(treatment, `Nitrate + nitrite (mg N/L)`)
@@ -509,14 +510,15 @@ allnuttable <- no3table %>%
   left_join(orthotable, by = "year") %>%
   left_join(tsstable, by = "year") %>%
   mutate_if(is.numeric, round, 2) %>%
-  rename(Site = full.x, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
+  rename(Year = year, Site = full.x, no3ctl = control.x, no3trt = treatment.x, orthoctl = control.y, 
          orthotrt = treatment.y, tssctl = control, tsstrt = treatment) %>%
-  select(-full, -full.y)
+  select(-full, -full.y) %>%
+  mutate(Site = as.character(Site))
 
-completetable <- e1%>% cbind(allnuttable) %>%
-  ungroup() %>%
-  select(-year, -Site, -Site1)
+completetable <- left_join(e1, allnuttable) %>%
+  ungroup %>%
+  select(-Site)
 
-write.csv(completetable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/sitecompletetable.csv")
+write.csv(completetable, row.names = F, file = "C:/Users/Chris/Documents/prairiestrips/tables/armcompletetable2020.csv")
 #this is finished table in graphsandtables****.Rmd
 

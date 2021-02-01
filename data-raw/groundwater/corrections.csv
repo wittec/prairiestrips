@@ -11,13 +11,13 @@ Guthrie,GUT
 Dec. 2015,Dec.
 November,Nov.
 August,Aug.
-Toe-Top,Top
-Toe-Bot,Bot
+Toe-Top,Upslope
+Toe-Bot,Downslope
 Spirit Lake,SPL
 Whiterock,WHI
 Sept. 2015,Sept.
-top,Top
-bot,Bot
+top,Upslope
+bot,Downslope
 trt,TRT
 ctl,CTL
 arm,ARM
@@ -27,11 +27,11 @@ rhodes,RHO
 eia,EIA
 mcnay,MCN
 worle,WOR
-CTL-Top,Top
-CTL-Bot,Bot
-TRT-Top,Top
-TRT-Bot,Bot
-Bottom,Bot
+CTL-Top,Upslope
+CTL-Bot,Downslope
+TRT-Top,Upslope
+TRT-Bot,Downslope
+Bottom,Downslope
 2,Feb.
 3,Mar.
 4,Apr.
@@ -52,3 +52,4 @@ White,WHI
 1,Jan.
 Arm,ARM
 marsh,MAR
+Top,Upslope

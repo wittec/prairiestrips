@@ -132,7 +132,8 @@ all <- gw2016 %>%
 
 all$trt[all$position == "CTL" | all$position == "CTL-Bot" | all$position == "CTL-Top"] <- "CTL"
 all$trt[is.na(all$trt)] <- "TRT"
-all$position[all$position == "CTL"] <- "Bot"
+all <- all %>% mutate(position = as.character(position))
+all$position[all$position == "CTL"] <- "Downslope"
 is.na(all$sampleID) <- NULL
 
 
@@ -183,7 +184,7 @@ depthadj <- read.csv("~/prairiestrips/data-raw/groundwater/depthadjustment.csv",
   select(wellid, abovegroundin)
 
 gwdepth <- left_join(gwdepth, depthadj) %>%
-  select(-c(10:12)) %>%
+  #select(-c(10:12)) %>%
   mutate(adjdepthft = round(uncorrecteddepthft - (abovegroundin/12), digits = 2)) %>%
   mutate(negadjdepthft = -(adjdepthft))
 

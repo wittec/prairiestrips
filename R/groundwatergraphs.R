@@ -4,11 +4,11 @@ rm(list=ls(all=TRUE))
 source("~/prairiestrips/R/groundwaterwrangle.R")
 
 # Customized graph settings ------------------------------------------------------
-colorscale <- c(TRT = "blue", 
-                CTL = "red",
+colorscale <- c(TRT = "#F1BE48", 
+                CTL = "#C8102E",
                 MCL = "green")
-linescale <- c(Top = "dashed",
-               Bot = "solid",
+linescale <- c(Upslope = "dashed",
+               Downslope = "solid",
                MCL = "solid")
 
 
@@ -42,8 +42,8 @@ ggsave(filename = "~/prairiestrips/graphs/gw/gwno3.jpg", plot=no3, width = 6, he
 
 # graphing no3 data without ctl----------------------------------------------------------------
 
-colorscalenoctl <- c(Top = "red", 
-                Bot = "blue")
+colorscalenoctl <- c(Upslope = "#C8102E", 
+                Downslope = "#F1BE48")
 
 no3datanoctl <- all %>%
   filter(no3mgL!="NA" & year != "2015" & trt != "CTL")
@@ -145,10 +145,10 @@ ggsave(filename = "~/prairiestrips/graphs/gw/gwdepthnoctl.jpg", plot=gwdepthnoct
 
 # gwdepth graph without top-----------------------------------------------------------
 
-colorscalenotop <- c(CTL = "red", 
-                     TRT = "blue")
+colorscalenotop <- c(CTL = "#C8102E", 
+                     TRT = "#F1BE48")
 
-gwdepthnotop <- gwdepth %>% filter(pos != "Top")
+gwdepthnotop <- gwdepth %>% filter(pos != "Upslope")
 
 gwdepthplotnotop <- ggplot(gwdepthnotop, aes(x = order, 
                                    y = negadjdepthft, 
