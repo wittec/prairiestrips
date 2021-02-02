@@ -70,6 +70,32 @@ no3noctl <- ggplot(no3datanoctl, aes(x = order,
 
 ggsave(filename = "~/prairiestrips/graphs/gw/gwno3noctl.jpg", plot=no3noctl, width = 6, height=8)
 
+# graphing no3 data without ctl and no RHO----------------------------------------------------------------
+
+no3datanoctlrho <- all %>%
+  filter(no3mgL!="NA" & year != "2015" & trt != "CTL" & site !="RHO")
+
+no3noctlrho <- ggplot(no3datanoctlrho, aes(x = order, 
+                                     y = no3mgL, 
+                                     group = pos,
+                                     #linetype = position,
+                                     color = position)) +
+  geom_line(size = 1) + 
+  geom_point(size= 1.5) +
+  #add in next line for max concentration limit for drinking water 
+  #geom_hline(aes(color = "MCL", yintercept = 10)) +
+  facet_grid(site~year, scales='free_x') + 
+  labs(x = '',  
+       y = 'Groundwater Nitrate - Nitrogen (mg/L)') + 
+  scale_color_manual(values = colorscalenoctl) +
+  #scale_linetype_manual(values = linescale) +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        legend.title    = element_blank(),
+        axis.text.x = element_text(angle=60,hjust=1))
+
+
+ggsave(filename = "~/prairiestrips/graphs/gw/gwno3noctlrho.jpg", plot=no3noctlrho, width = 6, height=8)
 
 # graphing drp data ----------------------------------------------------------------
 
