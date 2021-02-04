@@ -70,12 +70,12 @@ no3noctl <- ggplot(no3datanoctl, aes(x = order,
 
 ggsave(filename = "~/prairiestrips/graphs/gw/gwno3noctl.jpg", plot=no3noctl, width = 6, height=8)
 
-# graphing no3 data without ctl and no RHO----------------------------------------------------------------
+# graphing no3 data without ctl and no RHO, MCN, EIA----------------------------------------------------------------
 
-no3datanoctlrho <- all %>%
-  filter(no3mgL!="NA" & year != "2015" & trt != "CTL" & site !="RHO")
+no3datanoctlrhomcneia <- all %>%
+  filter(no3mgL!="NA" & year != "2015" & trt != "CTL" & site !="RHO" & site != "EIA" & site != "MCN")
 
-no3noctlrho <- ggplot(no3datanoctlrho, aes(x = order, 
+no3noctlrhomcneia <- ggplot(no3datanoctlrhomcneia, aes(x = order, 
                                      y = no3mgL, 
                                      group = pos,
                                      #linetype = position,
@@ -95,7 +95,7 @@ no3noctlrho <- ggplot(no3datanoctlrho, aes(x = order,
         axis.text.x = element_text(angle=60,hjust=1))
 
 
-ggsave(filename = "~/prairiestrips/graphs/gw/gwno3noctlrho.jpg", plot=no3noctlrho, width = 6, height=8)
+ggsave(filename = "~/prairiestrips/graphs/gw/gwno3noctlrhomcneia.jpg", plot=no3noctlrhomcneia, width = 6, height=8)
 
 # graphing drp data ----------------------------------------------------------------
 
