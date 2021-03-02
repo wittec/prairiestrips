@@ -1,0 +1,28 @@
+#There are occasional errors and/or missing rain data due to malfunctioning 
+#Isco rain gages. In these cases, data have been substituted with nearby 
+#rain gage station data. Listed below are the replacements.
+#
+#ASOS/AWOS data obtained here: https://mesonet.agron.iastate.edu/request/download.phtml
+#
+# 2016:
+# SPL 9/9/16 0:05 - 9/15/16 23:52, replaced with Estherville ASOS data
+# 
+# 2017
+# SPL 8/21/2017 0:00 - 8/21/2017 23:55, replaced with Estherville ASOS data
+# 
+# 2018
+# WOR 6/5/2018 0:00 - 8/15/2018 23:55, replaced with Ames ASOS data
+# WOR 8/16/2018 0:00 - 8/16/2018 23:55, replaced with Ames ASOS data
+# MCN 8/31/2018 0:00 - 9/7/2018 23:55, replaced with Chariton AWOS data
+# SPL 9/3/2018 0:00 - 9/19/2018 23:55, replaced with Estherville ASOS data
+# 
+# 2019
+# MCN 2019-09-28 00:15:00 - 2019-09-30 23:55:00, replaced with Chariton AWOS data
+# WHI 2019-05-18 00:15:00 - 2019-05-29 23:55:00, replaced with Audubon AWOS data
+# WHI 2019-06-18 00:15:00 - 2019-06-21 23:55:00, replaced with Audubon AWOS data
+# MAR 2019-08-06 00:53:00 - 2019-09-26 23:53:00, replaced with Marshalltown ASOS data
+# SPL 2019-04-27 00:00:00 - 2019-07-17 23:00:00, replaced with Estherville ASOS data
+# 
+# 2020
+# I have not found any bad spots in the rain data this year
+# 

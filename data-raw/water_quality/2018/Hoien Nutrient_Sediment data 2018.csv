@@ -1,0 +1,49 @@
+Collected Date,Test,Method,Unit,Environmental Location,Analyte,Value,Quant Limit
+2018-06-18 14:05,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake ctl,Nitrate + Nitrite nitrogen as N,150,0.05
+2018-06-18 14:05,solids,sm 2540 d suspended,mg/L,spirit lake ctl,Total Suspended Solids,420,1
+2018-06-18 14:05,tkn,epa 111b rev 0,mg/L,spirit lake ctl,Total Kjeldahl Nitrogen as N,0.7,0.3
+2018-06-18 14:05,phosphorus,epa 119b rev 0,mg/L,spirit lake ctl,Phosphorus,1.3,0.02
+2018-06-22 10:00,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake ctl,Nitrate + Nitrite nitrogen as N,30.,0.05
+2018-06-22 10:00,solids,sm 2540 d suspended,mg/L,spirit lake ctl,Total Suspended Solids,930,1
+2018-06-22 10:00,tkn,epa 111b rev 0,mg/L,spirit lake ctl,Total Kjeldahl Nitrogen as N,9.1,0.3
+2018-06-22 10:00,phosphorus,epa 119b rev 0,mg/L,spirit lake ctl,Phosphorus,2.1,0.02
+2018-06-25 11:15,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake ctl,Nitrate + Nitrite nitrogen as N,13,0.05
+2018-06-25 11:15,solids,sm 2540 d suspended,mg/L,spirit lake ctl,Total Suspended Solids,2100,1
+2018-06-25 11:15,tkn,epa 111b rev 0,mg/L,spirit lake ctl,Total Kjeldahl Nitrogen as N,11,0.3
+2018-06-25 11:15,phosphorus,epa 119b rev 0,mg/L,spirit lake ctl,Phosphorus,2.5,0.02
+2018-06-25 11:35,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake trt,Nitrate + Nitrite nitrogen as N,8.1,0.05
+2018-06-25 11:35,solids,sm 2540 d suspended,mg/L,spirit lake trt,Total Suspended Solids,800,1
+2018-06-25 11:35,tkn,epa 111b rev 0,mg/L,spirit lake trt,Total Kjeldahl Nitrogen as N,5.2,0.3
+2018-06-25 11:35,phosphorus,epa 119b rev 0,mg/L,spirit lake trt,Phosphorus,1.9,0.02
+2018-06-27 15:20,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake ctl,Nitrate + Nitrite nitrogen as N,7.9,0.05
+2018-06-27 15:20,solids,sm 2540 d suspended,mg/L,spirit lake ctl,Total Suspended Solids,410,1
+2018-06-27 15:20,tkn,epa 111b rev 0,mg/L,spirit lake ctl,Total Kjeldahl Nitrogen as N,3.1,0.3
+2018-06-27 15:20,phosphorus,epa 119b rev 0,mg/L,spirit lake ctl,Phosphorus,1.2,0.02
+2018-06-27 15:45,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake trt,Nitrate + Nitrite nitrogen as N,0.28,0.05
+2018-06-27 15:45,solids,sm 2540 d suspended,mg/L,spirit lake trt,Total Suspended Solids,450,1
+2018-06-27 15:45,tkn,epa 111b rev 0,mg/L,spirit lake trt,Total Kjeldahl Nitrogen as N,8.4,0.3
+2018-06-27 15:45,phosphorus,epa 119b rev 0,mg/L,spirit lake trt,Phosphorus,1.4,0.02
+2018-07-05 09:10,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake ctl,Nitrate + Nitrite nitrogen as N,0.080,0.05
+2018-07-05 09:10,solids,sm 2540 d suspended,mg/L,spirit lake ctl,Total Suspended Solids,1400,1
+2018-07-05 09:10,tkn,epa 111b rev 0,mg/L,spirit lake ctl,Total Kjeldahl Nitrogen as N,15,0.3
+2018-07-05 09:10,phosphorus,epa 119b rev 0,mg/L,spirit lake ctl,Phosphorus,2.3,0.02
+2018-07-05 09:40,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake trt,Nitrate + Nitrite nitrogen as N,2.6,0.05
+2018-07-05 09:40,solids,sm 2540 d suspended,mg/L,spirit lake trt,Total Suspended Solids,200,1
+2018-07-05 09:40,tkn,epa 111b rev 0,mg/L,spirit lake trt,Total Kjeldahl Nitrogen as N,2.8,0.3
+2018-07-05 09:40,phosphorus,epa 119b rev 0,mg/L,spirit lake trt,Phosphorus,1.2,0.02
+2018-08-07 11:00,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake ctl,Nitrate + Nitrite nitrogen as N,0.12,0.05
+2018-08-07 11:00,solids,sm 2540 d suspended,mg/L,spirit lake ctl,Total Suspended Solids,630,1
+2018-08-07 11:00,tkn,epa 111b rev 0,mg/L,spirit lake ctl,Total Kjeldahl Nitrogen as N,6.9,0.3
+2018-08-07 11:00,phosphorus,epa 119b rev 0,mg/L,spirit lake ctl,Phosphorus,0.81,0.02
+2018-09-05 10:05,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake ctl,Nitrate + Nitrite nitrogen as N,<0.050,0.05
+2018-09-05 10:05,solids,sm 2540 d suspended,mg/L,spirit lake ctl,Total Suspended Solids,490,1
+2018-09-05 10:05,tkn,epa 111b rev 0,mg/L,spirit lake ctl,Total Kjeldahl Nitrogen as N,3.7,0.3
+2018-09-05 10:05,phosphorus,epa 119b rev 0,mg/L,spirit lake ctl,Phosphorus,1.3,0.02
+2018-09-21 11:15,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake ctl,Nitrate + Nitrite nitrogen as N,<0.050,0.05
+2018-09-21 11:15,solids,sm 2540 d suspended,mg/L,spirit lake ctl,Total Suspended Solids,660,1
+2018-09-21 11:15,tkn,epa 111b rev 0,mg/L,spirit lake ctl,Total Kjeldahl Nitrogen as N,4.7,0.3
+2018-09-21 11:15,phosphorus,epa 119b rev 0,mg/L,spirit lake ctl,Phosphorus,1.5,0.02
+2018-09-21 11:35,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake trt,Nitrate + Nitrite nitrogen as N,2.4,0.05
+2018-09-21 11:35,solids,sm 2540 d suspended,mg/L,spirit lake trt,Total Suspended Solids,420,1
+2018-09-21 11:35,tkn,epa 111b rev 0,mg/L,spirit lake trt,Total Kjeldahl Nitrogen as N,3.7,0.3
+2018-09-21 11:35,phosphorus,epa 119b rev 0,mg/L,spirit lake trt,Phosphorus,1.6,0.02
