@@ -1,5 +1,0 @@
-awos data collected from: https://mesonet.agron.iastate.edu/request/download.phtml?network=AWOS
-
-1 hour precip in mm
-CST/CDT time zone
-comma delimited format

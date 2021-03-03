@@ -1,9 +1,0 @@
-Collected Date,Test,Method,Unit,Environmental Location,Analyte,Value,Quant Limit
-2019-05-28 11:30,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake trt,Nitrate + Nitrite nitrogen as N,0.08,0.05
-2019-05-28 11:30,solids,sm 2540 d suspended,mg/L,spirit lake trt,Total Suspended Solids,47,1
-2019-05-28 11:30,tkn,epa 111b rev 0,mg/L,spirit lake trt,Total Kjeldahl Nitrogen as N,2.1,0.3
-2019-05-28 11:30,phosphorus,epa 119b rev 0,mg/L,spirit lake trt,Phosphorus,0.78,0.02
-2019-05-28 10:50,nitrate + nitrite,epa 127b rev 0,mg/L,spirit lake ctl,Nitrate + Nitrite nitrogen as N,<0.05,0.05
-2019-05-28 10:50,solids,sm 2540 d suspended,mg/L,spirit lake ctl,Total Suspended Solids,450,1
-2019-05-28 10:50,tkn,epa 111b rev 0,mg/L,spirit lake ctl,Total Kjeldahl Nitrogen as N,3.7,0.3
-2019-05-28 10:50,phosphorus,epa 119b rev 0,mg/L,spirit lake ctl,Phosphorus,1.1,0.02
